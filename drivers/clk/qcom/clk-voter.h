@@ -29,7 +29,7 @@ extern const struct clk_ops clk_ops_voter;
 
 #define to_clk_voter(_hw) container_of(_hw, struct clk_voter, hw)
 
-#define __DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate, _is_branch) \
+#define __DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate, _is_branch, _flags) \
 	struct clk_voter clk_name = {					 \
 		.is_branch = (_is_branch),				  \
 		.rate = _default_rate,					   \
@@ -39,14 +39,18 @@ extern const struct clk_ops clk_ops_voter;
 			.flags = CLK_ENABLE_HAND_OFF,			   \
 			.parent_names = (const char *[]){ #_parent_name }, \
 			.num_parents = 1,				   \
+			.flags = _flags,					\
 		},							   \
 	}
 
 #define DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate) \
-	 __DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate, 0)
+	 __DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate, 0, 0)
+
+#define DEFINE_CLK_VOTER_NOCACHE(clk_name, _parent_name, _default_rate) \
+	 __DEFINE_CLK_VOTER(clk_name, _parent_name, _default_rate, 0, CLK_GET_RATE_NOCACHE)
 
 #define DEFINE_CLK_BRANCH_VOTER(clk_name, _parent_name) \
-	 __DEFINE_CLK_VOTER(clk_name, _parent_name, 1000, 1)
+	__DEFINE_CLK_VOTER(clk_name, _parent_name, 1000, 1, 0)
 
 int voter_clk_handoff(struct clk_hw *hw);
 
