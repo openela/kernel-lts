@@ -741,6 +741,13 @@ static int limits_dcvs_probe(struct platform_device *pdev)
 	}
 	request_reg = be32_to_cpu(addr[0]) + LIMITS_CLUSTER_REQ_OFFSET;
 
+	if (!IS_ENABLED(CONFIG_QTI_THERMAL_LIMITS_DCVS)) {
+		limits_isens_vref_ldo_init(pdev, hw);
+		devm_kfree(&pdev->dev, hw->cdev_data);
+		devm_kfree(&pdev->dev, hw);
+		return 0;
+	}
+
 	/*
 	 * Setup virtual thermal zones for each LMH-DCVS hardware
 	 * The sensor does not do actual thermal temperature readings
