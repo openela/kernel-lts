@@ -466,6 +466,7 @@ struct aw8697 {
     int index;
     int vmax;
     int gain;
+    int level;
 
     unsigned char seq[AW8697_SEQUENCER_SIZE];
     unsigned char loop[AW8697_SEQUENCER_SIZE];
