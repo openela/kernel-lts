@@ -125,6 +125,7 @@ struct kgsl_context;
  * @pagetable_list: LIst of open pagetables
  * @ptlock: Lock for accessing the pagetable list
  * @process_mutex: Mutex for accessing the process list
+ * @proclist_lock: Lock for accessing the process list
  * @devlock: Mutex protecting the device list
  * @stats: Struct containing atomic memory statistics
  * @full_cache_threshold: the threshold that triggers a full cache flush
@@ -143,6 +144,7 @@ struct kgsl_driver {
 	struct list_head pagetable_list;
 	spinlock_t ptlock;
 	struct mutex process_mutex;
+	spinlock_t proclist_lock;
 	struct mutex devlock;
 	struct {
 		atomic_long_t vmalloc;
