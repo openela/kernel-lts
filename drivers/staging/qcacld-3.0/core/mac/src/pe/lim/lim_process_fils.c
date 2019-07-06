@@ -885,6 +885,11 @@ static QDF_STATUS lim_process_auth_wrapped_data(struct pe_session *pe_session,
 		pe_err("invalid remaining len %d",
 			remaining_len);
 	}
+
+	if (sizeof(hash) < auth_tag_len) {
+		pe_err("sizeof(hash) < auth_tag_len check failed");
+		return QDF_STATUS_E_FAILURE;
+	}
 	if (qdf_mem_cmp(wrapped_data, hash, auth_tag_len)) {
 		pe_err("integratity check failed for auth, crypto %d",
 			crypto);
