@@ -23,7 +23,6 @@
 #include "adreno.h"
 #include "a6xx_reg.h"
 #include "adreno_a6xx.h"
-#include "adreno_snapshot.h"
 #include "adreno_trace.h"
 
 static const unsigned int a6xx_gmu_gx_registers[] = {
@@ -1538,6 +1537,7 @@ static unsigned int a6xx_gmu_ifpc_show(struct adreno_device *adreno_dev)
 			gmu->idle_level  >= GPU_HW_IFPC;
 }
 
+<<<<<<< HEAD
 static size_t a6xx_snapshot_gmu_tcm(struct kgsl_device *device,
 		u8 *buf, size_t remain, void *priv)
 {
@@ -1666,6 +1666,8 @@ static void a6xx_gmu_snapshot(struct adreno_device *adreno_dev,
 	}
 }
 
+=======
+>>>>>>> 8cd6d21de907b (msm: kgsl: Disable snapshot, coresight and trace)
 static int a6xx_gmu_wait_for_active_transition(
 	struct adreno_device *adreno_dev)
 {
@@ -1754,7 +1756,6 @@ struct gmu_dev_ops adreno_a6xx_gmudev = {
 	.wait_for_gmu_idle = a6xx_gmu_wait_for_idle,
 	.ifpc_store = a6xx_gmu_ifpc_store,
 	.ifpc_show = a6xx_gmu_ifpc_show,
-	.snapshot = a6xx_gmu_snapshot,
 	.wait_for_active_transition = a6xx_gmu_wait_for_active_transition,
 	.is_initialized = a6xx_gmu_is_initialized,
 	.read_ao_counter = a6xx_gmu_read_ao_counter,
