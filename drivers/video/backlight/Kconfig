@@ -15,7 +15,7 @@ if BACKLIGHT_LCD_SUPPORT
 #
 config LCD_CLASS_DEVICE
         tristate "Lowlevel LCD controls"
-	default m
+	default n
 	help
 	  This framework adds support for low-level control of LCD.
 	  Some framebuffer devices connect to platform-specific LCD modules
@@ -106,7 +106,7 @@ config LCD_TOSA
 config LCD_HP700
 	tristate "HP Jornada 700 series LCD Driver"
 	depends on SA1100_JORNADA720_SSP && !PREEMPT
-	default y
+	default n
 	help
 	  If you have an HP Jornada 700 series handheld (710/720/728)
 	  say Y to enable LCD control driver.
@@ -191,7 +191,7 @@ config BACKLIGHT_EP93XX
 
 config BACKLIGHT_GENERIC
 	tristate "Generic (aka Sharp Corgi) Backlight Driver"
-	default y
+	default n
 	help
 	  Say y to enable the generic platform backlight driver previously
 	  known as the Corgi backlight driver. If you have a Sharp Zaurus
@@ -200,7 +200,7 @@ config BACKLIGHT_GENERIC
 config BACKLIGHT_IPAQ_MICRO
 	tristate "iPAQ microcontroller backlight driver"
 	depends on MFD_IPAQ_MICRO
-	default y
+	default n
 	help
 	  Say y to enable the backlight driver for Compaq iPAQ handheld
 	  computers. Say yes if you have one of the h3100/h3600/h3700
@@ -221,7 +221,7 @@ config BACKLIGHT_LM3533
 config BACKLIGHT_LOCOMO
 	tristate "Sharp LOCOMO LCD/Backlight Driver"
 	depends on SHARP_LOCOMO
-	default y
+	default n
 	help
 	  If you have a Sharp Zaurus SL-5500 (Collie) or SL-5600 (Poodle) say y to
 	  enable the LCD/backlight driver.
@@ -229,7 +229,7 @@ config BACKLIGHT_LOCOMO
 config BACKLIGHT_OMAP1
 	tristate "OMAP1 PWL-based LCD Backlight"
 	depends on ARCH_OMAP1
-	default y
+	default n
 	help
 	  This driver controls the LCD backlight level and power for
 	  the PWL module of OMAP1 processors.  Say Y if your board
@@ -238,7 +238,7 @@ config BACKLIGHT_OMAP1
 config BACKLIGHT_HP680
 	tristate "HP Jornada 680 Backlight Driver"
 	depends on SH_HP6XX
-	default y
+	default n
 	help
 	  If you have a HP Jornada 680, say y to enable the
 	  backlight driver.
@@ -246,7 +246,7 @@ config BACKLIGHT_HP680
 config BACKLIGHT_HP700
 	tristate "HP Jornada 700 series Backlight Driver"
 	depends on SA1100_JORNADA720_SSP && !PREEMPT
-	default y
+	default n
 	help
 	  If you have an HP Jornada 700 series,
 	  say Y to include backlight control driver.
