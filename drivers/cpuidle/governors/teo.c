@@ -133,7 +133,15 @@ static void teo_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
 	} else {
 		unsigned int lat = drv->states[cpu_data->last_state].exit_latency;
 
-		measured_us = ktime_to_us(cpu_data->time_span_ns);
+		/*
+		 * The computations below are to determine whether or not the
+		 * (saved) time till the next timer event and the measured idle
+		 * duration fall into the same "bin", so use last_residency_ns
+		 * for that instead of time_span_ns which includes the cpuidle
+		 * overhead.
+		 */
+		measured_us = dev->last_residency;
+
 		/*
 		 * The delay between the wakeup and the first instruction
 		 * executed by the CPU is not likely to be worst-case every
