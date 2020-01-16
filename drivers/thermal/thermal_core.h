@@ -58,6 +58,32 @@ struct thermal_instance {
 	unsigned int weight; /* The weight of the cooling device */
 };
 
+#ifdef VENDOR_EDIT
+struct __thermal_zone {
+	enum thermal_device_mode mode;
+	int passive_delay;
+	int polling_delay;
+	int slope;
+	int offset;
+	struct thermal_zone_device *tzd;
+	bool default_disable;
+	bool is_wakeable;
+	bool temp_track;
+
+	/* trip data */
+	int ntrips;
+	struct thermal_trip *trips;
+
+	/* cooling binding data */
+	int num_tbps;
+	struct __thermal_bind_params *tbps;
+
+	struct list_head list;
+	/* sensor interface */
+	struct __sensor_param *senps;
+};
+#endif
+
 #define to_thermal_zone(_dev) \
 	container_of(_dev, struct thermal_zone_device, device)
 

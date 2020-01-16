@@ -149,9 +149,13 @@ static void thermal_zone_trip_update(struct thermal_zone_device *tz, int trip)
 	}
 
 	trend = get_tz_trend(tz, trip);
-
+#ifdef VENDOR_EDIT
+	dev_dbg(&tz->device, "Trip%d[type=%d,temp=%d]:trend=%d\n",
+				trip, trip_type, trip_temp, trend);
+#else
 	dev_dbg(&tz->device, "Trip%d[type=%d,temp=%d]:trend=%d,throttle=%d\n",
 				trip, trip_type, trip_temp, trend, throttle);
+#endif
 
 	mutex_lock(&tz->lock);
 
@@ -175,8 +179,13 @@ static void thermal_zone_trip_update(struct thermal_zone_device *tz, int trip)
 			throttle = false;
 
 		instance->target = get_target_state(instance, trend, throttle);
+#ifdef VENDOR_EDIT
+		dev_dbg(&instance->cdev->device, "old_target=%d, target=%d, throttle=%d\n",
+					old_target, (int)instance->target, throttle);
+#else
 		dev_dbg(&instance->cdev->device, "old_target=%d, target=%d\n",
 					old_target, (int)instance->target);
+#endif
 
 		if (instance->initialized && old_target == instance->target)
 			continue;

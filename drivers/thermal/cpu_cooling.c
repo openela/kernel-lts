@@ -1049,6 +1049,9 @@ __cpufreq_cooling_register(struct device_node *np,
 			pr_warn("%s: table has duplicate entries\n", __func__);
 		else
 			pr_debug("%s: freq:%u KHz\n", __func__, freq);
+
+		pr_info("%s: cdev%d, freq[%d]=%d\n", __func__, cpufreq_cdev->id, i,
+				cpufreq_cdev->freq_table[i].frequency);
 	}
 
 	/* Max level index is for core isolation, set this level as zero */

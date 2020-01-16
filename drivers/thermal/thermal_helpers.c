@@ -168,6 +168,10 @@ void thermal_cdev_update(struct thermal_cooling_device *cdev)
 	struct thermal_instance *instance;
 	unsigned long current_target = 0, min_target = ULONG_MAX;
 
+#ifdef VENDOR_EDIT
+	unsigned long stale_target;
+#endif
+
 	mutex_lock(&cdev->lock);
 	/* cooling device is updated*/
 	if (cdev->updated) {
@@ -178,6 +182,9 @@ void thermal_cdev_update(struct thermal_cooling_device *cdev)
 	/* Make sure cdev enters the deepest cooling state */
 	current_target = cdev->sysfs_cur_state_req;
 	min_target = cdev->sysfs_min_state_req;
+#ifdef VENDOR_EDIT
+	cdev->ops->get_cur_state(cdev, &stale_target);
+#endif
 	list_for_each_entry(instance, &cdev->thermal_instances, cdev_node) {
 		dev_dbg(&cdev->device, "zone%d->target=%lu\n",
 				instance->tz->id, instance->target);
@@ -193,6 +200,19 @@ void thermal_cdev_update(struct thermal_cooling_device *cdev)
 	}
 	trace_cdev_update_start(cdev);
 	cdev->ops->set_cur_state(cdev, current_target);
+#ifdef VENDOR_EDIT
+	if (stale_target != current_target) {
+		pr_err("%s: cdev=%s, old_target=%d, target=%d.\n",
+			__func__, cdev->type, stale_target, current_target);
+
+		list_for_each_entry(instance, &cdev->thermal_instances, cdev_node) {
+			struct __thermal_zone *devdata = instance->tz->devdata;
+
+			if (devdata->temp_track)
+				pr_err("%s: tz=%s, temp=%d\n", __func__, instance->tz->type, instance->tz->temperature);
+		}
+	}
+#endif
 	if (cdev->ops->set_min_state)
 		cdev->ops->set_min_state(cdev, min_target);
 	cdev->updated = true;

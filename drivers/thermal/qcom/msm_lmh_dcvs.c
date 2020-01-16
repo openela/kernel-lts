@@ -110,6 +110,10 @@ struct limits_dcvs_hw {
 	uint32_t cdev_registered;
 	struct regulator *isens_reg[2];
 	struct work_struct cdev_register_work;
+#ifdef VENDOR_EDIT
+	uint32_t dump_thres;
+	uint32_t dump_cnt;
+#endif
 };
 
 LIST_HEAD(lmh_dcvs_hw_list);
@@ -139,6 +143,31 @@ static void limits_dcvs_get_freq_limits(struct limits_dcvs_hw *hw)
 		idx++;
 	}
 }
+
+#ifdef VENDOR_EDIT
+static void lmh_dump_tz_temp(struct limits_dcvs_hw *hw)
+{
+	struct thermal_cooling_device *cdev;
+	int cpu, idx = 0;
+	struct thermal_instance *instance;
+
+	if (NULL == hw) {
+		pr_err("lmh device is invalid!\n");
+		return;
+	}
+
+	for_each_cpu(cpu, &hw->core_map) {
+		cdev = hw->cdev_data[idx].cdev;
+		list_for_each_entry(instance, &cdev->thermal_instances, cdev_node) {
+			pr_info("cdev%d: zone%d->temp=%d, type=%s\n", idx, instance->tz->id,
+				instance->tz->temperature, instance->tz->type);
+		}
+		idx++;
+	}
+
+	return;
+}
+#endif
 
 static unsigned long limits_mitigation_notify(struct limits_dcvs_hw *hw)
 {
@@ -192,6 +221,17 @@ static unsigned long limits_mitigation_notify(struct limits_dcvs_hw *hw)
 	sched_update_cpu_freq_min_max(&hw->core_map, 0, max_limit);
 	pr_debug("CPU:%d max limit:%lu\n", cpumask_first(&hw->core_map),
 			max_limit);
+#ifdef VENDOR_EDIT
+	if (max_limit < hw->dump_thres) {
+		pr_info("CPU:%d max limit:%lu\n", cpumask_first(&hw->core_map),
+			max_limit);
+		hw->dump_cnt++;
+		if (!(hw->dump_cnt % 100)) {
+			lmh_dump_tz_temp(hw);
+			hw->dump_cnt = 0;
+		}
+	}
+#endif
 	trace_lmh_dcvs_freq(cpumask_first(&hw->core_map), max_limit);
 
 notify_exit:
@@ -395,6 +435,10 @@ static int lmh_set_max_limit(int cpu, u32 freq)
 	ret = limits_dcvs_write(hw->affinity, LIMITS_SUB_FN_THERMAL,
 				  LIMITS_FREQ_CAP, max_freq,
 				  (max_freq == U32_MAX) ? 0 : 1, 1);
+#ifdef VENDOR_EDIT
+	pr_info("affinity:%x, max_freq:%u, ret:%d\n", hw->affinity,
+			max_freq, ret);
+#endif
 	lmh_dcvs_notify(hw);
 	mutex_unlock(&hw->access_lock);
 
@@ -579,6 +623,9 @@ static int limits_dcvs_probe(struct platform_device *pdev)
 	struct device_node *dn = pdev->dev.of_node;
 	struct device_node *cpu_node, *lmh_node;
 	uint32_t request_reg, clear_reg, min_reg;
+#ifdef VENDOR_EDIT
+	uint32_t dump_thres;
+#endif
 	int cpu, idx = 0;
 	cpumask_t mask = { CPU_BITS_NONE };
 	const __be32 *addr;
@@ -759,6 +806,18 @@ static int limits_dcvs_probe(struct platform_device *pdev)
 	hw->lmh_freq_attr.show = lmh_freq_limit_show;
 	hw->lmh_freq_attr.attr.mode = 0444;
 	sysfs_attr_init(&hw->lmh_freq_attr.attr);
+
+#ifdef VENDOR_EDIT
+	ret = of_property_read_u32(dn, "dump_thres", &dump_thres);
+	if (ret) {
+		pr_err("lmh%d: dump_thres=%u. Doesn't support dump!\n",
+			affinity, hw->dump_thres);
+	} else {
+		pr_info("lmh%d: dump_thres=%u\n", affinity, dump_thres);
+		hw->dump_thres = dump_thres;
+	}
+#endif
+
 	device_create_file(&pdev->dev, &hw->lmh_freq_attr);
 
 probe_exit:
