@@ -819,7 +819,7 @@ static void sugov_policy_free(struct sugov_policy *sg_policy)
 static int sugov_kthread_create(struct sugov_policy *sg_policy)
 {
 	struct task_struct *thread;
-	struct sched_param param = { .sched_priority = MAX_USER_RT_PRIO / 2 };
+	struct sched_param param = { .sched_priority = SUGOV_KTHREAD_PRIORITY };
 	struct cpufreq_policy *policy = sg_policy->policy;
 	int ret;
 
