@@ -82,10 +82,10 @@ static int pm_qos_state = 0;
 #endif
 
 uint8_t DouTap_enable = 0;               // double tap
-uint8_t UpVee_enable  = 0;               // V
-uint8_t DownVee_enable  = 0;             // ^
-uint8_t LeftVee_enable = 0;              // >
-uint8_t RightVee_enable = 0;             // <
+uint8_t UpVee_enable  = 0;               // ^
+uint8_t DownVee_enable  = 0;             // v
+uint8_t LeftVee_enable = 0;              // <
+uint8_t RightVee_enable = 0;             // >
 uint8_t Circle_enable = 0;               // O
 uint8_t DouSwip_enable = 0;              // ||
 uint8_t Left2RightSwip_enable = 0;       // -->
@@ -453,8 +453,8 @@ static void tp_gesture_handle(struct touchpanel_data *ts)
     TPD_INFO("detect %s gesture\n", gesture_info_temp.gesture_type == DouTap ? "double tap" :
              gesture_info_temp.gesture_type == UpVee ? "up vee" :
              gesture_info_temp.gesture_type == DownVee ? "down vee" :
-             gesture_info_temp.gesture_type == LeftVee ? "(>)" :
-             gesture_info_temp.gesture_type == RightVee ? "(<)" :
+             gesture_info_temp.gesture_type == LeftVee ? "(<)" :
+             gesture_info_temp.gesture_type == RightVee ? "(>)" :
              gesture_info_temp.gesture_type == Circle ? "circle" :
              gesture_info_temp.gesture_type == DouSwip ? "(||)" :
              gesture_info_temp.gesture_type == Left2RightSwip ? "(-->)" :
@@ -474,19 +474,19 @@ static void tp_gesture_handle(struct touchpanel_data *ts)
             break;
         case UpVee:
             enabled = UpVee_enable;
-            key = KEY_GESTURE_UP_ARROW;
+            key = KEY_GESTURE_DOWN_ARROW;
             break;
         case DownVee:
             enabled = DownVee_enable;
-            key = KEY_GESTURE_DOWN_ARROW;
+            key = KEY_GESTURE_UP_ARROW;
             break;
         case LeftVee:
             enabled = LeftVee_enable;
-            key = KEY_GESTURE_LEFT_ARROW;
+            key = KEY_GESTURE_RIGHT_ARROW;
             break;
         case RightVee:
             enabled = RightVee_enable;
-            key = KEY_GESTURE_RIGHT_ARROW;
+            key = KEY_GESTURE_LEFT_ARROW;
             break;
         case Circle:
             enabled = Circle_enable;
@@ -498,19 +498,19 @@ static void tp_gesture_handle(struct touchpanel_data *ts)
             break;
         case Left2RightSwip:
             enabled = Left2RightSwip_enable;
-            key = KEY_GESTURE_SWIPE_LEFT;
+            key = KEY_GESTURE_SWIPE_RIGHT;
             break;
         case Right2LeftSwip:
             enabled = Right2LeftSwip_enable;
-            key = KEY_GESTURE_SWIPE_RIGHT;
+            key = KEY_GESTURE_SWIPE_LEFT;
             break;
         case Up2DownSwip:
             enabled = Up2DownSwip_enable;
-            key = KEY_GESTURE_SWIPE_UP;
+            key = KEY_GESTURE_SWIPE_DOWN;
             break;
         case Down2UpSwip:
             enabled = Down2UpSwip_enable;
-            key = KEY_GESTURE_SWIPE_DOWN;
+            key = KEY_GESTURE_SWIPE_UP;
             break;
         case Mgestrue:
             enabled = Mgestrue_enable;

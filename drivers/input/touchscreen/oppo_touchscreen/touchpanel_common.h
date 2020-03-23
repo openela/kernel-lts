@@ -49,10 +49,10 @@
 
 #define UnkownGesture       0
 #define DouTap              1   // double tap
-#define UpVee               2   // V
-#define DownVee             3   // ^
-#define LeftVee             4   // >
-#define RightVee            5   // <
+#define UpVee               2   // ^
+#define DownVee             3   // v
+#define LeftVee             4   // <
+#define RightVee            5   // >
 #define Circle              6   // O
 #define DouSwip             7   // ||
 #define Left2RightSwip      8   // -->
