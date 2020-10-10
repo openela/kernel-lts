@@ -167,8 +167,9 @@ CONFIG_QCOM_TDLS := y
 
 CONFIG_WLAN_SYSFS := y
 CONFIG_WLAN_POWER_DEBUG := y
-#Enable Beacon Reception Stats
-CONFIG_FEATURE_BECN_STATS := y
+
+#Disable Beacon Reception Stats
+CONFIG_FEATURE_BECN_STATS := n
 endif
 
 #Disable the Export Symbol config
@@ -276,8 +277,7 @@ ifeq ($(CONFIG_ROME_IF),usb)
 	CONFIG_LINUX_QCMBR :=y
 endif
 
-
-CONFIG_FEATURE_EPPING := y
+CONFIG_FEATURE_EPPING := n
 
 #Flag to enable offload packets feature
 CONFIG_WLAN_OFFLOAD_PACKETS := y
@@ -440,7 +440,6 @@ CONFIG_QCA_WIFI_QCA8074 := y
 CONFIG_QCA_WIFI_QCA8074_VP := y
 CONFIG_DP_INTR_POLL_BASED := y
 CONFIG_TX_PER_PDEV_DESC_POOL := y
-CONFIG_DP_TRACE := n
 CONFIG_FEATURE_TSO := y
 CONFIG_FEATURE_FORCE_WAKE := y
 CONFIG_DP_LFR := y
@@ -457,13 +456,6 @@ CONFIG_RXDMA_ERR_PKT_DROP := y
 CONFIG_DELIVERY_TO_STACK_STATUS_CHECK := y
 CONFIG_DP_MEM_PRE_ALLOC := y
 
-ifeq ($(CONFIG_FEATURE_TSO), y)
-	CONFIG_FEATURE_TSO_STATS := y
-endif
-
-ifeq ($(CONFIG_DISABLE_DP_STATS), y)
-	CONFIG_FEATURE_TSO_STATS := n
-endif
 endif
 
 # As per target team, build is done as follows:
@@ -491,17 +483,17 @@ ifneq ($(TARGET_BUILD_VARIANT),user)
 endif
 
 #Enable WLAN/Power debugfs feature only if debug_fs is enabled
-ifeq ($(CONFIG_DEBUG_FS), y)
+#ifeq ($(CONFIG_DEBUG_FS), y)
        # Flag to enable debugfs. Depends on CONFIG_DEBUG_FS in kernel
        # configuration.
-       CONFIG_WLAN_DEBUGFS := y
+       # CONFIG_WLAN_DEBUGFS := y
 
        # Flag to enable streamfs. Depends on CONFIG_DEBUG_FS and
        # CONFIG_RELAY in kernel configuration.
-ifeq ($(CONFIG_RELAY), y)
-       CONFIG_WLAN_STREAMFS := y
-endif
-endif
+#ifeq ($(CONFIG_RELAY), y)
+       # CONFIG_WLAN_STREAMFS := y
+#endif
+#endif
 
 ifeq ($(CONFIG_WLAN_DEBUGFS), y)
        CONFIG_WLAN_MWS_INFO_DEBUGFS := y
@@ -517,7 +509,7 @@ endif
 BUILD_DEBUG_VERSION := n
 
 #Enable this flag to build driver in diag version
-BUILD_DIAG_VERSION := y
+BUILD_DIAG_VERSION := n
 
 ifeq ($(CONFIG_SLUB_DEBUG), y)
 	PANIC_ON_BUG := y
@@ -781,7 +773,7 @@ CONFIG_QCA_SIGNED_SPLIT_BINARY_SUPPORT := n
 CONFIG_QCA_SINGLE_BINARY_SUPPORT := n
 
 #Enable collecting target RAM dump after kernel panic
-CONFIG_TARGET_RAMDUMP_AFTER_KERNEL_PANIC := y
+CONFIG_TARGET_RAMDUMP_AFTER_KERNEL_PANIC := n
 
 #Flag to enable/disable secure firmware feature
 CONFIG_FEATURE_SECURE_FIRMWARE := n
@@ -800,7 +792,7 @@ CONFIG_FEATURE_HTC_CREDIT_HISTORY := y
 CONFIG_TRACE_RECORD_FEATURE := n
 
 #Flag to enable p2p debug feature
-CONFIG_WLAN_FEATURE_P2P_DEBUG := y
+CONFIG_WLAN_FEATURE_P2P_DEBUG := n
 
 #Flag to enable roam debug log
 CONFIG_FEATURE_ROAM_DEBUG := n
@@ -815,7 +807,7 @@ CONFIG_WLAN_WEXT_SUPPORT_ENABLE := y
 CONFIG_ENABLE_MTRACE_LOG := n
 
 #Flag to enable nud tracking feature
-CONFIG_WLAN_NUD_TRACKING := y
+CONFIG_WLAN_NUD_TRACKING := n
 
 #Flag to enable/Disable Function call trace
 CONFIG_FUNC_CALL_MAP := n
@@ -870,7 +862,7 @@ CONFIG_WLAN_NS_OFFLOAD := y
 CONFIG_FEATURE_WLAN_RA_FILTERING:= y
 CONFIG_FEATURE_WLAN_LPHB := y
 CONFIG_QCA_SUPPORT_TX_THROTTLE := y
-CONFIG_WMI_INTERFACE_EVENT_LOGGING := y
+CONFIG_WMI_INTERFACE_EVENT_LOGGING := n
 CONFIG_WLAN_FEATURE_LINK_LAYER_STATS := y
 CONFIG_FEATURE_WLAN_EXTSCAN := n
 CONFIG_WMI_BCN_OFFLOAD := y
@@ -887,7 +879,7 @@ CONFIG_HDD_INIT_WITH_RTNL_LOCK := y
 CONFIG_WLAN_CONV_SPECTRAL_ENABLE := y
 CONFIG_WLAN_SPECTRAL_ENABLE := y
 CONFIG_WMI_CMD_STRINGS := y
-CONFIG_FEATURE_MONITOR_MODE_SUPPORT := y
+CONFIG_FEATURE_MONITOR_MODE_SUPPORT := n
 CONFIG_WLAN_ALLOCATE_GLOBAL_BUFFERS_DYNAMICALLY := n
 CONFIG_WLAN_FEATURE_TWT := y
 CONFIG_FW_THERMAL_THROTTLE := y
@@ -964,6 +956,9 @@ ifeq ($(CONFIG_LITHIUM), y)
 	CONFIG_DYNAMIC_RX_AGGREGATION := y
 endif
 
+#Flag to enable hdd memory dump feature
+CONFIG_FEATURE_MEMDUMP_ENABLE := n
+
 #Flag to enable/disable WLAN D0-WOW
 ifeq ($(CONFIG_PCI_MSM), y)
 ifeq ($(CONFIG_HIF_PCI), y)
@@ -988,9 +983,7 @@ ifeq ($(CONFIG_ARCH_SDXPRAIRIE), y)
 	CONFIG_WMI_DBR_SUPPORT := n
 endif
 
-ifneq ($(CONFIG_HIF_USB), y)
-CONFIG_WLAN_LOGGING_SOCK_SVC := y
-endif
+CONFIG_WLAN_LOGGING_SOCK_SVC := n
 
 ifneq ($(TARGET_BUILD_VARIANT),user)
 CONFIG_DESC_DUP_DETECT_DEBUG := y
@@ -1044,9 +1037,9 @@ CONFIG_WLAN_FEATURE_DP_BUS_BANDWIDTH := y
 ifeq ($(CONFIG_CNSS_QCA6490), y)
 
 #Enable 6 GHz Band
-CONFIG_BAND_6GHZ := n
-CONFIG_RX_FISA := n
-CONFIG_MORE_TX_DESC := n
+CONFIG_BAND_6GHZ := y
+CONFIG_RX_FISA := y
+CONFIG_MORE_TX_DESC := y
 
 endif
 
@@ -1067,7 +1060,7 @@ ifeq ($(CONFIG_ARCH_QCS405), y)
 CONFIG_FEATURE_WLAN_TIME_SYNC_FTM := y
 endif
 
-CONFIG_WLAN_HANG_EVENT := y
+CONFIG_WLAN_HANG_EVENT := n
 
 CONFIG_FEATURE_GPIO_CFG := y
 
