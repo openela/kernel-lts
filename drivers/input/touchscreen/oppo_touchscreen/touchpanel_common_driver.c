@@ -230,6 +230,9 @@ void operate_mode_switch(struct touchpanel_data *ts)
         if (ts->edge_limit_support || ts->fw_edge_limit_support)
             ts->ts_ops->mode_switch(ts->chip_data, MODE_EDGE, ts->limit_edge);
 
+        if (ts->game_switch_support)
+            ts->ts_ops->mode_switch(ts->chip_data, MODE_GAME, ts->noise_level);
+
         if (ts->glove_mode_support)
             ts->ts_ops->mode_switch(ts->chip_data, MODE_GLOVE, ts->glove_enable);
 
