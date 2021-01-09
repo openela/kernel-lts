@@ -86,6 +86,13 @@ struct clk_osm {
 	cpumask_t related_cpus;
 };
 
+struct clk_osm_boost {
+	struct clk_osm *c;
+	unsigned int max_index;
+};
+
+static DEFINE_PER_CPU(struct clk_osm_boost, clk_boost_pcpu);
+
 static bool is_sdmshrike;
 static bool is_sm6150;
 static bool is_sdmmagpie;
@@ -670,7 +677,7 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	struct clk_osm *c, *parent;
 	struct clk_hw *p_hw;
 	int ret, of_len;
-	unsigned int i;
+	unsigned int i, cpu;
 	u32 *of_table = NULL;
 	char tbl_name[] = "qcom,cpufreq-table-##";
 
@@ -759,6 +766,10 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 	policy->dvfs_possible_from_any_cpu = true;
 	policy->fast_switch_possible = true;
 	policy->driver_data = c;
+	for_each_cpu(cpu, &c->related_cpus) {
+		per_cpu(clk_boost_pcpu, cpu).c = c;
+		per_cpu(clk_boost_pcpu, cpu).max_index = i - 1;
+	}
 
 	cpumask_copy(policy->cpus, &c->related_cpus);
 
@@ -797,6 +808,16 @@ static struct cpufreq_driver qcom_osm_cpufreq_driver = {
 	.attr		= osm_cpufreq_attr,
 	.boost_enabled	= true,
 };
+
+static int cpuhp_osm_online(unsigned int cpu)
+{
+	struct clk_osm_boost *b = &per_cpu(clk_boost_pcpu, cpu);
+	struct clk_osm *c = b->c;
+
+	/* Set the max frequency by default before the governor takes over */
+	osm_set_index(c, b->max_index, c->core_num);
+	return 0;
+}
 
 static u32 find_voltage(struct clk_osm *c, unsigned long rate)
 {
@@ -1311,6 +1332,11 @@ static int clk_cpu_osm_driver_probe(struct platform_device *pdev)
 	rc = cpufreq_register_driver(&qcom_osm_cpufreq_driver);
 	if (rc)
 		goto provider_err;
+
+	rc = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE, "osm-cpufreq:online",
+				       cpuhp_osm_online, NULL);
+	if (rc)
+		dev_err(&pdev->dev, "CPUHP callback setup failed, rc=%d\n", rc);
 
 	pr_info("OSM CPUFreq driver inited\n");
 	return 0;
