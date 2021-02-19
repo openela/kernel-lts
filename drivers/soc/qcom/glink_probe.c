@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2017-2019, 2021, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -44,6 +44,8 @@ do {									       \
 #define GLINK_SSR_CLEANUP_DONE	1
 #define GLINK_SSR_PRIORITY	1
 #define GLINK_SSR_REPLY_TIMEOUT	HZ
+
+extern const struct dev_pm_ops glink_native_pm_ops;
 
 struct do_cleanup_msg {
 	__le32 version;
@@ -459,6 +461,7 @@ static struct platform_driver glink_probe_driver = {
 		.name = "msm_glink",
 		.owner = THIS_MODULE,
 		.of_match_table = glink_match_table,
+		.pm = &glink_native_pm_ops,
 	},
 };
 
