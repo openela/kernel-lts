@@ -194,13 +194,6 @@ Optional Properties:
 				Specify the number of macrotiling channels for this chip.
 				This is programmed into certain registers and also pass to
 				the user as a property.
-- qcom,l2pc-cpu-mask:
-				Disables L2PC on masked CPUs when any of Graphics
-				rendering thread is running on masked CPUs.
-				Bit 0 is for CPU-0, bit 1 is for CPU-1...
-
-- qcom,l2pc-update-queue:
-				Disables L2PC on masked CPUs at queue time when it's true.
 
 - qcom,snapshot-size:
 				Specify the size of snapshot in bytes. This will override
