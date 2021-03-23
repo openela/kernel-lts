@@ -662,7 +662,7 @@ void wcd_mbhc_report_plug(struct wcd_mbhc *mbhc, int insertion,
 		/*Suresh.Alla@MULTIMEDIA.AUDIODRIVER.HEADSETDET 2020/07/31,
 		 *Modify for necessary log.
 		 */
-		pr_debug("%s: Reporting removal %d(%x)\n", __func__,
+		pr_info("%s: Reporting removal %d(%x)\n", __func__,
 			 jack_type, mbhc->hph_status);
 		#else /* OPLUS_ARCH_EXTENDS */
 		pr_info("%s: Reporting removal %d(%x)\n", __func__,
@@ -1671,13 +1671,8 @@ static int wcd_mbhc_initialise(struct wcd_mbhc *mbhc)
 		/* Insertion debounce set to 48ms */
 		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_INSREM_DBNC, 4);
 	} else {
-		#ifndef OPLUS_ARCH_EXTENDS
-		//RiCheng.Wang@MULTIMEDIA.AUDIODRIVER.DRIVER. 2020/10/17 Modify the Debounce to 512ms
-		/* Insertion debounce set to 96ms */
-		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_INSREM_DBNC, 6);
-		#else
-		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_INSREM_DBNC, 0xB);
-		#endif
+		/* Insertion debounce set to 512ms */
+		WCD_MBHC_REG_UPDATE_BITS(WCD_MBHC_INSREM_DBNC, 0x0B);
 	}
 
 	/* Button Debounce set to 16ms */

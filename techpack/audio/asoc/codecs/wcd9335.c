@@ -1800,7 +1800,7 @@ static void tasha_wcd_mbhc_calc_impedance(struct wcd_mbhc *mbhc, uint32_t *zl,
 		{4, 0, 4, 0x08, 0x14, 0x18}, /* < 32ohm */
 		{2, 0, 3, 0x18, 0x7C, 0x90}, /* 32ohm < Z < 400ohm */
 		{1, 4, 5, 0x18, 0x7C, 0x90}, /* 400ohm < Z < 1200ohm */
-		{1, 6, 7, 0x18, 0x7C, 0x90}, /* >1200ohm */
+		{2, 6, 7, 0x18, 0x7C, 0x90}, /* >1200ohm */
 	};
 	struct tasha_mbhc_zdet_param *zdet_param_ptr = NULL;
 	s16 d1_a[][4] = {
