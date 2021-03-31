@@ -145,7 +145,6 @@ static struct device *wakeup_source_device_create(struct device *parent,
 	device_initialize(dev);
 	dev->devt = MKDEV(0, 0);
 	dev->class = wakeup_class;
-	dev->parent = parent;
 	dev->groups = wakeup_source_groups;
 	dev->release = device_create_release;
 	dev_set_drvdata(dev, ws);
