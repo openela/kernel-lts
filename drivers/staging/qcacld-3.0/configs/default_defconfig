@@ -440,7 +440,7 @@ CONFIG_QCA_WIFI_QCA8074 := y
 CONFIG_QCA_WIFI_QCA8074_VP := y
 CONFIG_DP_INTR_POLL_BASED := y
 CONFIG_TX_PER_PDEV_DESC_POOL := y
-CONFIG_DP_TRACE := y
+CONFIG_DP_TRACE := n
 CONFIG_FEATURE_TSO := y
 CONFIG_FEATURE_FORCE_WAKE := y
 CONFIG_DP_LFR := y
@@ -514,7 +514,7 @@ endif
 # Feature flags which are not (currently) configurable via Kconfig
 
 #Whether to build debug version
-BUILD_DEBUG_VERSION := y
+BUILD_DEBUG_VERSION := n
 
 #Enable this flag to build driver in diag version
 BUILD_DIAG_VERSION := y
@@ -531,16 +531,19 @@ else
 endif
 
 # Compile all log levels by default
-CONFIG_WLAN_LOG_FATAL := y
-CONFIG_WLAN_LOG_ERROR := y
-CONFIG_WLAN_LOG_WARN := y
-CONFIG_WLAN_LOG_INFO := y
+CONFIG_WLAN_LOG_FATAL := n
+CONFIG_WLAN_LOG_ERROR := n
+CONFIG_WLAN_LOG_WARN := n
+CONFIG_WLAN_LOG_INFO := n
+CONFIG_WLAN_LOG_DEBUG := n
+CONFIG_WLAN_LOG_ENTER := n
+CONFIG_WLAN_LOG_EXIT := n
 
 #Enable OL debug and wmi unified functions
 CONFIG_ATH_PERF_PWR_OFFLOAD := y
 
 #Disable packet log
-CONFIG_REMOVE_PKT_LOG := n
+CONFIG_REMOVE_PKT_LOG := y
 
 #Enable 11AC TX
 ifeq ($(CONFIG_ROME_IF),pci)
@@ -794,13 +797,22 @@ CONFIG_WLAN_DFS_STATIC_MEM_ALLOC := y
 CONFIG_FEATURE_HTC_CREDIT_HISTORY := y
 
 #Flag to enable MTRACE feature
-CONFIG_TRACE_RECORD_FEATURE := y
+CONFIG_TRACE_RECORD_FEATURE := n
+
+#Flag to enable p2p debug feature
+CONFIG_WLAN_FEATURE_P2P_DEBUG := y
+
+#Flag to enable roam debug log
+CONFIG_FEATURE_ROAM_DEBUG := n
 
 #Flag to enable DFS Master feature
 CONFIG_WLAN_DFS_MASTER_ENABLE := y
 
 #Flag to enable WEXT support for STA/AP/P2P interfaces
 CONFIG_WLAN_WEXT_SUPPORT_ENABLE := y
+
+#Flag to enable/disable MTRACE feature
+CONFIG_ENABLE_MTRACE_LOG := n
 
 #Flag to enable nud tracking feature
 CONFIG_WLAN_NUD_TRACKING := y
@@ -846,6 +858,9 @@ CONFIG_FEATURE_INTEROP_ISSUES_AP := y
 CONFIG_FEATURE_WLAN_WAPI := y
 
 CONFIG_AGEIE_ON_SCAN_RESULTS := y
+
+#Flag to enable FW log parsing support feature
+CONFIG_FEATURE_FW_LOG_PARSING := n
 
 CONFIG_PTT_SOCK_SVC_ENABLE := y
 CONFIG_SOFTAP_CHANNEL_RANGE := y
@@ -902,7 +917,7 @@ CONFIG_WMI_ROAM_SUPPORT := y
 CONFIG_WMI_CONCURRENCY_SUPPORT := y
 CONFIG_WMI_STA_SUPPORT := y
 
-CONFIG_DP_TRACE := y
+CONFIG_DP_TRACE := n
 
 ifeq ($(CONFIG_HELIUMPLUS), y)
 ifneq ($(CONFIG_FORCE_ALLOC_FROM_DMA_ZONE), y)
@@ -1029,9 +1044,9 @@ CONFIG_WLAN_FEATURE_DP_BUS_BANDWIDTH := y
 ifeq ($(CONFIG_CNSS_QCA6490), y)
 
 #Enable 6 GHz Band
-CONFIG_BAND_6GHZ := y
-CONFIG_RX_FISA := y
-CONFIG_MORE_TX_DESC := y
+CONFIG_BAND_6GHZ := n
+CONFIG_RX_FISA := n
+CONFIG_MORE_TX_DESC := n
 
 endif
 
