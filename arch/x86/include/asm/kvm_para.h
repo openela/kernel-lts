@@ -93,7 +93,6 @@ void __init kvm_guest_init(void);
 void kvm_async_pf_task_wait(u32 token, int interrupt_kernel);
 void kvm_async_pf_task_wake(u32 token);
 u32 kvm_read_and_reset_pf_reason(void);
-extern void kvm_disable_steal_time(void);
 
 #ifdef CONFIG_PARAVIRT_SPINLOCKS
 void __init kvm_spinlock_init(void);
@@ -123,10 +122,6 @@ static inline u32 kvm_read_and_reset_pf_reason(void)
 	return 0;
 }
 
-static inline void kvm_disable_steal_time(void)
-{
-	return;
-}
 #endif
 
 #endif /* _ASM_X86_KVM_PARA_H */
