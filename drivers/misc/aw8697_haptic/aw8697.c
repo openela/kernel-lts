@@ -648,7 +648,7 @@ static int aw8697_haptic_play_go(struct aw8697 *aw8697, bool flag)
         aw8697->interval_us = (aw8697->current_time.tv_sec-aw8697->pre_enter_time.tv_sec) * 1000000
           + (aw8697->current_time.tv_usec-aw8697->pre_enter_time.tv_usec);
        if (aw8697->interval_us < 2000) {
-           pr_info("aw8697->interval_us t=%ld\n",aw8697->interval_us);
+           pr_debug("aw8697->interval_us t=%ld\n",aw8697->interval_us);
            mdelay(2);
        }
     }
@@ -674,7 +674,7 @@ static int aw8697_haptic_stop_delay(struct aw8697 *aw8697)
             return 0;
         }
         mdelay(2);
-        pr_info("%s wait for standby, reg glb_state=0x%02x\n",
+        pr_debug("%s wait for standby, reg glb_state=0x%02x\n",
             __func__, reg_val);
     }
     pr_err("%s do not enter standby automatically\n", __func__);
