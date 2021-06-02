@@ -120,7 +120,7 @@ static void teo_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
 {
 	struct teo_cpu *cpu_data = per_cpu_ptr(&teo_cpus, dev->cpu);
 	unsigned int sleep_length_us = ktime_to_us(cpu_data->sleep_length_ns);
-	int i, idx_hit = 0, idx_timer = 0;
+	int i, idx_timer = 0, idx_duration = 0;
 	unsigned int measured_us, hits, misses;
 
 	if (cpu_data->time_span_ns >= cpu_data->sleep_length_ns) {
@@ -159,14 +159,15 @@ static void teo_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
 	 * states matching the sleep length and the measured idle duration.
 	 */
 	for (i = 0; i < drv->state_count; i++) {
+		int target_residency = drv->states[i].target_residency;
 		unsigned int early_hits = cpu_data->states[i].early_hits;
 
 		cpu_data->states[i].early_hits -= early_hits >> DECAY_SHIFT;
 
-		if (drv->states[i].target_residency <= sleep_length_us) {
+		if (target_residency <= sleep_length_us) {
 			idx_timer = i;
-			if (drv->states[i].target_residency <= measured_us)
-				idx_hit = i;
+			if (target_residency <= measured_us)
+				idx_duration = i;
 		}
 	}
 
@@ -184,11 +185,11 @@ static void teo_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
 	misses = cpu_data->states[idx_timer].misses;
 	misses -= misses >> DECAY_SHIFT;
 
-	if (idx_timer == idx_hit) {
+	if (idx_timer == idx_duration) {
 		hits += PULSE;
 	} else {
 		misses += PULSE;
-		cpu_data->states[idx_hit].early_hits += PULSE;
+		cpu_data->states[idx_duration].early_hits += PULSE;
 	}
 
 	cpu_data->states[idx_timer].misses = misses;
