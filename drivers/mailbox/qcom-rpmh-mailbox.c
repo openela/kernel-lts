@@ -1015,7 +1015,7 @@ tx_fail:
 
 	/* If we were just busy waiting for TCS, dump the state and return */
 	if (ret == -EBUSY) {
-		dev_err_ratelimited(chan->cl->dev,
+		dev_dbg_ratelimited(chan->cl->dev,
 				"TCS Busy, retrying RPMH message send\n");
 		ret = -EAGAIN;
 	}
