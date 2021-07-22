@@ -19,26 +19,26 @@ extern void	WitTim( unsigned short	UsWitTim );
 /* Raw data buffers */	
 //Dual_Axis_t xy_raw_data[360/DEGSTEP + 1];
 Dual_Axis_t xy_raw_data[360/3 + 1];
-float xMaxAcc, yMaxAcc;
-float xLimit, yLimit;
+int xMaxAcc, yMaxAcc;
+int xLimit, yLimit;
 
-static float fix2float(unsigned int fix)
+static int fix2float(unsigned int fix)
 {
     if((fix & 0x80000000) > 0)
     {
-        return ((float)fix-(float)0x100000000)/(float)0x7FFFFFFF;
+        return ((int)fix-(int)0x100000000)/(int)0x7FFFFFFF;
     } else {
-        return (float)fix/(float)0x7FFFFFFF;
+        return (int)fix/(int)0x7FFFFFFF;
     }
 }
 
-static unsigned int float2fix(float f)
+static unsigned int int2fix(int f)
 {
     if(f < 0)
     {
-        return (unsigned int)(f * (float)0x7FFFFFFF + 0x100000000);
+        return (unsigned int)(f * (int)0x7FFFFFFF + 0x100000000);
     } else {
-        return (unsigned int)(f * (float)0x7FFFFFFF);
+        return (unsigned int)(f * (int)0x7FFFFFFF);
     }
 }
 
@@ -50,14 +50,14 @@ static unsigned int float2fix(float f)
 					   Low byte: Y total NG points)	
 --------------------------------------------------------------------*/
 //unsigned short Accuracy()
-unsigned short Accuracy(float ACCURACY, unsigned short RADIUS, unsigned short DEGSTEP, unsigned short WAIT_MSEC1, unsigned short WAIT_MSEC2, unsigned short WAIT_MSEC3)
+unsigned short Accuracy(int ACCURACY, unsigned short RADIUS, unsigned short DEGSTEP, unsigned short WAIT_MSEC1, unsigned short WAIT_MSEC2, unsigned short WAIT_MSEC3)
 {
-	float xpos, ypos;
+	int xpos, ypos;
 	unsigned int xhall_value, yhall_value;
-	float xMaxHall, yMaxHall;
+	int xMaxHall, yMaxHall;
     unsigned short xng = 0, yng = 0;
     unsigned short deg;
-    float xRadius, yRadius;
+    int xRadius, yRadius;
 	unsigned int xGyrogain, yGyrogain;
     unsigned int xGLenz, yGLenz;
     unsigned int xG2x4xb, yG2x4xb;
@@ -93,16 +93,16 @@ unsigned short Accuracy(float ACCURACY, unsigned short RADIUS, unsigned short DE
 	// Circle check
 	xpos = xRadius * cos(0);
 	ypos = yRadius * sin(0);
-	RamWrite32A(HALL_RAM_HXOFF1, float2fix(xpos));
-	RamWrite32A(HALL_RAM_HYOFF1, float2fix(ypos));
+	RamWrite32A(HALL_RAM_HXOFF1, int2fix(xpos));
+	RamWrite32A(HALL_RAM_HYOFF1, int2fix(ypos));
 	WitTim(WAIT_MSEC1);
 
 	for( deg = 0; deg <= 360; deg += DEGSTEP ) // 0-360 degree
 	{
 		xpos = xRadius * cos(deg * PI/180);
 		ypos = yRadius * sin(deg * PI/180);
-    	RamWrite32A(HALL_RAM_HXOFF1, float2fix(xpos));
-		RamWrite32A(HALL_RAM_HYOFF1, float2fix(ypos));
+    	RamWrite32A(HALL_RAM_HXOFF1, int2fix(xpos));
+		RamWrite32A(HALL_RAM_HYOFF1, int2fix(ypos));
 
 		if(deg ==0)
 			WitTim(500);
@@ -142,7 +142,7 @@ unsigned short Accuracy(float ACCURACY, unsigned short RADIUS, unsigned short DE
 }
 
 //unsigned short HallCheck(void)
-unsigned short HallCheck(float ACCURACY, unsigned short RADIUS, unsigned short DEGSTEP, unsigned short WAIT_MSEC1, unsigned short WAIT_MSEC2, unsigned short WAIT_MSEC3)
+unsigned short HallCheck(int ACCURACY, unsigned short RADIUS, unsigned short DEGSTEP, unsigned short WAIT_MSEC1, unsigned short WAIT_MSEC2, unsigned short WAIT_MSEC3)
 {
 	short i;
 //	unsigned short ret = Accuracy();

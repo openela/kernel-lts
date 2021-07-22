@@ -697,7 +697,7 @@ UINT_8 FlashDownload128( UINT_8 ModuleVendor, UINT_8 ActVer, UINT_8 MasterSlave,
 	do {
 		if(ptr->FWType == FWType) {
 
-			// UploadFile‚ª64Byte‚İ‚ÉPadding‚³‚ê‚Ä‚¢‚È‚¢‚È‚ç‚ÎAErrorB
+			// UploadFileï¿½ï¿½64Byteï¿½ï¿½ï¿½İ‚ï¿½Paddingï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½È‚ï¿½ÎAErrorï¿½B
 			if( ( ptr->SizeFromCode % 64 ) != 0 )	return (0xF1) ;
 
 			if(!RamRead32A(0x8000, &data1)) {
@@ -991,10 +991,10 @@ const UINT_8 PACT0Tbl[] = { 0xFF, 0xFF };	/* Dummy table */
 const UINT_8 PACT1Tbl[] = { 0x20, 0xDF };	/* [ACT_02][ACT_01][ACT_03][ACT_05] */
 
 
-UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement )
+UINT_8 SetAngleCorrection( int DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement )
 {
-	double OffsetAngle = 0.0f;
-	double OffsetAngleV_slt = 0.0f;
+	double OffsetAngle = 0;
+	double OffsetAngleV_slt = 0;
 //	double OffsetAngleS_slt = 0.0f;
 	INT_32 Slgx45x = 0, Slgx45y = 0;
 	INT_32 Slgy45y = 0, Slgy45x = 0;
@@ -1003,7 +1003,7 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 	
 	UINT_8	UcCnvF = 0;
 
-	if( ( DegreeGap > 180.0f) || ( DegreeGap < -180.0f ) ) return ( 1 );
+	if( ( DegreeGap > 180) || ( DegreeGap < -180 ) ) return ( 1 );
 	if( Arrangement >= 2 ) return ( 1 );
 
 /************************************************************************/
@@ -1011,11 +1011,11 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 /************************************************************************/
 	switch(SelectAct) {
 //		case 0x00 :
-//			OffsetAngle = (double)( 45.0f + DegreeGap ) * 3.141592653589793238 / 180.0f ;
+//			OffsetAngle = (double)( 45.0f + DegreeGap ) * (22/7) / 180 ;
 //			UcCnvF = PACT1Tbl[ Arrangement ];
 //			break;
 //		case 0x01 :
-//			OffsetAngle = (double)( DegreeGap ) * 3.141592653589793238 / 180.0f ;
+//			OffsetAngle = (double)( DegreeGap ) * (22/7) / 180 ;
 //			UcCnvF = PACT1Tbl[ Arrangement ];
 //			break;
 //		case 0x02 :
@@ -1026,7 +1026,7 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 //		case 0x08 :
 //		case 0x09 :
 		default :
-			OffsetAngle = (double)( DegreeGap ) * 3.141592653589793238 / 180.0f ;
+			OffsetAngle = (double)( DegreeGap ) * (22/7) / 180 ;
 			UcCnvF = PACT1Tbl[ Arrangement ];
 			break;
 //		default :
@@ -1054,9 +1054,9 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 	RamWrite32A( 0x864C , 		(UINT_32)Slgy45x );
 	
 	if(SelectAct == 0x00) {
-		OffsetAngleV_slt = (double)( 45.0f ) * 3.141592653589793238 / 180.0f ;
+		OffsetAngleV_slt = (double)( 45.0f ) * (22/7) / 180 ;
 	}else{
-		OffsetAngleV_slt = (double)( 0.0f ) * 3.141592653589793238 / 180.0f ;
+		OffsetAngleV_slt = (double)( 0.0f ) * (22/7) / 180 ;
 	}
 //	Slagx45x = (INT_32)( cos( OffsetAngleV_slt )*2147483647.0);
 //	Slagx45y = (INT_32)(-sin( OffsetAngleV_slt )*2147483647.0);
@@ -1067,7 +1067,7 @@ UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement
 	RamWrite32A( 0x86F0 , 			(UINT_32)Slagy45y );
 	RamWrite32A( 0x86F4 , 			(UINT_32)Slagy45x );
 
-//	OffsetAngleS_slt = (double)( -90.0f ) * 3.141592653589793238 / 180.0f ;
+//	OffsetAngleS_slt = (double)( -90.0f ) * (22/7) / 180 ;
 //	Slagx45x = (INT_32)( cos( OffsetAngleS_slt )*2147483647.0);
 //	Slagx45y = (INT_32)(-sin( OffsetAngleS_slt )*2147483647.0);
 //	Slagy45y = (INT_32)( cos( OffsetAngleS_slt )*2147483647.0);
@@ -1263,7 +1263,7 @@ void	SscDis( void )
  #define		ACT_CHK_FRQ		0x0008B8E5	
  #define		ACT_CHK_NUM		3756		
  #define		ACT_THR			0x000003E8	
- #define		ACT_MARGIN		0.75f		
+ #define		ACT_MARGIN		(75/100)
  
 UINT_8	TstActMov( UINT_8 UcDirSel )
 {
@@ -1271,7 +1271,7 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 	INT_32	SlMeasureParameterNum ;
 	INT_32	SlMeasureParameterA , SlMeasureParameterB ;
 	UnllnVal	StMeasValueA  , StMeasValueB ;
-	float		SfLimit , Sfzoom , Sflenz , Sfshift ;
+	int		SfLimit , Sfzoom , Sflenz , Sfshift ;
 	UINT_32		UlLimit , Ulzoom , Ullenz , Ulshift , UlActChkLvl ;
 	UINT_8		i;
 	UINT_32		UlReturnVal;
@@ -1289,23 +1289,23 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 	}
 
 
-	SfLimit = (float)UlLimit / (float)0x7FFFFFFF;
+	SfLimit = (int)UlLimit / (int)0x7FFFFFFF;
 	if( Ulzoom == 0){
 		Sfzoom = 0;
 	}else{
-		Sfzoom = (float)abs(Ulzoom) / (float)0x7FFFFFFF;
+		Sfzoom = (int)abs(Ulzoom) / (int)0x7FFFFFFF;
 	}
 	if( Ullenz == 0){
 		Sflenz = 0;
 	}else{
-		Sflenz = (float)Ullenz / (float)0x7FFFFFFF;
+		Sflenz = (int)Ullenz / (int)0x7FFFFFFF;
 	}
 	Ulshift = ( Ulshift & 0x0000FF00) >> 8 ;	
 	Sfshift = 1;
 	for( i = 0 ; i < Ulshift ; i++ ){
 		Sfshift *= 2;
 	}
-	UlActChkLvl = (UINT_32)( (float)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
+	UlActChkLvl = (UINT_32)( (int)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
 
 	SlMeasureParameterNum	=	ACT_CHK_NUM ;
 
@@ -1686,14 +1686,14 @@ UINT_8 LoadUareToPM( DOWNLOAD_TBL_EXT* ptr , UINT_8 mode )
 		RamRead32A( 0x8000 , &UlReadVer );
 		if(( UlReadVer & 0x000000FF ) > 0x00000002 ){
 			RamWrite32A( 0xE000 , 0x00000000 );		// to boot
-			WitTim( 15 ) ;												// BootƒvƒƒOƒ‰ƒ€‚ğ‰ñ‚·‚Ì‚É15msec•K—vB
+			WitTim( 15 ) ;												// Bootï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚·‚Ì‚ï¿½15msecï¿½Kï¿½vï¿½B
 			IORead32A( ROMINFO,				(UINT_32 *)&UlReadVal ) ;	
 		}else{
 			return( 0x01 );	// NG
 		}
 		if( UlReadVal != 0x0B ){
 			IOWrite32A( SYSDSP_REMAP,				0x00001400 ) ;		// CORE_RST[12], MC_IGNORE2[10] = 1
-			WitTim( 15 ) ;												// BootƒvƒƒOƒ‰ƒ€‚ğ‰ñ‚·‚Ì‚É15msec•K—vB
+			WitTim( 15 ) ;												// Bootï¿½vï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ‚·‚Ì‚ï¿½15msecï¿½Kï¿½vï¿½B
 			IORead32A( ROMINFO,				(UINT_32 *)&UlReadVal ) ;	
 			if( UlReadVal != 0x0B) {
 				return( 0x02 );
@@ -1714,7 +1714,7 @@ UINT_8 LoadUareToPM( DOWNLOAD_TBL_EXT* ptr , UINT_8 mode )
 			IOWrite32A( 0xE0701C , 0x00000002);
 			return (0x10) ;									// trans ng
 		}
-		RamRead32A( 0x5004, &UlReadVal );					// PmCheck.ExecFlag‚Ì“Ç‚İo‚µ
+		RamRead32A( 0x5004, &UlReadVal );					// PmCheck.ExecFlagï¿½Ì“Ç‚İoï¿½ï¿½
 	}while ( UlReadVal != 0 );
 	IOWrite32A( 0xE0701C , 0x00000002);
 	

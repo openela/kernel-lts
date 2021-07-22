@@ -8,20 +8,20 @@
 //#define		RADIUS 		75							// 75um
 
 // Parameter define
-//#define		DEGSTEP		3							// Degree of one step (3Åã)
-//#define		ACCURACY	3.0F						// Accuracy (Å}3.0um)
+//#define		DEGSTEP		3							// Degree of one step (3ÔøΩÔøΩ)
+//#define		ACCURACY	3.0F						// Accuracy (ÔøΩ}3.0um)
 //#define		WAIT_MSEC	10							// Each step wait time(msec)
 #define		LOOPTIME	3							// Read times at each step
 
 // Constants
-#define		PI			3.14159		// ÉŒ
+#define		PI			3.14159		// ÔøΩÔøΩ
 
 
 typedef struct tag_Dual_Axis
 {
-	float xpos;
-	float xhall;
-	float ypos;
-	float yhall;
+	int xpos;
+	int xhall;
+	int ypos;
+	int yhall;
 }Dual_Axis_t;
 

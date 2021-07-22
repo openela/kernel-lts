@@ -244,7 +244,7 @@ __OIS_CMD_HEADER__	UINT_8	MesRam( INT_32 , INT_32 , INT_32 , stMesRam* , stMesRa
 
  __OIS_FLSH_HEADER__	UINT_8 WrOptCenerData( UINT_8 );
  
- __OIS_CMD_HEADER__	UINT_8 SetAngleCorrection( float , UINT_8 , UINT_8  );
+ __OIS_CMD_HEADER__	UINT_8 SetAngleCorrection( int , UINT_8 , UINT_8  );
 
  /* Flash Update */
  __OIS_FLSH_HEADER__	UINT_8	UnlockCodeSet( void ) ;					//!< <Flash Memory> Unlock Code Set

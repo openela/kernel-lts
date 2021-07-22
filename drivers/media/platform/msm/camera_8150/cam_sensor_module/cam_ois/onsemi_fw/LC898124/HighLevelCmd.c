@@ -885,7 +885,7 @@ void	SetSinWavGenInt124( void )
  #define		ACT_CHK_FRQ		0x00074528		// 4Hz
  #define		ACT_CHK_NUM		4507			// 18.0288/0.004 
  #define		ACT_THR			0x000003E8		// 20dB 10*100
- #define		ACT_MARGIN		0.75f			// 
+ #define		ACT_MARGIN		(75/100)
  
 UINT8	TstActMov124( UINT8 UcDirSel )
 {
@@ -893,7 +893,7 @@ UINT8	TstActMov124( UINT8 UcDirSel )
 	INT32	SlMeasureParameterNum ;
 	INT32	SlMeasureParameterA , SlMeasureParameterB ;
 	UnllnVal	StMeasValueA  , StMeasValueB ;
-	float		SfLimit , Sfzoom , Sflenz , Sfshift ;
+	int		SfLimit , Sfzoom , Sflenz , Sfshift ;
 	UINT32		UlLimit , Ulzoom , Ullenz , Ulshift , UlActChkLvl ;
 	UINT8		i;
 	UINT32		UlReturnVal;
@@ -912,23 +912,23 @@ UINT8	TstActMov124( UINT8 UcDirSel )
 
 TRACE(" DIR = %d, lmt = %08x, zom = %08x , lnz = %08x ,sft = %08x \n", UcDirSel, (unsigned int)UlLimit , (unsigned int)Ulzoom , (unsigned int)Ullenz , (unsigned int)Ulshift  ) ;
 
-	SfLimit = (float)UlLimit / (float)0x7FFFFFFF;
+	SfLimit = (int)UlLimit / (int)0x7FFFFFFF;
 	if( Ulzoom == 0){
 		Sfzoom = 0;
 	}else{
-		Sfzoom = (float)abs(Ulzoom) / (float)0x7FFFFFFF;
+		Sfzoom = (int)abs(Ulzoom) / (int)0x7FFFFFFF;
 	}
 	if( Ullenz == 0){
 		Sflenz = 0;
 	}else{
-		Sflenz = (float)Ullenz / (float)0x7FFFFFFF;
+		Sflenz = (int)Ullenz / (int)0x7FFFFFFF;
 	}
 	Ulshift = ( Ulshift & 0x0000FF00) >> 8 ;	// 2X4XB
 	Sfshift = 1;
 	for( i = 0 ; i < Ulshift ; i++ ){
 		Sfshift *= 2;
 	}
-	UlActChkLvl = (UINT32)( (float)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
+	UlActChkLvl = (UINT32)( (int)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
 //TRACE(" lvl = %08x \n", (unsigned int)UlActChkLvl  ) ;
 
 	SlMeasureParameterNum	=	ACT_CHK_NUM ;
@@ -1452,7 +1452,7 @@ const UINT8 PACT1Tbl124[] = { 0x20, 0xDF };
 const UINT8 PACT2Tbl124[] = { 0x26, 0xD9 };	/* ACT_45DEG */
 
 
-UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, UINT8 Arrangement )
+UINT8 SetAngleCorrection124( int DegreeGap, UINT8 SelectAct, UINT8 Arrangement )
 {
 	double OffsetAngle = 0.0f;
 	INT32 Slgx45x = 0, Slgx45y = 0;
@@ -1462,7 +1462,7 @@ UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, UINT8 Arrangement
 //	INT32 Slgy45m = 0, Slgy45s = 0;
 	UINT8	UcCnvF = 0;
 
-	if( ( DegreeGap > 180.0f) || ( DegreeGap < -180.0f ) ) return ( 1 );
+	if( ( DegreeGap > 180) || ( DegreeGap < -180 ) ) return ( 1 );
 	if( Arrangement >= 2 ) return ( 1 );
 
 /************************************************************************/
@@ -1470,12 +1470,12 @@ UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, UINT8 Arrangement
 /************************************************************************/
 	switch(SelectAct) {
 		case ACT_45DEG :
-			OffsetAngle = (double)( 45.0f + DegreeGap ) * 3.141592653589793238 / 180.0f ;
+			OffsetAngle = (double)( 45 + DegreeGap ) * (22/7) / 180 ;
 			UcCnvF = PACT2Tbl124[ Arrangement ];
 			break;
 		case ACT_SO2821 :
 		case ACT_M12337_A1:
-			OffsetAngle = (double)( DegreeGap ) * 3.141592653589793238 / 180.0f ;
+			OffsetAngle = (double)( DegreeGap ) * (22/7) / 180 ;
 			UcCnvF = PACT1Tbl124[ Arrangement ];
 			break;
 		default :
@@ -1707,7 +1707,7 @@ UINT32	MeasGain124 ( UINT16	UcDirSel, UINT16	UsMeasFreq , UINT32 UlMesAmp )
 // Explanation		: Measure Filter Setting Function
 // History			: First edition 		
 //********************************************************************************
-#define	DivOffset	5741.65f		/* 18028.8/3.14 */
+#define	DivOffset	(574165/100)		/* 18028.8/3.14 */
 
 void	MesFil2124( UINT16	UsMesFreq )		
 {
@@ -1785,8 +1785,8 @@ void	LinearityCalculation( void )
 	INT16	pixx[7],pixy[7];
 	INT16	cfax[6],cfbx[6],cfzx[5];
 	INT16	cfay[6],cfby[6],cfzy[5];
-	float	cffax[6];
-	float	cffay[6];
+	int	cffax[6];
+	int	cffay[6];
 	
 	ReadE2Prom( EEPROM_Calibration_Status_MSB, &cnt );
 TRACE("E2prom Read 0x19 = %02x   &  %02x  \n", cnt , (UINT8)(HLLN_CALB_FLG>>8) );
@@ -1829,10 +1829,10 @@ TRACE("[s] %04xh %04xh \n",stpx,stpy) ;
 	}
 	for( i=0 ; i<6 ; i++ ){
 		if(i == 3){
-//			cfax[i] = (INT16)((float)pixx[i+1] / (float)dacx[i+1] * 524287.0f);
-//			cfay[i] = (INT16)((float)pixy[i+1] / (float)dacy[i+1] * 524287.0f);
-			cffax[i] = ((float)pixx[i+1] / (float)dacx[i+1] * 524287.0f);
-			cffay[i] = ((float)pixy[i+1] / (float)dacy[i+1] * 524287.0f);
+//			cfax[i] = (INT16)((int)pixx[i+1] / (int)dacx[i+1] * 524287);
+//			cfay[i] = (INT16)((int)pixy[i+1] / (int)dacy[i+1] * 524287);
+			cffax[i] = ((int)pixx[i+1] / (int)dacx[i+1] * 524287);
+			cffay[i] = ((int)pixy[i+1] / (int)dacy[i+1] * 524287);
 			cfax[i] = (INT16)cffax[i];
 			cfay[i] = (INT16)cffay[i];
 			cfbx[i] = (INT16)0;
@@ -1840,8 +1840,8 @@ TRACE("[s] %04xh %04xh \n",stpx,stpy) ;
 		}else{
 //			cfax[i] = (INT16)(( dacx[i] - dacx[i+1] ) / ( pixx[i] - pixx[i+1] ));
 //			cfay[i] = (INT16)(( dacy[i] - dacy[i+1] ) / ( pixy[i] - pixy[i+1] ));
-			cffax[i] = (float)( dacx[i] - dacx[i+1] ) / (float)( pixx[i] - pixx[i+1] );
-			cffay[i] = (float)( dacy[i] - dacy[i+1] ) / (float)( pixy[i] - pixy[i+1] );
+			cffax[i] = (int)( dacx[i] - dacx[i+1] ) / (int)( pixx[i] - pixx[i+1] );
+			cffay[i] = (int)( dacy[i] - dacy[i+1] ) / (int)( pixy[i] - pixy[i+1] );
 			cfax[i] = (INT16)cffax[i];
 			cfay[i] = (INT16)cffay[i];
 			if(i == 2){
@@ -1850,8 +1850,8 @@ TRACE("[s] %04xh %04xh \n",stpx,stpy) ;
 			}else{
 //				cfbx[i] = (INT16)( dacx[i] - (INT32)cfax[i] * (INT32)pixx[i] );
 //				cfby[i] = (INT16)( dacy[i] - (INT32)cfay[i] * (INT32)pixy[i] );
-				cfbx[i] = (INT16)( (float)dacx[i] - cffax[i] * (float)pixx[i] );
-				cfby[i] = (INT16)( (float)dacy[i] - cffay[i] * (float)pixy[i] );
+				cfbx[i] = (INT16)( (int)dacx[i] - cffax[i] * (int)pixx[i] );
+				cfby[i] = (INT16)( (int)dacy[i] - cffay[i] * (int)pixy[i] );
 			}
 		}
 		if(i<5){

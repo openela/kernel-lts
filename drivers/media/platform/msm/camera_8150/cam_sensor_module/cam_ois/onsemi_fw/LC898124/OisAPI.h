@@ -37,7 +37,7 @@ extern UINT8 GetGyroOffset124( UINT16* GyroOffsetX, UINT16* GyroOffsetY, INT16 G
 extern void	SetGyroOffset124( UINT16 GyroOffsetX, UINT16 GyroOffsetY, UINT16 GyroOffsetZ );	// set the gyro offset data. before do this before Remapmain.
 
 /* Angle correction for 45deg*/
-extern UINT8 SetAngleCorrection124( float DegreeGap, UINT8 SelectAct, unsigned char Arrangement );
+extern UINT8 SetAngleCorrection124( int DegreeGap, UINT8 SelectAct, unsigned char Arrangement );
 
 extern void	SetGyroAccelCoef( UINT8 );
 
@@ -61,7 +61,7 @@ extern	UINT8	RunGea124( void ) ;						// Gyro Examination of Acceptance
 #endif //((SELECT_VENDOR & 0x80 ) != 0x80)
 
 extern void GyroOffsetMeasureStartZ124( void );			// start the gyro Z offset adjustment
-extern UINT32	TneZeroServo( UINT8 , float );			/* zero servo adjustment command */
+extern UINT32	TneZeroServo( UINT8 , int );			/* zero servo adjustment command */
 extern UINT8	ZeroServoLmt( UINT8 UCMODE );
 extern UINT32	TneAvc( UINT8 ucposture );				// Accel offset adjustment
 

@@ -381,8 +381,8 @@ TRACE("TnePtp\n ") ;
 TRACE("TnePtp\n") ;
 
 	SetSinWavGenInt();
-	SetTransDataAdr( SinWave_OutAddr	,	SinWave_Output ) ;		// o—ÍæƒAƒhƒŒƒX
-	SetTransDataAdr( CosWave_OutAddr	,	CosWave_OutAddr );		// o—ÍæƒAƒhƒŒƒX
+	SetTransDataAdr( SinWave_OutAddr	,	SinWave_Output ) ;		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
+	SetTransDataAdr( CosWave_OutAddr	,	CosWave_OutAddr );		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 
 	if( UcDirSel == X_DIR ) {								// X axis
 		SlMeasureParameterA		=	HALL_RAM_HXIDAT ;		// Set Measure RAM Address
@@ -497,7 +497,7 @@ UINT_32	TneCen( UINT_8 UcTneAxs, ADJ_HALL* ptr )
 	BeforeControl=0;
 
 	TneOff( StTneVal, UcTneAxs ) ;
-	UcTofRst	= SUCCESS ;				/* b’è‚ÅOK‚É‚·‚é */
+	UcTofRst	= SUCCESS ;				/* ï¿½bï¿½ï¿½ï¿½OKï¿½É‚ï¿½ï¿½ï¿½ */
 
 	while ( UlTneRst && (UINT_32)UcTmeOut )
 	{
@@ -808,8 +808,8 @@ UINT_32	LopGan( UINT_8 UcDirSel, ADJ_LOPGAN* ptr )
 	}
 	
 	SetSinWavGenInt();
-	SetTransDataAdr( SinWave_OutAddr	,	SinWave_Output ) ;		// o—ÍæƒAƒhƒŒƒX
-	SetTransDataAdr( CosWave_OutAddr	,	CosWave_OutAddr );		// o—ÍæƒAƒhƒŒƒX
+	SetTransDataAdr( SinWave_OutAddr	,	SinWave_Output ) ;		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
+	SetTransDataAdr( CosWave_OutAddr	,	CosWave_OutAddr );		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 
 	RamWrite32A( SinWave_Offset		,	UlFreq ) ;								// Freq Setting
 	RamWrite32A( SinWave_Gain		,	UlGain ) ;								// Set Sine Wave Gain					
@@ -1158,9 +1158,9 @@ void	MemoryClear( UINT_16 UsSourceAddress, UINT_16 UsClearSize )
 // History			: First edition
 //********************************************************************************
 #if FS_MODE == 0
-#define 	ONE_MSEC_COUNT	18			// 18.0446kHz * 18 à 1ms
+#define 	ONE_MSEC_COUNT	18			// 18.0446kHz * 18 ï¿½ï¿½ 1ms
 #else //FS_MODE
-#define 	ONE_MSEC_COUNT	15			// 15.0273kHz * 15 à 1ms
+#define 	ONE_MSEC_COUNT	15			// 15.0273kHz * 15 ï¿½ï¿½ 1ms
 #endif //FS_MODE
 void	SetWaitTime( UINT_16 UsWaitTime )
 {
@@ -1188,7 +1188,7 @@ UINT_32	TneGvc(  UINT_8	uc_mode  )
 	INT_32			SlMeasureAveValueA , SlMeasureAveValueB ;
 	
 	
-	//•½‹Ï’l‘ª’è
+	//ï¿½ï¿½ï¿½Ï’lï¿½ï¿½ï¿½ï¿½
 	
 	MesFil( THROUGH ) ;					// Set Measure Filter
 
@@ -1287,7 +1287,7 @@ UINT_32	TneAvc( UINT_8 ucposture )
 
 	UlRsltSts = EXE_END ;
 	if( ucposture < 0x7f ){
-		//•½‹Ï’l‘ª’è
+		//ï¿½ï¿½ï¿½Ï’lï¿½ï¿½ï¿½ï¿½
 		for( i=0 ; i<2 ; i++ )
 		{
 			MesFil( THROUGH ) ;					// Set Measure Filter
@@ -1356,7 +1356,7 @@ TRACE("POS14(X,Y,Z) st = \t%08xh\t%08xh\t%08xh\t%08xh \n", (unsigned int)StPosOf
 		}
 	}else{
 		switch(ucposture){
-		case 0x80:	/* ŒvZ */
+		case 0x80:	/* ï¿½vï¿½Z */
 
 			if(StPosOff.UlAclOfSt == 0x3fL ){
 				/*X offset*/
@@ -1422,7 +1422,7 @@ void MeasAddressSelection( UINT_8 mode , INT_32 * measadr_a , INT_32 * measadr_b
 #define		GSENS		( 4096 << 16 )				// LSB/g
 #define		GSENS_MARG		(GSENS / 4)			// 1/4g
 #define		POSTURETH		(GSENS - GSENS_MARG)	// LSB/g
-#define		ZG_MRGN		(409 << 16)					// G tolerance  100mG‚Æ‚·‚é
+#define		ZG_MRGN		(409 << 16)					// G tolerance  100mGï¿½Æ‚ï¿½ï¿½ï¿½
 UINT_32	MeasGyAcOffset(  void  )
 {
 	UINT_32	UlRsltSts;
@@ -1433,7 +1433,7 @@ UINT_32	MeasGyAcOffset(  void  )
 	UINT_8			i ;
 
 	
-	//•½‹Ï’l‘ª’è
+	//ï¿½ï¿½ï¿½Ï’lï¿½ï¿½ï¿½ï¿½
 	
 	MesFil( THROUGH ) ;					// Set Measure Filter
 
@@ -1872,8 +1872,8 @@ const UINT_32	CucFreqVal[ 17 ]	= {
 	} ;
 #endif //FS_MODE
 
-// 	RamWrite32A( SinWave.Gain , 0x00000000 ) ;			// Gain‚Í‚»‚ê‚¼‚êİ’è‚·‚é‚±‚Æ
-// 	RamWrite32A( CosWave.Gain , 0x00000000 ) ;			// Gain‚Í‚»‚ê‚¼‚êİ’è‚·‚é‚±‚Æ
+// 	RamWrite32A( SinWave.Gain , 0x00000000 ) ;			// Gainï¿½Í‚ï¿½ï¿½ê‚¼ï¿½ï¿½İ’è‚·ï¿½é‚±ï¿½ï¿½
+// 	RamWrite32A( CosWave.Gain , 0x00000000 ) ;			// Gainï¿½Í‚ï¿½ï¿½ê‚¼ï¿½ï¿½İ’è‚·ï¿½é‚±ï¿½ï¿½
 void	SetSinWavePara( UINT_8 UcTableVal ,  UINT_8 UcMethodVal )
 {
 	UINT_32	UlFreqDat ;
@@ -1884,40 +1884,40 @@ void	SetSinWavePara( UINT_8 UcTableVal ,  UINT_8 UcMethodVal )
 	UlFreqDat = CucFreqVal[ UcTableVal ] ;
 
 	if( UcMethodVal == CIRCWAVE) {
-		RamWrite32A( SinWave_Phase	,	0x00000000 ) ;		// ³Œ·”g‚ÌˆÊ‘Š—Ê
-		RamWrite32A( CosWave_Phase 	,	0x20000000 );		// ³Œ·”g‚ÌˆÊ‘Š—Ê
+		RamWrite32A( SinWave_Phase	,	0x00000000 ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+		RamWrite32A( CosWave_Phase 	,	0x20000000 );		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
 	}else{
-		RamWrite32A( SinWave_Phase	,	0x00000000 ) ;		// ³Œ·”g‚ÌˆÊ‘Š—Ê
-		RamWrite32A( CosWave_Phase 	,	0x00000000 );		// ³Œ·”g‚ÌˆÊ‘Š—Ê
+		RamWrite32A( SinWave_Phase	,	0x00000000 ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+		RamWrite32A( CosWave_Phase 	,	0x00000000 );		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
 	}
 
 
-	if( UlFreqDat == 0xFFFFFFFF )			/* Sine”g’†~ */
+	if( UlFreqDat == 0xFFFFFFFF )			/* Sineï¿½gï¿½ï¿½ï¿½~ */
 	{
-		RamWrite32A( SinWave_Offset		,	0x00000000 ) ;									// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
-		RamWrite32A( SinWave_Phase		,	0x00000000 ) ;									// ³Œ·”g‚ÌˆÊ‘Š—Ê
-//		RamWrite32A( SinWave_Gain		,	0x00000000 ) ;									// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚Í0[dB])
-//		SetTransDataAdr( SinWave_OutAddr	,	 (UINT_32)SinWave_Output );			// o—ÍæƒAƒhƒŒƒX
+		RamWrite32A( SinWave_Offset		,	0x00000000 ) ;									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
+		RamWrite32A( SinWave_Phase		,	0x00000000 ) ;									// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+//		RamWrite32A( SinWave_Gain		,	0x00000000 ) ;									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½0[dB])
+//		SetTransDataAdr( SinWave_OutAddr	,	 (UINT_32)SinWave_Output );			// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 
-		RamWrite32A( CosWave_Offset		,	0x00000000 );									// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
-		RamWrite32A( CosWave_Phase 		,	0x00000000 );									// ³Œ·”g‚ÌˆÊ‘Š—Ê
-//		RamWrite32A( CosWave_Gain 		,	0x00000000 );									// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚ÍCut)
-//		SetTransDataAdr( CosWave_OutAddr	,	 (UINT_32)CosWave_Output );			// o—ÍæƒAƒhƒŒƒX
+		RamWrite32A( CosWave_Offset		,	0x00000000 );									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
+		RamWrite32A( CosWave_Phase 		,	0x00000000 );									// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+//		RamWrite32A( CosWave_Gain 		,	0x00000000 );									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½Cut)
+//		SetTransDataAdr( CosWave_OutAddr	,	 (UINT_32)CosWave_Output );			// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 
 		RamWrite32A( SinWaveC_Regsiter	,	0x00000000 ) ;									// Sine Wave Stop
-		SetTransDataAdr( SinWave_OutAddr	,	0x00000000 ) ;		// o—ÍæƒAƒhƒŒƒX
-		SetTransDataAdr( CosWave_OutAddr	,	0x00000000 );		// o—ÍæƒAƒhƒŒƒX
+		SetTransDataAdr( SinWave_OutAddr	,	0x00000000 ) ;		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
+		SetTransDataAdr( CosWave_OutAddr	,	0x00000000 );		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 		RamWrite32A( HALL_RAM_HXOFF1		,	0x00000000 ) ;				// DelayRam Clear
 		RamWrite32A( HALL_RAM_HYOFF1		,	0x00000000 ) ;				// DelayRam Clear
 	}
 	else
 	{
-		RamWrite32A( SinWave_Offset		,	UlFreqDat ) ;									// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
-		RamWrite32A( CosWave_Offset		,	UlFreqDat );									// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
+		RamWrite32A( SinWave_Offset		,	UlFreqDat ) ;									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
+		RamWrite32A( CosWave_Offset		,	UlFreqDat );									// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
 
 		RamWrite32A( SinWaveC_Regsiter	,	0x00000001 ) ;									// Sine Wave Start
-		SetTransDataAdr( SinWave_OutAddr	,	(UINT_32)HALL_RAM_HXOFF1 ) ;		// o—ÍæƒAƒhƒŒƒX
-		SetTransDataAdr( CosWave_OutAddr	,	 (UINT_32)HALL_RAM_HYOFF1 );		// o—ÍæƒAƒhƒŒƒX
+		SetTransDataAdr( SinWave_OutAddr	,	(UINT_32)HALL_RAM_HXOFF1 ) ;		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
+		SetTransDataAdr( CosWave_OutAddr	,	 (UINT_32)HALL_RAM_HYOFF1 );		// ï¿½oï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½X
 
 	}
 
@@ -1973,7 +1973,7 @@ UINT_8	TneHvc( void )
 
 	WitTim( 500 ) ;
 
-	//•½‹Ï’l‘ª’è
+	//ï¿½ï¿½ï¿½Ï’lï¿½ï¿½ï¿½ï¿½
 
 	MesFil( THROUGH ) ;					// Set Measure Filter
 
@@ -2068,7 +2068,7 @@ void	TneFin( ADJ_LOPGAN* ptr )
 			if( UlMinimumValueA >= abs(SlMeasureAveValueA) ) {
 				UlMinimumValueA = abs(SlMeasureAveValueA) ;
 				UsAdxMin = UsAdxOff ;
-				// û‘©‚ğ‘‚ß‚é‚½‚ß‚ÉAo—Í’l‚É”ä—á‚³‚¹‚é
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ğ‘‚ß‚é‚½ï¿½ß‚ÉAï¿½oï¿½Í’lï¿½É”ï¿½á‚³ï¿½ï¿½ï¿½ï¿½
 				if( SlMeasureAveValueA > 0 )
 					UsAdxOff = (INT_16)UsAdxOff + (SlMeasureAveValueA >> 17) + 1 ;
 				else
@@ -2085,7 +2085,7 @@ void	TneFin( ADJ_LOPGAN* ptr )
 			if( UlMinimumValueB >= abs(SlMeasureAveValueB) ) {
 				UlMinimumValueB = abs(SlMeasureAveValueB) ;
 				UsAdyMin = UsAdyOff ;
-				// û‘©‚ğ‘‚ß‚é‚½‚ß‚ÉAo—Í’l‚É”ä—á‚³‚¹‚é
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ğ‘‚ß‚é‚½ï¿½ß‚ÉAï¿½oï¿½Í’lï¿½É”ï¿½á‚³ï¿½ï¿½ï¿½ï¿½
 				if( SlMeasureAveValueB > 0 )
 					UsAdyOff = (INT_16)UsAdyOff + (SlMeasureAveValueB >> 17) + 1 ;
 				else
@@ -2235,17 +2235,17 @@ void	TneHrzPos( UINT_8 UcPos )
 void	SetSinWavGenInt( void )
 {
 
-	RamWrite32A( SinWave_Offset		,	0x00000000 ) ;		// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
-	RamWrite32A( SinWave_Phase		,	0x60000000 ) ;		// ³Œ·”g‚ÌˆÊ‘Š—Ê
-	RamWrite32A( SinWave_Gain		,	0x00000000 ) ;		// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚Í0[dB])
-//	RamWrite32A( SinWave_Gain		,	0x7FFFFFFF ) ;		// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚ÍCut)
-//	SetTransDataAdr( SinWave_OutAddr	,	(UINT_32)SinWave_Output ) ;		// ‰Šú’l‚Ìo—ÍæƒAƒhƒŒƒX‚ÍA©•ª‚Ìƒƒ“ƒo
+	RamWrite32A( SinWave_Offset		,	0x00000000 ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
+	RamWrite32A( SinWave_Phase		,	0x60000000 ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+	RamWrite32A( SinWave_Gain		,	0x00000000 ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½0[dB])
+//	RamWrite32A( SinWave_Gain		,	0x7FFFFFFF ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½Cut)
+//	SetTransDataAdr( SinWave_OutAddr	,	(UINT_32)SinWave_Output ) ;		// ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½Ìoï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½Xï¿½ÍAï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½ï¿½ï¿½o
 
-	RamWrite32A( CosWave_Offset		,	0x00000000 );		// ”­¶ü”g”‚ÌƒIƒtƒZƒbƒg‚ğİ’è
-	RamWrite32A( CosWave_Phase 		,	0x00000000 );		// ³Œ·”g‚ÌˆÊ‘Š—Ê
-	RamWrite32A( CosWave_Gain 		,	0x00000000 );		// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚ÍCut)
-//	RamWrite32A( CosWave_Gain 		,	0x7FFFFFFF );		// ”­¶ü”g”‚ÌƒAƒbƒeƒl[ƒ^(‰Šú’l‚Í0[dB])
-//	SetTransDataAdr( CosWave_OutAddr	,	(UINT_32)CosWave_Output );		// ‰Šú’l‚Ìo—ÍæƒAƒhƒŒƒX‚ÍA©•ª‚Ìƒƒ“ƒo
+	RamWrite32A( CosWave_Offset		,	0x00000000 );		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒIï¿½tï¿½Zï¿½bï¿½gï¿½ï¿½İ’ï¿½
+	RamWrite32A( CosWave_Phase 		,	0x00000000 );		// ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ÌˆÊ‘ï¿½ï¿½ï¿½
+	RamWrite32A( CosWave_Gain 		,	0x00000000 );		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½Cut)
+//	RamWrite32A( CosWave_Gain 		,	0x7FFFFFFF );		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ÌƒAï¿½bï¿½eï¿½lï¿½[ï¿½^(ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½ï¿½0[dB])
+//	SetTransDataAdr( CosWave_OutAddr	,	(UINT_32)CosWave_Output );		// ï¿½ï¿½ï¿½ï¿½ï¿½lï¿½Ìoï¿½Íï¿½Aï¿½hï¿½ï¿½ï¿½Xï¿½ÍAï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½ï¿½ï¿½o
 
 	RamWrite32A( SinWaveC_Regsiter	,	0x00000000 ) ;								// Sine Wave Stop
 
@@ -2419,9 +2419,9 @@ void	OscStb( void )
 UINT_8	GyrSlf( void )
 {
 	UINT_8		UcFinSts = 0 ;
-	float		flGyrRltX ;
-	float		flGyrRltY ;
-	float		flMeasureAveValueA , flMeasureAveValueB ;
+	int		flGyrRltX ;
+	int		flGyrRltY ;
+	int		flMeasureAveValueA , flMeasureAveValueB ;
 	INT_32		SlMeasureParameterNum ;
 	INT_32		SlMeasureParameterA, SlMeasureParameterB ;
 	UnllnVal	StMeasValueA , StMeasValueB ;
@@ -2465,8 +2465,8 @@ UINT_8	GyrSlf( void )
 	RamRead32A( StMeasFunc_MFB_LLiIntegral2 	, &StMeasValueB.StUllnVal.UlLowVal ) ;	// Y axis
 	RamRead32A( StMeasFunc_MFB_LLiIntegral2 + 4	, &StMeasValueB.StUllnVal.UlHigVal ) ;
 
-	flMeasureAveValueA = (float)((( (INT_64)StMeasValueA.UllnValue >> 16 ) / (float)SlMeasureParameterNum ) ) ;
-	flMeasureAveValueB = (float)((( (INT_64)StMeasValueB.UllnValue >> 16 ) / (float)SlMeasureParameterNum ) ) ;
+	flMeasureAveValueA = (int)((( (INT_64)StMeasValueA.UllnValue >> 16 ) / (int)SlMeasureParameterNum ) ) ;
+	flMeasureAveValueB = (int)((( (INT_64)StMeasValueB.UllnValue >> 16 ) / (int)SlMeasureParameterNum ) ) ;
 
 	flGyrRltX = flMeasureAveValueA / 175.0 ;	// sensitivity 175 dps
 	flGyrRltY = flMeasureAveValueB / 175.0 ;	// sensitivity 175 dps
@@ -2511,8 +2511,8 @@ UINT_8	GyrSlf( void )
 	RamRead32A( StMeasFunc_MFB_LLiIntegral2 	, &StMeasValueB.StUllnVal.UlLowVal ) ;	// Y axis
 	RamRead32A( StMeasFunc_MFB_LLiIntegral2 + 4	, &StMeasValueB.StUllnVal.UlHigVal ) ;
 
-	flMeasureAveValueA = (float)((( (INT_64)StMeasValueA.UllnValue >> 16 ) / (float)SlMeasureParameterNum ) ) ;
-	flMeasureAveValueB = (float)((( (INT_64)StMeasValueB.UllnValue >> 16 ) / (float)SlMeasureParameterNum ) ) ;
+	flMeasureAveValueA = (int)((( (INT_64)StMeasValueA.UllnValue >> 16 ) / (int)SlMeasureParameterNum ) ) ;
+	flMeasureAveValueB = (int)((( (INT_64)StMeasValueB.UllnValue >> 16 ) / (int)SlMeasureParameterNum ) ) ;
 
 	flGyrRltX = flMeasureAveValueA / GYRO_SENSITIVITY ;
 	flGyrRltY = flMeasureAveValueB / GYRO_SENSITIVITY ;
@@ -2667,7 +2667,7 @@ UINT_8	GyroReCalib( stReCalib * pReCalib )
 //------------------------------------------------------------------------------------------------
 	ReadCalData128( UlBufDat, &UiChkSum );
 
-	// HighLevelƒRƒ}ƒ“ƒh
+	// HighLevelï¿½Rï¿½}ï¿½ï¿½ï¿½h
 	RamWrite32A( CMD_CALIBRATION , 0x00000000 ) ;
 
 	do {
@@ -2675,9 +2675,9 @@ UINT_8	GyroReCalib( stReCalib * pReCalib )
 	} while (UcSndDat != 0);
 
 	RamRead32A( CMD_CALIBRATION , &UlRcvDat ) ;
-	UcSndDat = (unsigned char)(UlRcvDat >> 24);								// I—¹ƒXƒe[ƒ^ƒX
+	UcSndDat = (unsigned char)(UlRcvDat >> 24);								// ï¿½Iï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½^ï¿½X
 
-	// –ß‚è’l‚ğ•ÒW
+	// ï¿½ß‚ï¿½lï¿½ï¿½ÒW
 	if( UlBufDat[ GYRO_FCTRY_OFST_X ] == 0xFFFFFFFF )
 		pReCalib->SsFctryOffX = (UlBufDat[ GYRO_OFFSET_X ] >> 16) ;
 	else
@@ -2688,7 +2688,7 @@ UINT_8	GyroReCalib( stReCalib * pReCalib )
 	else
 		pReCalib->SsFctryOffY = (UlBufDat[ GYRO_FCTRY_OFST_Y ] >> 16) ;
 
-	// ƒLƒƒƒŠƒuƒŒ[ƒVƒ‡ƒ“Œã‚Ì’l‚ğæ“¾
+	// ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì’lï¿½ï¿½ï¿½æ“¾
 	RamRead32A(  GYRO_RAM_GXOFFZ , &UlGofX ) ;
 	RamRead32A(  GYRO_RAM_GYOFFZ , &UlGofY ) ;
 
@@ -2912,7 +2912,7 @@ void	MesFil2( UINT_16	UsMesFreq )
 	UINT_32	UlMeasFilA1 , UlMeasFilB1 , UlMeasFilC1 , UlTempval ;
 	UINT_32	UlMeasFilA2 , UlMeasFilC2 ;
 		
-	UlTempval = (UINT_32)(2147483647 * (float)UsMesFreq / ((float)UsMesFreq + DivOffset ));
+	UlTempval = (UINT_32)(2147483647 * (int)UsMesFreq / ((int)UsMesFreq + DivOffset ));
 	UlMeasFilA1	=	0x7fffffff - UlTempval;
 	UlMeasFilB1	=	~UlMeasFilA1 + 0x00000001;	
 	UlMeasFilC1	=	0x7FFFFFFF - ( UlTempval << 1 ) ;
@@ -3008,21 +3008,21 @@ UINT_8 GetInfomationAfterStartUp( DSPVER* Info )
 // Explanation		: Angle Correction
 // History			: First edition
 //********************************************************************************
-/*  bit7  	HX GYR			Hall X  ‚Æ“¯•ûŒü‚ÌGyroM†‚ªGX?               0:GX  1:GY  */
-/*  bit6  	HX GYR pol		Hall X+ ‚Æ“¯•ûŒü‚ÌGyroM†‚ªX+‚ÆG+‚Å“¯•ûŒü?   0:NEG 1:POS */
-/*  bit5  	HY GYR pol		Hall Y+ ‚Æ“¯•ûŒü‚ÌGyroM†‚ªY+‚ÆG+‚Å“¯•ûŒü?   0:NEG 1:POS */
-/*  bit4  	GZ pol			Šî–{‹É«‚É‘Î‚µ‚ÄGyroZM†‚ª“¯•ûŒü?            0:NEG 1:POS */
-/*  bit3  	HX ACL			Hall X  ‚Æ“¯•ûŒü‚ÌAcclM†‚ªAX?               0:AX  1:AY  */
-/*  bit2  	HX ACL pol		Hall X+ ‚Æ“¯•ûŒü‚ÌAcclM†‚ªX+‚ÆA+‚Å“¯•ûŒü?   0:NEG 1:POS */
-/*  bit1  	HY ACL pol		Hall Y+ ‚Æ“¯•ûŒü‚ÌAcclM†‚ªY+‚ÆA+‚Å“¯•ûŒü?   0:NEG 1:POS */
-/*  bit0  	AZ pol			Šî–{‹É«‚É‘Î‚µ‚ÄAcclZM†‚ª“¯•ûŒü?            0:NEG 1:POS */
-                      //   top0‹btm0‹//
+/*  bit7  	HX GYR			Hall X  ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Gyroï¿½Mï¿½ï¿½ï¿½ï¿½GX?               0:GX  1:GY  */
+/*  bit6  	HX GYR pol		Hall X+ ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Gyroï¿½Mï¿½ï¿½ï¿½ï¿½X+ï¿½ï¿½G+ï¿½Å“ï¿½ï¿½ï¿½ï¿½ï¿½?   0:NEG 1:POS */
+/*  bit5  	HY GYR pol		Hall Y+ ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Gyroï¿½Mï¿½ï¿½ï¿½ï¿½Y+ï¿½ï¿½G+ï¿½Å“ï¿½ï¿½ï¿½ï¿½ï¿½?   0:NEG 1:POS */
+/*  bit4  	GZ pol			ï¿½ï¿½{ï¿½Éï¿½ï¿½É‘Î‚ï¿½ï¿½ï¿½GyroZï¿½Mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?            0:NEG 1:POS */
+/*  bit3  	HX ACL			Hall X  ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Acclï¿½Mï¿½ï¿½ï¿½ï¿½AX?               0:AX  1:AY  */
+/*  bit2  	HX ACL pol		Hall X+ ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Acclï¿½Mï¿½ï¿½ï¿½ï¿½X+ï¿½ï¿½A+ï¿½Å“ï¿½ï¿½ï¿½ï¿½ï¿½?   0:NEG 1:POS */
+/*  bit1  	HY ACL pol		Hall Y+ ï¿½Æ“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Acclï¿½Mï¿½ï¿½ï¿½ï¿½Y+ï¿½ï¿½A+ï¿½Å“ï¿½ï¿½ï¿½ï¿½ï¿½?   0:NEG 1:POS */
+/*  bit0  	AZ pol			ï¿½ï¿½{ï¿½Éï¿½ï¿½É‘Î‚ï¿½ï¿½ï¿½AcclZï¿½Mï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?            0:NEG 1:POS */
+                      //   top0ï¿½ï¿½btm0ï¿½ï¿½//
 const UINT_8 PACT0Tbl[] = { 0xFF, 0xFF };	/* Dummy table */
 const UINT_8 PACT1Tbl[] = { 0x20, 0xDF };	/* [ACT_02][ACT_01][ACT_03] */
 const UINT_8 PACT2Tbl[] = { 0x46, 0xB9 };	/* [---] */
 
 
-UINT_8 SetAngleCorrection( float DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement )
+UINT_8 SetAngleCorrection( int DegreeGap, UINT_8 SelectAct, UINT_8 Arrangement )
 {
 	double OffsetAngle = 0.0f;
 	double OffsetAngleV_slt = 0.0f;
@@ -3251,7 +3251,7 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 	INT_32	SlMeasureParameterNum ;
 	INT_32	SlMeasureParameterA , SlMeasureParameterB ;
 	UnllnVal	StMeasValueA  , StMeasValueB ;
-	float		SfLimit , Sfzoom , Sflenz , Sfshift ;
+	int		SfLimit , Sfzoom , Sflenz , Sfshift ;
 	UINT_32		UlLimit , Ulzoom , Ullenz , Ulshift , UlActChkLvl ;
 	UINT_8		i;
 	UINT_32		UlReturnVal;
@@ -3270,23 +3270,23 @@ UINT_8	TstActMov( UINT_8 UcDirSel )
 
 TRACE(" DIR = %d, lmt = %08x, zom = %08x , lnz = %08x ,sft = %08x \n", UcDirSel, (unsigned int)UlLimit , (unsigned int)Ulzoom , (unsigned int)Ullenz , (unsigned int)Ulshift  ) ;
 
-	SfLimit = (float)UlLimit / (float)0x7FFFFFFF;
+	SfLimit = (int)UlLimit / (int)0x7FFFFFFF;
 	if( Ulzoom == 0){
 		Sfzoom = 0;
 	}else{
-		Sfzoom = (float)abs(Ulzoom) / (float)0x7FFFFFFF;
+		Sfzoom = (int)abs(Ulzoom) / (int)0x7FFFFFFF;
 	}
 	if( Ullenz == 0){
 		Sflenz = 0;
 	}else{
-		Sflenz = (float)Ullenz / (float)0x7FFFFFFF;
+		Sflenz = (int)Ullenz / (int)0x7FFFFFFF;
 	}
 	Ulshift = ( Ulshift & 0x0000FF00) >> 8 ;	
 	Sfshift = 1;
 	for( i = 0 ; i < Ulshift ; i++ ){
 		Sfshift *= 2;
 	}
-	UlActChkLvl = (UINT_32)( (float)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
+	UlActChkLvl = (UINT_32)( (int)0x7FFFFFFF * SfLimit * Sfzoom * Sflenz * Sfshift * ACT_MARGIN );
 TRACE(" lvl = %08x \n", (unsigned int)UlActChkLvl  ) ;
 
 	SlMeasureParameterNum	=	ACT_CHK_NUM ;

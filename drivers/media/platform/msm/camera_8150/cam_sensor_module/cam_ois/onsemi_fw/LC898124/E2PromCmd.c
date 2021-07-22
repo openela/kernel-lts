@@ -135,7 +135,7 @@ unsigned char WriteE2Prom( unsigned char address, unsigned char data )
 	UINT32 UlReadVal, UlCnt;
 	UINT8 ans, e2prom_data[CHECK_SUM_NUM], cnt;
 	UINT32 ReadVerify, Parity;		
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return (ans);							// Unlock Code Set
 
@@ -368,7 +368,7 @@ UINT8	WrHallCalData124( void )
 	BurstReadE2Prom( EEPROM_Calibration_Status_LSB, UcReadVal, 2 );
 	StAdjPar124.StHalAdj.UlAdjPhs |= ( (((UINT32)UcReadVal[1]<<8) +UcReadVal[0]) & (~( HALL_CALB_FLG | HALL_CALB_BIT )) ); 
 	
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 
@@ -592,7 +592,7 @@ UINT8	WrGyroGainData124( void )
 	BurstReadE2Prom( EEPROM_Calibration_Status_LSB, UcReadVal, 2 );
 	UlReadVal = (((UINT32)UcReadVal[1]<<8) +UcReadVal[0]) & (~GYRO_GAIN_FLG) ; 
 		
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 
@@ -742,7 +742,7 @@ UINT8	WrZeroServoData( void )
 	BurstReadE2Prom( EEPROM_Calibration_Status_LSB, UcReadVal, 2 );
 	UlReadVal = (((UINT32)UcReadVal[1]<<8) +UcReadVal[0]) & (~ZSRV_CAL_FLG) ; 
 	
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 	
@@ -908,7 +908,7 @@ UINT8	WrAfParameter( UINT8 SelectAct )
 		return( 7 );	/* Error */
 	}
 
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 
@@ -1005,7 +1005,7 @@ UINT8	WrHallLnData(  UINT8 UcMode, mlLinearityValue *linval )
 	UINT32 UlReadVal, UlCnt;
 	UINT8 ans, data[CHECK_SUM_NUM], cnt, UcReadVal[2];
 	UINT32 ReadVerify, Parity;
-	double		*pPosX, *pPosY;
+	int		*pPosX, *pPosY;
 	UINT32	PosDifX, PosDifY;
 	DSPVER Info;
 	
@@ -1017,7 +1017,7 @@ UINT8	WrHallLnData(  UINT8 UcMode, mlLinearityValue *linval )
 		UlReadVal = (((UINT32)UcReadVal[1]<<8) +UcReadVal[0]) | (HLLN_CALB_FLG) ; 
 	}
 	
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 	
@@ -1269,7 +1269,7 @@ UINT8	WrMixCalData124(  UINT8 UcMode, mlMixingValue *mixval )
 		UlReadVal = (((UINT32)UcReadVal[1]<<8) +UcReadVal[0]) | (MIXI_CALB_FLG) ; 
 	}
 	
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) return ( 1 );							// Unlock Code Set
 	
@@ -1498,7 +1498,7 @@ UINT8	WrOptOffsetData( void )
 TRACE("UlHxoff = %08X\n", UlHxoff);
 TRACE("UlHyoff = %08X\n", UlHyoff);
 	
-	// Flash write€”õ
+	// Flash writeï¿½ï¿½ï¿½ï¿½
 	ans = UnlockCodeSet124();
 	if ( ans != 0 ) {
 		TRACE("Error 1 \n");

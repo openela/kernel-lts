@@ -267,9 +267,9 @@ union	ULLNVAL {
 } ;
 
 
-// Float Data Union
+// int Data Union
 union	FLTVAL {
-	float	SfFltVal ;
+	int	SfFltVal ;
 	UINT_32	UlLngVal ;
 	UINT_16	UsDwdVal[ 2 ] ;
 	struct {
@@ -321,9 +321,9 @@ union	ULLNVAL {
 typedef union ULLNVAL	UnllnVal;
 
 
-// Float Data Union
+// int Data Union
 union	FLTVAL {
-	float	SfFltVal ;
+	int	SfFltVal ;
 	UINT_32	UlLngVal ;
 	UINT_16	UsDwdVal[ 2 ] ;
 	struct {
@@ -449,8 +449,8 @@ __OIS_CMD_HEADER__	stAclVal	StAclVal ;				//!< Execute Command Parameter
  
 // for RunGea2
 // level of judgement
-#define		GEA_MAX_LVL		0x0A41			//!< 2030_87.5lsb/‹/s    max 30‹/s-p-p
-#define		GEA_MIN_LVL		0x1482			//!< 2030_87.5lsb/‹/s    min 60‹/s-p-p
+#define		GEA_MAX_LVL		0x0A41			//!< 2030_87.5lsb/ï¿½ï¿½/s    max 30ï¿½ï¿½/s-p-p
+#define		GEA_MIN_LVL		0x1482			//!< 2030_87.5lsb/ï¿½ï¿½/s    min 60ï¿½ï¿½/s-p-p
 // mode
 #define		GEA_MINMAX_MODE	0x00			//!< min, max mode
 #define		GEA_MEAN_MODE	0x01			//!< mean mode
@@ -459,7 +459,7 @@ __OIS_CMD_HEADER__	stAclVal	StAclVal ;				//!< Execute Command Parameter
 // for Accelerometer offset measurement
 #ifdef	SEL_SHIFT_COR
 
-//100mG‚Æ‚·‚é
+//100mGï¿½Æ‚ï¿½ï¿½ï¿½
 //#define		ZEROG_MRGN_Z	(409 << 16)			// G tolerance for Z
 //#define		ZEROG_MRGN_XY	(409 << 16)			// G tolerance for XY
 // XY 250mG , Z 320mG from Huawei
