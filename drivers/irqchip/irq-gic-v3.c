@@ -41,7 +41,6 @@
 #include <asm/smp_plat.h>
 #include <asm/virt.h>
 
-#include <linux/syscore_ops.h>
 #include <linux/suspend.h>
 #include <linux/notifier.h>
 
@@ -384,61 +383,6 @@ static int gic_irq_set_vcpu_affinity(struct irq_data *d, void *vcpu)
 	return 0;
 }
 
-#ifdef CONFIG_PM
-#ifdef CONFIG_HIBERNATION
-extern int in_suspend;
-static bool hibernation;
-
-static int gic_suspend_notifier(struct notifier_block *nb,
-				unsigned long event,
-				void *dummy)
-{
-	if (event == PM_HIBERNATION_PREPARE)
-		hibernation = true;
-	else if (event == PM_POST_HIBERNATION)
-		hibernation = false;
-	return NOTIFY_OK;
-}
-
-static struct notifier_block gic_notif_block = {
-	.notifier_call = gic_suspend_notifier,
-};
-
-static void gic_hibernation_suspend(void)
-{
-	int i;
-	void __iomem *base = gic_data.dist_base;
-	void __iomem *rdist_base = gic_data_rdist_sgi_base();
-
-	if ((base == NULL) || (rdist_base == NULL))
-		return;
-
-	gic_data.enabled_sgis = readl_relaxed(rdist_base + GICD_ISENABLER);
-	gic_data.pending_sgis = readl_relaxed(rdist_base + GICD_ISPENDR);
-	/* Store edge level for PPIs by reading GICR_ICFGR1 */
-	gic_data.ppi_edg_lvl = readl_relaxed(rdist_base + GICR_ICFGR0 + 4);
-
-	for (i = 0; i * 32 < gic_data.irq_nr; i++) {
-		gic_data.enabled_irqs[i] = readl_relaxed(base +
-						GICD_ISENABLER + i * 4);
-		gic_data.active_irqs[i] = readl_relaxed(base +
-						GICD_ISPENDR + i * 4);
-	}
-
-	for (i = 2; i < gic_data.irq_nr / 16; i++)
-		gic_data.irq_edg_lvl[i] = readl_relaxed(base +
-						GICD_ICFGR + i * 4);
-}
-#endif
-static int gic_suspend(void)
-{
-#ifdef CONFIG_HIBERNATION
-	if (unlikely(hibernation))
-		gic_hibernation_suspend();
-#endif
-	return 0;
-}
-
 static void gic_show_resume_irq(struct gic_chip_data *gic)
 {
 	unsigned int i;
@@ -447,9 +391,6 @@ static void gic_show_resume_irq(struct gic_chip_data *gic)
 	void __iomem *base = gic_data.dist_base;
 
 	if (base == NULL)
-		return;
-
-	if (!msm_show_resume_irq_mask)
 		return;
 
 	for (i = 0; i * 32 < gic->irq_nr; i++) {
@@ -473,72 +414,6 @@ static void gic_show_resume_irq(struct gic_chip_data *gic)
 		pr_warn("%s: %d triggered %s\n", __func__, irq, name);
 	}
 }
-
-static void gic_resume_one(struct gic_chip_data *gic)
-{
-	gic_show_resume_irq(gic);
-}
-
-static void gic_resume(void)
-{
-#ifdef CONFIG_HIBERNATION
-	int i;
-	void __iomem *base = gic_data.dist_base;
-	void __iomem *rdist_base = gic_data_rdist_sgi_base();
-
-	/*
-	 * in_suspend is defined in hibernate.c and will be 0 during
-	 * hibernation restore case. Also it willl be 0 for suspend to ram case
-	 * and similar cases. Underlying code will not get executed in regular
-	 * cases and will be executed only for hibernation restore.
-	 */
-	if (unlikely((in_suspend == 0 && hibernation))) {
-		pr_info("Re-initializing gic in hibernation restore\n");
-		gic_dist_init();
-		gic_cpu_init();
-
-		/* Activate and enable SGIs and PPIs */
-		writel_relaxed(gic_data.enabled_sgis,
-			       rdist_base + GICD_ISENABLER);
-		writel_relaxed(gic_data.pending_sgis,
-			       rdist_base + GICD_ISPENDR);
-		/* Restore edge and level triggers for PPIs from GICR_ICFGR1 */
-		writel_relaxed(gic_data.ppi_edg_lvl,
-			       rdist_base + GICR_ICFGR0 + 4);
-
-		/* Restore edge and level triggers */
-		for (i = 2; i < gic_data.irq_nr / 16; i++)
-			writel_relaxed(gic_data.irq_edg_lvl[i],
-					base + GICD_ICFGR + i * 4);
-		gic_dist_wait_for_rwp();
-
-		/* Activate and enable interupts from backup */
-		for (i = 0; i * 32 < gic_data.irq_nr; i++) {
-			writel_relaxed(gic_data.active_irqs[i],
-				       base + GICD_ISPENDR + i * 4);
-
-			writel_relaxed(gic_data.enabled_irqs[i],
-				       base + GICD_ISENABLER + i * 4);
-		}
-		gic_dist_wait_for_rwp();
-	}
-#endif
-	gic_resume_one(&gic_data);
-}
-
-static struct syscore_ops gic_syscore_ops = {
-	.suspend = gic_suspend,
-	.resume = gic_resume,
-};
-
-static int __init gic_init_sys(void)
-{
-	register_syscore_ops(&gic_syscore_ops);
-	return 0;
-}
-arch_initcall(gic_init_sys);
-
-#endif
 
 static u64 gic_mpidr_to_affinity(unsigned long mpidr)
 {
