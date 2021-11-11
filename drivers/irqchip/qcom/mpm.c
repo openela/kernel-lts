@@ -575,7 +575,7 @@ static int msm_mpm_init(struct device_node *node)
 	dev->ipc_irq = irq;
 
 	ret = request_irq(dev->ipc_irq, msm_mpm_irq,
-		IRQF_TRIGGER_RISING | IRQF_NO_SUSPEND, "mpm",
+		IRQF_TRIGGER_RISING "mpm",
 		msm_mpm_irq);
 	if (ret) {
 		pr_err("request_irq failed errno: %d\n", ret);
