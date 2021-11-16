@@ -1,0 +1,10 @@
+config OPLUS_FEATURE_SENSOR_CFG
+	tristate "oplus sensor share memory config"
+	default y
+	help
+	  To compile this driver as a module, set M in kernel build config
+	  module will be called oplus_sensor.
+config SSC_INTERACTIVE
+    bool "config ssc interactive"
+    help
+        define this config to send lcd info to slpi

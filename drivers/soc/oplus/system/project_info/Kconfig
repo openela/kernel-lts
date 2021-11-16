@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Copyright (C) 2018-2020 Oplus. All rights reserved.
+config OPLUS_FEATURE_PROJECTINFO
+  bool "config oppo common software"
+  default y
+  help
+	define this config to get project verion from sharemem.
+	Maybe this value is from CDT or dynamic identify by hardware
+	id.

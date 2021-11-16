@@ -115,6 +115,10 @@ obj-$(CONFIG_MSM_HAB) += hab/
 obj-$(CONFIG_QCOM_HGSL) += hgsl/
 obj-$(CONFIG_QCOM_HYP_CORE_CTL) += hyp_core_ctl.o
 obj-$(CONFIG_QCOM_AOP_DDRSS_COMMANDS) += aop_ddrss_cmds.o
+#ifdef OPLUS_ARCH_EXTENDS
+#Richeng.Wang@MULTIMEDIA.AUDIODRIVER.HEADSETS, 2020/10/11, Add for max20328
+obj-$(CONFIG_QCOM_MAX20328_I2C) += max20328.o
+#endif
 obj-$(CONFIG_RMNET_CTL) += rmnet_ctl/
 obj-$(CONFIG_QCOM_ADSP_MANUAL_VOTE) += adsp_vote_qmi.o adsp_lpm_voting_v01.o
 obj-$(CONFIG_CPU_V7) += idle-v7.o

@@ -1,0 +1,30 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Copyright (C) 2018-2020 Oplus. All rights reserved.
+config OPLUS_SYSTEM_KERNEL
+  bool "config oplus system feature "
+  default y
+  help
+	define this config to add oplus sytstem kernel feature
+
+config OPPO_ARCH_FILE
+  bool "for build directory oppo"
+  ---help---
+  say Y to buid in
+
+config OPPO_COMMON_SOFT
+  bool "config oppo common software"
+  select OPPO_ARCH_FILE
+  help
+	define this config to get project verion from sharemem.
+	Maybe this value is from CDT or dynamic identify by hardware
+	id.
+
+config OPPO_DEVICE_IFNO
+  bool "config oppo devinfo"
+  select OPPO_ARCH_FILE
+  help
+	define this config to compile devinfo.c for device register
+		.
+
+source "drivers/soc/oplus/system/oplus_project/Kconfig"
+source "drivers/soc/oplus/system/project_info/Kconfig"

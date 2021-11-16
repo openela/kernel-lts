@@ -1,0 +1,5 @@
+config OPPO_DEVICE_IFNO
+  bool "config oppo devinfo software"
+  help
+    define this config to compile devinfo.c for device register
+

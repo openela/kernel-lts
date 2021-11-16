@@ -17,5 +17,6 @@ source "drivers/soc/ti/Kconfig"
 source "drivers/soc/ux500/Kconfig"
 source "drivers/soc/versatile/Kconfig"
 source "drivers/soc/zte/Kconfig"
-
+source "drivers/soc/oplus/Kconfig"
+source "drivers/soc/oplus/sensor/Kconfig"
 endmenu

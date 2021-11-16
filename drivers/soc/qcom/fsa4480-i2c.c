@@ -18,10 +18,28 @@
 #include <linux/mutex.h>
 #include <linux/soc/qcom/fsa4480-i2c.h>
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+ * Add for fsa4480 headset detection interrupt.
+ */
+#include <linux/of_gpio.h>
+#include <linux/gpio.h>
+#endif /* OPLUS_ARCH_EXTENDS */
+
 #define FSA4480_I2C_NAME	"fsa4480-driver"
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+#define HL5280_DEVICE_REG_VALUE 0x49
+
+#define FSA4480_DEVICE_ID  0x00
+#endif /* OPLUS_ARCH_EXTENDS */
 #define FSA4480_SWITCH_SETTINGS 0x04
 #define FSA4480_SWITCH_CONTROL  0x05
+#ifdef OPLUS_ARCH_EXTENDS
+/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/09/20, Add for status0 register*/
+#define FSA4480_SWITCH_STATUS0  0x06
+#endif /* OPLUS_ARCH_EXTENDS */
 #define FSA4480_SWITCH_STATUS1  0x07
 #define FSA4480_SLOW_L          0x08
 #define FSA4480_SLOW_R          0x09
@@ -32,7 +50,26 @@
 #define FSA4480_DELAY_L_MIC     0x0E
 #define FSA4480_DELAY_L_SENSE   0x0F
 #define FSA4480_DELAY_L_AGND    0x10
+#ifdef OPLUS_ARCH_EXTENDS
+/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/09/20, Add for open auto mic DET*/
+#define FSA4480_FUN_EN          0x12
+#define FSA4480_JACK_STATUS     0x17
+#endif /* OPLUS_ARCH_EXTENDS */
 #define FSA4480_RESET           0x1E
+
+#ifdef OPLUS_ARCH_EXTENDS
+/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31, Add for log*/
+#undef dev_dbg
+#define dev_dbg dev_info
+#endif /* OPLUS_ARCH_EXTENDS */
+
+#ifdef OPLUS_ARCH_EXTENDS
+/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+enum switch_vendor {
+    FSA4480 = 0,
+    HL5280
+};
+#endif /* OPLUS_ARCH_EXTENDS */
 
 struct fsa4480_priv {
 	struct regmap *regmap;
@@ -43,6 +80,16 @@ struct fsa4480_priv {
 	struct work_struct usbc_analog_work;
 	struct blocking_notifier_head fsa4480_notifier;
 	struct mutex notification_lock;
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+	 * Add for fsa4480 headset detection interrupt.
+	 */
+	unsigned int hs_det_pin;
+	#endif /* OPLUS_ARCH_EXTENDS */
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+	enum switch_vendor vendor;
+	#endif /* OPLUS_ARCH_EXTENDS */
 };
 
 struct fsa4480_reg_val {
@@ -112,6 +159,12 @@ static int fsa4480_usbc_event_changed(struct notifier_block *nb,
 		return ret;
 	}
 
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+	if (fsa_priv->vendor == HL5280) {
+		dev_err(fsa_priv->dev, "%s: switch chip is HL5280\n", __func__);
+	}
+	#endif /* OPLUS_ARCH_EXTENDS */
 	dev_dbg(dev, "%s: USB change event received, supply mode %d, usbc mode %d, expected %d\n",
 		__func__, mode.intval, fsa_priv->usbc_mode.counter,
 		POWER_SUPPLY_TYPEC_SINK_AUDIO_ADAPTER);
@@ -139,7 +192,11 @@ static int fsa4480_usbc_analog_setup_switches(struct fsa4480_priv *fsa_priv)
 	int rc = 0;
 	union power_supply_propval mode;
 	struct device *dev;
-
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/09/20, Add for get status*/
+	unsigned int switch_status = 0;
+	unsigned int jack_status = 0;
+	#endif /* OPLUS_ARCH_EXTENDS */
 	if (!fsa_priv)
 		return -EINVAL;
 	dev = fsa_priv->dev;
@@ -155,20 +212,63 @@ static int fsa4480_usbc_analog_setup_switches(struct fsa4480_priv *fsa_priv)
 			__func__, rc);
 		goto done;
 	}
-	dev_dbg(dev, "%s: setting GPIOs active = %d\n",
+	dev_info(dev, "%s: setting GPIOs active = %d\n",
 		__func__, mode.intval != POWER_SUPPLY_TYPEC_NONE);
 
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31, Add for log*/
+	dev_info(dev, "%s: USB mode %d\n", __func__, mode.intval);
+	#endif /* OPLUS_ARCH_EXTENDS */
 	switch (mode.intval) {
 	/* add all modes FSA should notify for in here */
 	case POWER_SUPPLY_TYPEC_SINK_AUDIO_ADAPTER:
 		/* activate switches */
 		fsa4480_usbc_update_settings(fsa_priv, 0x00, 0x9F);
+		#ifdef OPLUS_ARCH_EXTENDS
+		/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/09/20, Add for open auto mic DET*/
+		usleep_range(1000, 1005);
+		regmap_write(fsa_priv->regmap, FSA4480_FUN_EN, 0x45);
+		usleep_range(4000, 4005);
+		dev_info(dev, "%s: set reg[0x%x] done.\n", __func__, FSA4480_FUN_EN);
+
+		regmap_read(fsa_priv->regmap, FSA4480_JACK_STATUS, &jack_status);
+		dev_info(dev, "%s: reg[0x%x]=0x%x.\n", __func__, FSA4480_JACK_STATUS, jack_status);
+		if (jack_status & 0x2) {
+			//for 3 pole, mic switch to SBU2
+			dev_info(dev, "%s: set mic to sbu2 for 3 pole.\n", __func__);
+			fsa4480_usbc_update_settings(fsa_priv, 0x00, 0x9F);
+			usleep_range(4000, 4005);
+		}
+
+		regmap_read(fsa_priv->regmap, FSA4480_SWITCH_STATUS0, &switch_status);
+		dev_info(dev, "%s: reg[0x%x]=0x%x.\n", __func__, FSA4480_SWITCH_STATUS0, switch_status);
+		regmap_read(fsa_priv->regmap, FSA4480_SWITCH_STATUS1, &switch_status);
+		dev_info(dev, "%s: reg[0x%x]=0x%x.\n", __func__, FSA4480_SWITCH_STATUS1, switch_status);
+		#endif /* OPLUS_ARCH_EXTENDS */
 
 		/* notify call chain on event */
 		blocking_notifier_call_chain(&fsa_priv->fsa4480_notifier,
 		mode.intval, NULL);
+		#ifdef OPLUS_ARCH_EXTENDS
+		/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+		 * Add for fsa4480 headset detection interrupt.
+		 */
+		if (gpio_is_valid(fsa_priv->hs_det_pin)) {
+			dev_info(dev, "%s: set hs_det_pin to low.\n", __func__);
+			gpio_direction_output(fsa_priv->hs_det_pin, 0);
+		}
+		#endif /* OPLUS_ARCH_EXTENDS */
 		break;
 	case POWER_SUPPLY_TYPEC_NONE:
+		#ifdef OPLUS_ARCH_EXTENDS
+		/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+		 * Add for fsa4480 headset detection interrupt.
+		 */
+		if (gpio_is_valid(fsa_priv->hs_det_pin)) {
+			dev_info(dev, "%s: set hs_det_pin to high.\n", __func__);
+			gpio_direction_output(fsa_priv->hs_det_pin, 1);
+		}
+		#endif /* OPLUS_ARCH_EXTENDS */
 		/* notify call chain on event */
 		blocking_notifier_call_chain(&fsa_priv->fsa4480_notifier,
 				POWER_SUPPLY_TYPEC_NONE, NULL);
@@ -310,6 +410,11 @@ int fsa4480_switch_event(struct device_node *node,
 	if (!fsa_priv->regmap)
 		return -EINVAL;
 
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31, Add for log*/
+	pr_info("%s - switch event: %d\n", __func__, event);
+	#endif /* VENDOR_EDIT */
+
 	switch (event) {
 	case FSA_MIC_GND_SWAP:
 		regmap_read(fsa_priv->regmap, FSA4480_SWITCH_CONTROL,
@@ -337,11 +442,54 @@ int fsa4480_switch_event(struct device_node *node,
 }
 EXPORT_SYMBOL(fsa4480_switch_event);
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+ * Add for fsa4480 headset detection interrupt.
+ */
+static int fsa4480_parse_dt(struct fsa4480_priv *fsa_priv,
+	struct device *dev)
+{
+    struct device_node *dNode = dev->of_node;
+    int ret = 0;
+
+    if (dNode == NULL)
+        return -ENODEV;
+
+	if (!fsa_priv) {
+		pr_err("%s: fsa_priv is NULL\n", __func__);
+		return -ENOMEM;
+	}
+
+	fsa_priv->hs_det_pin = of_get_named_gpio(dNode,
+	        "fsa4480,hs-det-gpio", 0);
+	if (!gpio_is_valid(fsa_priv->hs_det_pin)) {
+	    pr_warning("%s: hs-det-gpio in dt node is missing\n", __func__);
+	    return -ENODEV;
+	}
+	ret = gpio_request(fsa_priv->hs_det_pin, "fsa4480_hs_det");
+	if (ret) {
+		pr_warning("%s: hs-det-gpio request fail\n", __func__);
+		return ret;
+	}
+
+	gpio_direction_output(fsa_priv->hs_det_pin, 1);
+
+	return ret;
+}
+#endif /* OPLUS_ARCH_EXTENDS */
+
 static void fsa4480_usbc_analog_work_fn(struct work_struct *work)
 {
 	struct fsa4480_priv *fsa_priv =
 		container_of(work, struct fsa4480_priv, usbc_analog_work);
-
+        #ifdef OPLUS_FEATURE_DP_MAX20328
+        /* xiang.fei@PSW.MM.AudioDriver.HeadsetDet, 2019/07/13, Add for max20328 */
+        #ifdef CONFIG_QCOM_MAX20328_I2C
+            if (!gpio_is_valid(fsa_priv->hs_det_pin)) {
+               return;
+            }
+        #endif
+        #endif /* OPLUS_FEATURE_DP_MAX20328 */
 	if (!fsa_priv) {
 		pr_err("%s: fsa container invalid\n", __func__);
 		return;
@@ -364,6 +512,10 @@ static int fsa4480_probe(struct i2c_client *i2c,
 {
 	struct fsa4480_priv *fsa_priv;
 	int rc = 0;
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+	unsigned int reg_value = 0;
+	#endif /* OPLUS_ARCH_EXTENDS */
 
 	fsa_priv = devm_kzalloc(&i2c->dev, sizeof(*fsa_priv),
 				GFP_KERNEL);
@@ -371,6 +523,13 @@ static int fsa4480_probe(struct i2c_client *i2c,
 		return -ENOMEM;
 
 	fsa_priv->dev = &i2c->dev;
+
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+	 * Add for fsa4480 headset detection interrupt.
+	 */
+	fsa4480_parse_dt(fsa_priv, &i2c->dev);
+	#endif /* OPLUS_ARCH_EXTENDS */
 
 	fsa_priv->usb_psy = power_supply_get_by_name("usb");
 	if (!fsa_priv->usb_psy) {
@@ -394,6 +553,19 @@ static int fsa4480_probe(struct i2c_client *i2c,
 	}
 
 	fsa4480_update_reg_defaults(fsa_priv->regmap);
+
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Zhao.Pan@PSW.MM.AudioDriver.HeadsetDet, 2019/11/13, Add for support HL5280*/
+	regmap_read(fsa_priv->regmap, FSA4480_DEVICE_ID, &reg_value);
+	dev_err(fsa_priv->dev, "%s: device id reg value: 0x%x\n", __func__, reg_value);
+	if (HL5280_DEVICE_REG_VALUE == reg_value) {
+		dev_err(fsa_priv->dev, "%s: switch chip is HL5280\n", __func__);
+		fsa_priv->vendor = HL5280;
+	} else {
+		dev_err(fsa_priv->dev, "%s: switch chip is FSA4480\n", __func__);
+		fsa_priv->vendor = FSA4480;
+	}
+	#endif /* OPLUS_ARCH_EXTENDS */
 
 	fsa_priv->psy_nb.notifier_call = fsa4480_usbc_event_changed;
 	fsa_priv->psy_nb.priority = 0;
@@ -420,6 +592,14 @@ static int fsa4480_probe(struct i2c_client *i2c,
 err_supply:
 	power_supply_put(fsa_priv->usb_psy);
 err_data:
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Jianfeng.Qiu@PSW.MM.AudioDriver.HeadsetDet, 2019/07/31,
+	 * Add for fsa4480 headset detection interrupt.
+	 */
+	if (gpio_is_valid(fsa_priv->hs_det_pin)) {
+		gpio_free(fsa_priv->hs_det_pin);
+	}
+	#endif /* OPLUS_ARCH_EXTENDS */
 	devm_kfree(&i2c->dev, fsa_priv);
 	return rc;
 }

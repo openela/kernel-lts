@@ -34,6 +34,10 @@
 #include <soc/qcom/socinfo.h>
 #include <linux/soc/qcom/smem.h>
 #include <soc/qcom/boot_stats.h>
+#ifdef OPLUS_ARCH_EXTENDS
+// XieLiujie@BSP.KERNEL.PERFORMANCE, 2020/09/03, Add for fake cpu id
+#include <soc/oplus/system/oppo_project.h>
+#endif
 
 #define BUILD_ID_LENGTH 32
 #define CHIP_ID_LENGTH 32
@@ -289,6 +293,11 @@ static union {
 
 /* max socinfo format version supported */
 #define MAX_SOCINFO_FORMAT SOCINFO_VERSION(0, 15)
+#ifdef OPLUS_ARCH_EXTENDS
+// XieLiujie@BSP.KERNEL.PERFORMANCE, 2020/09/03, Add for fake cpu id
+static char *fake_cpu_id = "SDM660";
+static char *real_cpu_id = "SDM720G";
+#endif
 
 static struct msm_soc_info cpu_of_id[] = {
 	[0]  = {MSM_CPU_UNKNOWN, "Unknown CPU"},
@@ -368,7 +377,7 @@ static struct msm_soc_info cpu_of_id[] = {
 	[339] = {MSM_CPU_SM8150, "SM8150"},
 
 	/* sm8150p ID */
-	[361] = {MSM_CPU_SM8150, "SM8150P"},
+	[361] = {MSM_CPU_SM8150, "SM8150_Plus"},
 
 	/* sa8155 ID */
 	[362] = {MSM_CPU_SA8155, "SA8155"},
@@ -507,7 +516,12 @@ static char *msm_read_hardware_id(void)
 		goto err_path;
 	if (!cpu_of_id[socinfo->v0_1.id].soc_id_string)
 		goto err_path;
-
+#ifdef VENDOR_EDIT
+//zhye@BSP.Kernel.Config, 2019-10-19, add for 19081 sm8150_plus config
+	if((get_project() == 19081) || (get_project() == 19781)|| (get_project() == 19696))
+		socinfo->v0_1.id = 361;
+	pr_err("socinfo->v0_1.id=%d\n",socinfo->v0_1.id);
+#endif//VENDOR_EDIT
 	ret = strlcat(msm_soc_str, cpu_of_id[socinfo->v0_1.id].soc_id_string,
 			sizeof(msm_soc_str));
 	if (ret > sizeof(msm_soc_str))
@@ -1840,6 +1854,30 @@ int __init socinfo_init(void)
 		pr_warn("New IDs added! ID => CPU mapping needs an update.\n");
 
 	cur_cpu = cpu_of_id[socinfo->v0_1.id].generic_soc_type;
+#ifdef OPLUS_ARCH_EXTENDS
+// XieLiujie@BSP.KERNEL.PERFORMANCE, 2020/09/03, Add for fake cpu id
+	if (is_confidential()) {
+		cpu_of_id[socinfo->v0_1.id].soc_id_string = fake_cpu_id;
+	} else {
+		cpu_of_id[socinfo->v0_1.id].soc_id_string = real_cpu_id;
+	}
+#endif
+
+//#ifdef ARCH_SM8150
+//Lixiang.Zhang@BSP.KERNEL.PERFORMANCE, 2020/11/12, Add for 8150R cpu id
+//	if (is_confidential()) {
+	if((get_project() == 18115) || (get_project() == 18116) || (get_project() == 18501))
+		{
+			cpu_of_id[socinfo->v0_1.id].generic_soc_type = MSM_CPU_SM8150;
+			cpu_of_id[socinfo->v0_1.id].soc_id_string = "SM8150";
+		}
+	else if((get_project() == 19081) || (get_project() == 19781)|| (get_project() == 19696))
+		{
+			cpu_of_id[socinfo->v0_1.id].generic_soc_type = MSM_CPU_SM8150;
+			cpu_of_id[socinfo->v0_1.id].soc_id_string = "SM8150_Plus";
+		}
+//	}
+//#endif
 	boot_stats_init();
 	socinfo_print();
 	arch_read_hardware_id = msm_read_hardware_id;

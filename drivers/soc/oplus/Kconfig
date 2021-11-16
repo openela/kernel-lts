@@ -1,0 +1,8 @@
+#wen.luo@BSP.Kernel.Stability 2020/03/25 add for oplus kernel system
+source "drivers/soc/oplus/system/Kconfig"
+#endif /* VENDOR_EDIT */
+
+#ifdef OPLUS_FEATURE_TP_BASIC
+#Qingwen.Liu@RM.BSP.Basic, 2020/11/03, Add for device info
+source "drivers/soc/oplus/device_info/Kconfig"
+#endif /* OPLUS_FEATURE_TP_BASIC */
