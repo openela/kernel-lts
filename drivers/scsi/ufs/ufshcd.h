@@ -74,6 +74,13 @@
 #include "ufs.h"
 #include "ufshci.h"
 
+#ifdef VENDOR_EDIT
+/* Hank.liu@TECH.PLAT.Storage, 2019-10-31, add UFS+ hpb and tw driver*/
+#if defined(CONFIG_UFSFEATURE)
+#include "ufsfeature.h"
+#endif
+#endif
+
 #define UFSHCD "ufshcd"
 #define UFSHCD_DRIVER_VERSION "0.3"
 
@@ -231,6 +238,13 @@ struct ufshcd_lrb {
 #endif /* CONFIG_SCSI_UFS_CRYPTO */
 
 	bool req_abort_skip;
+
+#ifdef VENDOR_EDIT
+/* Hank.liu@TECH.PLAT.Storage, 2019-10-31, add UFS+ hpb and tw driver*/
+#if defined(CONFIG_UFSFEATURE) && defined(CONFIG_UFSHPB)
+	int hpb_ctx_id;
+#endif
+#endif
 };
 
 /**
@@ -724,6 +738,21 @@ enum ufshcd_card_state {
 	UFS_CARD_STATE_OFFLINE	= 2,
 };
 
+#ifdef VENDOR_EDIT
+/* Hank.liu@TECH.PLAT.Storage, 2019-10-31, add UFS+ hpb and tw driver*/
+#if defined(CONFIG_UFSTW_DEBUGDRV)
+struct ufstwd_dev_info {
+	struct ufs_hba *hba;
+	int lun;
+
+	struct kobject kobj;
+	struct mutex sysfs_lock;
+	struct ufstwd_sysfs_entry *sysfs_entries;
+};
+
+void ufstwd_dev_init(struct ufs_hba *hba);
+#endif
+#endif
 /**
  * struct ufs_hba - per adapter private structure
  * @mmio_base: UFSHCI base register address
@@ -1058,6 +1087,9 @@ struct ufs_hba {
 
 	/* sync b/w diff contexts */
 	struct rw_semaphore lock;
+#ifdef OPLUS_FEATURE_STORAGE_TOOL
+    struct rw_semaphore ffu_lock;
+#endif
 	unsigned long shutdown_in_prog;
 
 	/* If set, don't gate device ref_clk during clock gating */
@@ -1067,7 +1099,12 @@ struct ufs_hba {
 
 	bool full_init_linereset;
 	struct pinctrl *pctrl;
-
+#ifdef VENDOR_EDIT
+//hank.liu@Tech.Storage.UFS, 2019-10-17 add latency_hist node for ufs latency calculate in sysfs.
+	struct io_latency_state io_lat_read;
+	struct io_latency_state io_lat_write;
+	struct io_latency_state io_lat_other;
+#endif
 	struct reset_control *core_reset;
 
 	struct ufs_desc_size desc_size;
@@ -1080,7 +1117,21 @@ struct ufs_hba {
 	bool force_g4;
 	/* distinguish between resume and restore */
 	bool restore;
+#ifdef OPLUS_FEATURE_STORAGE_TOOL
+/* hexiaosen@BSP.Storage.UFS 2020-08-13 add for ufs reset after ffu write buffer */
+	u8 set_host_blocked;
+	struct work_struct ffu_write_buffer_finished_work;
+#endif
 
+#ifdef VENDOR_EDIT
+/* Hank.liu@TECH.PLAT.Storage, 2019-10-31, add UFS+ hpb and tw driver*/ 
+#if defined(CONFIG_UFSFEATURE)
+	struct ufsf_feature ufsf;
+#endif
+#if defined(CONFIG_UFSTW_DEBUGDRV)
+	struct ufstwd_dev_info *ufstwd;
+#endif
+#endif
 #ifdef CONFIG_SCSI_UFS_CRYPTO
 	/* crypto */
 	union ufs_crypto_capabilities crypto_capabilities;
@@ -1355,6 +1406,18 @@ u32 ufshcd_get_local_unipro_ver(struct ufs_hba *hba);
 
 void ufshcd_scsi_block_requests(struct ufs_hba *hba);
 void ufshcd_scsi_unblock_requests(struct ufs_hba *hba);
+#ifdef VENDOR_EDIT
+/* Hank.liu@TECH.PLAT.Storage, 2019-10-31, add UFS+ hpb and tw driver*/
+#if defined(CONFIG_UFSFEATURE)
+int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
+			enum dev_cmd_type cmd_type, int timeout);
+int ufshcd_hibern8_hold(struct ufs_hba *hba, bool async);
+void ufshcd_hold_all(struct ufs_hba *hba);
+void ufshcd_release_all(struct ufs_hba *hba);
+int ufshcd_comp_scsi_upiu(struct ufs_hba *hba, struct ufshcd_lrb *lrbp);
+int ufshcd_map_sg(struct ufs_hba *hba, struct ufshcd_lrb *lrbp);
+#endif
+#endif
 
 /* Wrapper functions for safely calling variant operations */
 static inline const char *ufshcd_get_var_name(struct ufs_hba *hba)
