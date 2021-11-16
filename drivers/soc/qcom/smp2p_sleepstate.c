@@ -89,7 +89,8 @@ static int smp2p_sleepstate_probe(struct platform_device *pdev)
 	dev_info(&pdev->dev, "got smp2p-sleepstate-in irq %d\n", irq);
 	ret = devm_request_threaded_irq(dev, irq, NULL,
 		(irq_handler_t)smp2p_sleepstate_handler,
-		IRQF_TRIGGER_RISING, "smp2p_sleepstate", dev);
+		IRQF_ONESHOT | IRQF_TRIGGER_RISING,
+		"smp2p_sleepstate", dev);
 	if (ret) {
 		dev_err(&pdev->dev, "fail to register smp2p threaded_irq=%d\n",
 									irq);
