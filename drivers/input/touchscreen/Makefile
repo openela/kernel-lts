@@ -112,3 +112,7 @@ obj-$(CONFIG_TOUCHSCREEN_RASPBERRYPI_FW)	+= raspberrypi-ts.o
 obj-$(CONFIG_TOUCHSCREEN_IQS5XX)	+= iqs5xx.o
 obj-$(CONFIG_TOUCHSCREEN_ST)	+= st/
 obj-$(CONFIG_TOUCHSCREEN_FTS)	+= focaltech_touch/
+
+#Qicai.gu@Bsp.Group.Tp, 2020/02/26, Add for oppo project
+obj-$(CONFIG_TOUCHPANEL_OPPO) += oppo_touchscreen/
+obj-$(CONFIG_TOUCHPANEL_OPPO) += touch.o

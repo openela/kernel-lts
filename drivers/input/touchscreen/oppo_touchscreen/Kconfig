@@ -1,0 +1,51 @@
+config TOUCHPANEL_MTK_PLATFORM
+	bool "OPPO platform tp module used"
+	help
+	  Say Y here if you have mtk-platform.
+
+config TOUCHPANEL_LATE_INIT
+	bool "mk6360 pmic init"
+	help
+	  Say Y here if you have mk6360 pmic.
+
+config TOUCHIRQ_UPDATE_QOS
+	bool "OPPO touchpanel driver update qos"
+	help
+	  Say Y here if you want to update qos value in irq handler.
+
+config TOUCHPANEL_NEW_SET_IRQ_WAKE
+	bool "OPPO platform tp module used"
+	help
+	  Say Y here if call enable_irq_wake, can not call disable_irq_nosync
+
+config TOUCHPANEL_OPPO
+	bool "OPPO tp module"
+	help
+	  Say Y here if you have touchscreen module.
+
+config OPPO_TP_APK
+	bool "OPPO apk node create"
+	help
+	  Say Y here if you use apk for TP.
+
+config TOUCHPANEL_ALGORITHM
+	bool "touch alogoritm in driver support"
+	help
+	  Say Y here if you use touch alogoritm in driver.
+
+config TOUCHPANEL_MULTI_NOFLASH
+	bool "Multiple noflash TPs using"
+	help
+	  Say Y here if you have multiple noflash touchscreen.
+
+config TOUCHPANEL_SYNAPTICS
+#	default y
+	bool "TP Synaptics_IC enable or not for OPPO"
+	---help---
+	say Y to enable driver for Touchpanel using Synaptics_IC
+	
+source "drivers/input/touchscreen/oppo_touchscreen/util_interface/Kconfig"
+
+if TOUCHPANEL_SYNAPTICS
+source "drivers/input/touchscreen/oppo_touchscreen/Synaptics/Kconfig"
+endif

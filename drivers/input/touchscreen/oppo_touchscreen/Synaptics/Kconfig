@@ -1,0 +1,1 @@
+source "drivers/input/touchscreen/oppo_touchscreen/Synaptics/S3706/Kconfig"

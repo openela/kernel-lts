@@ -1288,13 +1288,8 @@ config TOUCHSCREEN_SYNAPTICS_TCM
 
 source "drivers/input/touchscreen/synaptics_tcm/Kconfig"
 
-config TOUCHSCREEN_RAYDIUM_CHIPSET
-	bool "Raydium WT030 touchpanel CHIPSET"
-	depends on I2C
-	help
-	  Say Y here if you have a Raydium WT030 CHIPSET touchscreen.
-
-	  If unsure, say N.
+#Qicai.gu@Bsp.Group.Tp, 2020/02/26, Add for oppo project
+source "drivers/input/touchscreen/oppo_touchscreen/Kconfig"
 
 source "drivers/input/touchscreen/focaltech_touch/Kconfig"
 
