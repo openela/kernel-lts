@@ -19,6 +19,9 @@
 		compatible = "qcom,msm-hw-limits";
 		interrupts = <GIC_SPI 32 IRQ_TYPE_LEVEL_HIGH>;
 		qcom,affinity = <0>;
+		/* #ifdef VENDOR_EDIT */
+		dump_thres = <1113600>;
+		/* #endif */
 		reg = <0x18358800 0x1000>,
 			<0x18323000 0x1000>;
 		#thermal-sensor-cells = <0>;
@@ -28,6 +31,9 @@
 		compatible = "qcom,msm-hw-limits";
 		interrupts = <GIC_SPI 33 IRQ_TYPE_LEVEL_HIGH>;
 		qcom,affinity = <1>;
+		/* #ifdef VENDOR_EDIT */
+		dump_thres = <1920000>;
+		/* #endif */
 		reg = <0x18350800 0x1000>,
 			<0x18325800 0x1000>;
 		#thermal-sensor-cells = <0>;

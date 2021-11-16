@@ -353,3 +353,8 @@
 		qcom,cdc-micbias1-mv = <1800>;
 	};
 };
+
+/* #ifdef OPLUS_ARCH_EXTENDS */
+/* Wan.li@MULTIMEDIA.AUDIODRIVER.MACHINE, 2020/09/27, Add for oplus extend aduio config */
+#include "oplus-audio-extend.dtsi"
+/* #endif OPLUS_ARCH_EXTENDS */

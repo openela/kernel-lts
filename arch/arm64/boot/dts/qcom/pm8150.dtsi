@@ -96,14 +96,24 @@
 					<0x0 0xc2 0 IRQ_TYPE_NONE>,
 					<0x0 0xc3 0 IRQ_TYPE_NONE>,
 					<0x0 0xc5 0 IRQ_TYPE_NONE>,
+					/*ifdef VENDOR_EDIT*/
+					//Added by wanghao@Bsp.Group.Tp for volkey,2018-11-01
+					<0x0 0xc6 0 IRQ_TYPE_NONE>,
+					//#endif
 					<0x0 0xc8 0 IRQ_TYPE_NONE>,
 					<0x0 0xc9 0 IRQ_TYPE_NONE>;
 			interrupt-names = "pm8150_gpio1", "pm8150_gpio3",
 					"pm8150_gpio4", "pm8150_gpio6",
-					"pm8150_gpio9", "pm8150_gpio10";
+					/*ifdef VENDOR_EDIT*/
+					//Added by wanghao@Bsp.Group.Tp for volkey,2018-11-01
+					"pm8150_gpio7", "pm8150_gpio9", "pm8150_gpio10";
+					//#endif
 			gpio-controller;
 			#gpio-cells = <2>;
-			qcom,gpios-disallowed = <2 5 7 8>;
+			/*ifdef VENDOR_EDIT*/
+			//Added by wanghao@Bsp.Group.Tp for volkey,2018-11-01
+			qcom,gpios-disallowed = <2 5 8>;
+			//#endif
 		};
 
 		pm8150_sdam_2: sdam@b100 {

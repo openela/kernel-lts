@@ -15,6 +15,11 @@
 #include "sm8150.dtsi"
 #include "sm8150-mtp.dtsi"
 
+//#ifdef VENDOR_EDIT
+//xiang.fei@PSW.MM.AudioDriver.Codec, 2019/07/13, Add for audio config */
+#include "sm8150-oppo-audio-overlay.dtsi"
+//#endif
+
 / {
 	model = "Qualcomm Technologies, Inc. SM8150 MTP";
 	compatible = "qcom,sm8150-mtp", "qcom,sm8150", "qcom,mtp";

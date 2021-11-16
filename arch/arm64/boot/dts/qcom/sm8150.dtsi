@@ -559,16 +559,16 @@
 			compatible = "android,firmware";
 			shared_meta: vbmeta {
 				compatible = "android,vbmeta";
-				parts = "vbmeta,boot,system,vendor,dtbo,odm";
+				parts = "vbmeta,boot,recovery,system,vendor,dtbo,odm";
 			};
-			android_q_fstab: fstab {
+			fstab {
 				compatible = "android,fstab";
 				vendor {
 					compatible = "android,vendor";
 					dev = "/dev/block/platform/soc/8804000.sdhci/by-name/vendor";
 					type = "ext4";
 					mnt_flags = "ro,barrier=1,discard";
-					fsmgr_flags = "wait,slotselect,avb";
+					fsmgr_flags = "wait,avb";
 					status = "ok";
 				};
 				odm {
@@ -576,7 +576,7 @@
 					dev = "/dev/block/platform/soc/8804000.sdhci/by-name/odm";
 					type = "ext4";
 					mnt_flags = "ro,barrier=1,discard";
-					fsmgr_flags = "wait,slotselect,avb";
+					fsmgr_flags = "wait,avb";
 					status = "ok";
 				};
 			};
@@ -605,100 +605,147 @@
 
 		removed_regions: removed_regions {
 			no-map;
-			reg = <0x0 0x86200000 0x0 0x5500000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x86200000 0x0 0x5500000>;
+			//#else
+			reg = <0x0 0x86200000 0x0 0x7500000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		pil_camera_mem: camera_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x8b700000 0x0 0x500000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x8b700000 0x0 0x500000>;
+			//#else
+			reg = <0x0 0x9ab00000 0x0 0x500000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		pil_wlan_fw_mem: pil_wlan_fw_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x8bc00000 0x0 0x180000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x8bc00000 0x0 0x180000>;
+			//#else
+			reg = <0x0 0x9b000000 0x0 0x180000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		pil_npu_mem: pil_npu_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x8bd80000 0x0 0x80000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x8bd80000 0x0 0x80000>;
+			//#else
+			reg = <0x0 0x9b180000 0x0 0x80000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		pil_adsp_mem: pil_adsp_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x8be00000 0x0 0x1a00000>;
+			//#ifndef OPLUS_ARCH_EXTENDS
+			/* xiang.fei@MULTIMEDIA.AudioDriver.Adsp, 2019/09/15, Add 4M memory for adsp */
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x8be00000 0x0 0x1a00000>;
+			//#else
+			//reg = <0x0 0x8be00000 0x0 0x1e00000>;
+			reg = <0x0 0x9b200000 0x0 0x1e00000>;
+			//#endif /* OPLUS_ARCH_EXTENDS */
 		};
 
 		pil_modem_mem: modem_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x8d800000 0x0 0x9600000>;
+			reg = <0x0 0x8dc00000 0x0 0xa000000>;
 		};
 
 		pil_video_mem: pil_video_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x96e00000 0x0 0x500000>;
+			reg = <0x0 0x97C00000 0x0 0x500000>;
 		};
 
 		pil_slpi_mem: pil_slpi_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x97300000 0x0 0x1400000>;
+			reg = <0x0 0x98100000 0x0 0x1400000>;
 		};
 
 		pil_ipa_fw_mem: pil_ipa_fw_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x98700000 0x0 0x10000>;
+			reg = <0x0 0x99500000 0x0 0x10000>;
 		};
 
 		pil_ipa_gsi_mem: pil_ipa_gsi_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x98710000 0x0 0x5000>;
+			reg = <0x0 0x99510000 0x0 0x5000>;
 		};
 
 		pil_gpu_mem: pil_gpu_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x98715000 0x0 0x2000>;
+			reg = <0x0 0x99515000 0x0 0x2000>;
 		};
 
 		pil_spss_mem: pil_spss_region {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x98800000 0x0 0x100000>;
+			reg = <0x0 0x99600000 0x0 0x100000>;
 		};
 
 		pil_cdsp_mem: cdsp_regions {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0x98900000 0x0 0x1400000>;
+			reg = <0x0 0x99700000 0x0 0x1400000>;
 		};
 
 		qseecom_mem: qseecom_region {
 			compatible = "shared-dma-pool";
 			no-map;
-			reg = <0 0x9e400000 0 0x1400000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0 0x9e400000 0 0x1400000>;
+			//#else
+			reg = <0 0xa0000000 0 0x1400000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		cdsp_sec_mem: cdsp_sec_regions {
 			compatible = "removed-dma-pool";
 			no-map;
-			reg = <0x0 0xa4c00000 0x0 0x3c00000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@Bsp.Fingerprint.Basic, 2019/06/07, set cdsp_sec_regions to 0x3c00000*/
+			//reg = <0x0 0xa4c00000 0x0 0x3c00000>;
+			//#else
+			reg = <0x0 0xa4c00000 0x0 0xc00000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 		};
 
 		cont_splash_memory: cont_splash_region {
-			reg = <0x0 0x9c000000 0x0 0x02400000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x9c000000 0x0 0x02400000>;
+			//#else
+			reg = <0x0 0x9d000000 0x0 0x02400000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 			label = "cont_splash_region";
 		};
 
 		disp_rdump_memory: disp_rdump_region {
-			reg = <0x0 0x9c000000 0x0 0x02400000>;
+			//ifdef OPLUS_FEATURE_SECURITY_COMMON
+			/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+			//reg = <0x0 0x9c000000 0x0 0x02400000>;
+			//#else
+			reg = <0x0 0x9d000000 0x0 0x02400000>;
+			//#endif /* OPLUS_FEATURE_SECURITY_COMMON */
 			label = "disp_rdump_region";
 		};
 
@@ -755,6 +802,19 @@
 			alloc-ranges = <0x0 0x00000000 0x0 0xffffffff>;
 			reusable;
 			size = <0 0x2400000>;
+		};
+		// #ifdef OPLUS_BUG_STABILITY
+		// #zhangzongyu@BSP.kernel.stability, 2020/05/15, Add for dump device info
+		// #endif
+		ramoops: ramoops@0x0xB7E00000 {
+			compatible = "ramoops";
+			reg = <0 0xB7E00000 0 0x00400000>;
+			record-size =  <0x40000>; //256x1024
+			console-size = <0x40000>;
+			ftrace-size =  <0x40000>;
+			pmsg-size=         <0x200000>;
+			devinfo-size=  <0x01000>;
+			ecc-size=          <0x0>;
 		};
 
 		/* global autoconfigured region for contiguous allocations */
@@ -1843,7 +1903,11 @@
 		reg = <0x17c10000 0x1000>;
 		reg-names = "wdt-base";
 		interrupts = <0 0 0>, <0 1 0>;
-		qcom,bark-time = <11000>;
+		//#ifdef VENDOR_EDIT //yixue.ge modify bark time to 20s
+		//qcom,bark-time = <11000>;
+		//#else
+		qcom,bark-time = <20000>;
+		//endif
 		qcom,pet-time = <9360>;
 		qcom,ipi-ping;
 		qcom,wakeup-enable;
@@ -2014,6 +2078,10 @@
 		compatible = "qcom,msm-ssc-sensors";
 		status = "ok";
 		qcom,firmware-name = "slpi";
+//#ifdef OPLUS_BUG_STABILITY
+		vdd-supply = <&pm8150l_l7>;
+		vddio-supply = <&pm8150l_l8>;
+//#endif
 	};
 
 	cpuss_dump {
@@ -2694,6 +2762,26 @@
 						0x4400 2>;
 			};
 
+			qcom,gpr {
+				compatible = "qcom,gpr";
+				qcom,glink-channels = "to_apps";
+				qcom,intents = <0x200 20>;
+				reg = <GPR_DOMAIN_ADSP>;
+				gecko_core {
+					compatible = "qcom,gecko_core";
+					reg = <GPR_SVC_ADSP_CORE>;
+				};
+				audio-pkt {
+					compatible = "qcom,audio-pkt";
+					qcom,audiopkt-ch-name = "apr_audio_svc";
+					reg = <GPR_SVC_MAX>;
+				};
+				q6prm {
+					compatible = "qcom,q6prm";
+					reg = <GPR_SVC_ASM>;
+				};
+			};
+
 			qcom,msm_fastrpc_rpmsg {
 				compatible = "qcom,msm-fastrpc-rpmsg";
 				qcom,glink-channels = "fastrpcglink-apps-dsp";
@@ -2735,26 +2823,6 @@
 			qcom,apr_tal_rpmsg {
 				qcom,glink-channels = "apr_audio_svc";
 				qcom,intents = <0x200 20>;
-			};
-
-			qcom,gpr {
-				compatible = "qcom,gpr";
-				qcom,glink-channels = "to_apps";
-				qcom,intents = <0x200 20>;
-				reg = <GPR_DOMAIN_ADSP>;
-				gecko_core {
-					compatible = "qcom,gecko_core";
-					reg = <GPR_SVC_ADSP_CORE>;
-				};
-				audio-pkt {
-					compatible = "qcom,audio-pkt";
-					qcom,audiopkt-ch-name = "apr_audio_svc";
-					reg = <GPR_SVC_MAX>;
-				};
-				q6prm {
-					compatible = "qcom,q6prm";
-					reg = <GPR_SVC_ASM>;
-				};
 			};
 
 			qcom,msm_fastrpc_rpmsg {
@@ -3026,7 +3094,12 @@
 
 	qcom_seecom: qseecom@87900000 {
 		compatible = "qcom,qseecom";
-		reg = <0x87900000 0x2200000>;
+		//ifdef OPLUS_FEATURE_SECURITY_COMMON
+		//Long.Liu@BSP.Fingerprint.Basic 2018/11/27 ,Add for set TZAPPMEM to 62M (KBA-181104234050)
+		/*Long.Liu@BSP.Fingerprint.Secure, 2019/08/27, expend tz memory to 94M */
+		//reg = <0x87900000 0x2200000>;
+		reg = <0x87900000 0x5E00000>;
+		//endif OPLUS_FEATURE_SECURITY_COMMON
 		reg-names = "secapp-region";
 		memory-region = <&qseecom_mem>;
 		qcom,hlos-num-ce-hw-instances = <1>;
@@ -3043,7 +3116,12 @@
 
 	qcom_smcinvoke: smcinvoke@87900000 {
 		compatible = "qcom,smcinvoke";
-		reg = <0x87900000 0x2200000>;
+		//ifdef OPLUS_FEATURE_SECURITY_COMMON
+		//Long.Liu@BSP.Fingerprint.Basic 2018/11/27 ,Add for set TZAPPMEM to 62M (KBA-181104234050)
+		/*Long.Liu@Bsp.Fingerprint.Basic, 2019/09/06, expend tz memory to 94*/
+		//reg = <0x87900000 0x2200000>;
+		reg = <0x87900000 0x5E00000>;
+		//endif OPLUS_FEATURE_SECURITY_COMMON
 		reg-names = "secapp-region";
 	};
 
@@ -3593,6 +3671,20 @@
 		qcom,client-id = <0x00000001>;
 		qcom,guard-memory;
 	};
+
+	//#ifdef VENDOR_EDIT
+	//Zhengpeng.Tan@NW.AP.NV.892767, 2016/11/30
+	//#ifdef FEATURE_OPPO_NV_BACKUP
+	//add for creating a shared memory with uio for nv backup and restore
+	qcom,oembackup_sharedmem@0 {
+		compatible = "qcom,sharedmem-uio";
+		reg = <0x0 0x00100000>;
+		reg-names = "oembackup";
+		qcom,client-id = <0x00000004>;
+	qcom,guard-memory;
+    };
+    //#endif /* FEATURE_OPPO_NV_BACKUP */
+    //#endif /* VENDOR_EDIT */
 
 	qcom,msm_gsi {
 		compatible = "qcom,msm_gsi";

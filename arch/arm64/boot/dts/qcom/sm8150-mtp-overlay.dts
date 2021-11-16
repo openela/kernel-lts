@@ -21,10 +21,16 @@
 #include "sm8150-mtp.dtsi"
 #include "sm8150-mtp-audio-overlay.dtsi"
 
+//#ifdef VENDOR_EDIT
+//xiang.fei@PSW.MM.AudioDriver.Codec, 2019/07/13, Add for audio config */
+#include "sm8150-oppo-audio-overlay.dtsi"
+//#endif
+
 / {
 	model = "MTP";
 	compatible = "qcom,sm8150-mtp", "qcom,sm8150", "qcom,mtp";
 	qcom,board-id = <8 0>;
+	oppo,dtsi_no = <19781>;
 };
 
 &dsi_sharp_4k_dsc_cmd_display {

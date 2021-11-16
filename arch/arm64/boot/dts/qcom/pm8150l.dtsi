@@ -293,6 +293,15 @@
 				qcom,led-mask = <3>;
 				qcom,default-led-trigger = "switch2_trigger";
 			};
+			/* #ifdef VENDOR_EDIT */
+			/* modify by hongbo.dai@camera 20181124, for back dual flash*/
+			pm8150l_switch3: qcom,led_switch_3 {
+				label = "switch";
+				qcom,led-name = "led:switch_3";
+				qcom,led-mask = <3>;
+				qcom,default-led-trigger = "switch3_trigger";
+			};
+			/*#endif*/            
 		};
 
 		pm8150l_wled: qcom,wled@d800 {

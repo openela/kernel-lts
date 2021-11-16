@@ -19,4 +19,5 @@
 	compatible = "qcom,sm8150";
 	qcom,pmic-name = "PM8150";
 	qcom,board-id = <0 0>;
+	oppo,dtsi_no = <19781>;
 };

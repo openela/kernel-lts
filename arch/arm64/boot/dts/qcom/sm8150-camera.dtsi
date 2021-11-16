@@ -183,7 +183,12 @@
 			hw-thd-dat = <22>;
 			hw-thd-sta = <35>;
 			hw-tbuf = <62>;
-			hw-scl-stretch-en = <0>;
+			/*#ifdef VENDOR_EDIT*/
+			/*modify by hongbo.dai@camera 20190320*/
+			hw-scl-stretch-en = <1>;
+			/*#else*/
+			//hw-scl-stretch-en = <0>;
+			/*#endif*/
 			hw-trdhld = <6>;
 			hw-tsp = <3>;
 			cci-clk-src = <37500000>;
@@ -213,7 +218,12 @@
 			hw-thd-dat = <16>;
 			hw-thd-sta = <15>;
 			hw-tbuf = <24>;
-			hw-scl-stretch-en = <0>;
+			/*#ifdef VENDOR_EDIT*/
+			/*add by hongbo.dai@camera 20181215*/
+			hw-scl-stretch-en = <1>;
+			/*#else*/
+			//hw-scl-stretch-en = <0>;
+			/*#endif*/
 			hw-trdhld = <3>;
 			hw-tsp = <3>;
 			cci-clk-src = <37500000>;
@@ -278,7 +288,12 @@
 			hw-thd-dat = <22>;
 			hw-thd-sta = <35>;
 			hw-tbuf = <62>;
-			hw-scl-stretch-en = <0>;
+			/*#ifdef VENDOR_EDIT*/
+			/*modify by hongbo.dai@camera 20190320*/
+			hw-scl-stretch-en = <1>;
+			/*#else*/
+			//hw-scl-stretch-en = <0>;
+			/*#endif*/
 			hw-trdhld = <6>;
 			hw-tsp = <3>;
 			cci-clk-src = <37500000>;
@@ -316,7 +331,7 @@
 		};
 	};
 
-	cam_smmu: qcom,cam_smmu {
+	qcom,cam_smmu {
 		compatible = "qcom,msm-cam-smmu";
 		status = "ok";
 
@@ -701,7 +716,7 @@
 		status = "ok";
 	};
 
-	cam_isp_mgr: qcom,cam-isp {
+	qcom,cam-isp {
 		compatible = "qcom,cam-isp";
 		arch-compat = "ife";
 		status = "ok";
@@ -985,6 +1000,7 @@
 		num-ipe = <2>;
 		num-bps = <1>;
 		icp_pc_en;
+		ipe_bps_pc_en;
 		status = "ok";
 	};
 
@@ -1122,7 +1138,7 @@
 		status = "ok";
 	};
 
-	cam_jpeg_mgr: qcom,cam-jpeg {
+	qcom,cam-jpeg {
 		compatible = "qcom,cam-jpeg";
 		compat-hw-name = "qcom,jpegenc",
 			"qcom,jpegdma";
@@ -1177,7 +1193,7 @@
 		status = "ok";
 	};
 
-	cam_fd_mgr: qcom,cam-fd {
+	qcom,cam-fd {
 		compatible = "qcom,cam-fd";
 		compat-hw-name = "qcom,fd";
 		num-fd = <1>;
@@ -1213,7 +1229,7 @@
 		status = "ok";
 	};
 
-	cam_lrme_mgr: qcom,cam-lrme {
+	qcom,cam-lrme {
 		compatible = "qcom,cam-lrme";
 		arch-compat = "lrme";
 		status = "ok";

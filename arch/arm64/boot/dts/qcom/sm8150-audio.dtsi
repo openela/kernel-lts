@@ -155,18 +155,24 @@
 				"msm-dai-q6-tdm.36912", "msm-dai-q6-tdm.36913",
 				"msm-dai-q6-tdm.36914",
 				"msm-dai-q6-tdm.36928", "msm-dai-q6-tdm.36929";
-		fsa4480-i2c-handle = <&fsa4480>;
+		//#ifndef VENDOR_EDIT
+		/* xiang.fei@PSW.MM.AudioDriver.HeadsetDet, 2019/09/13, not use fsa4480 */
+		//fsa4480-i2c-handle = <&fsa4480>;
+		//#endif /* VENDOR_EDIT */
 	};
 };
 
 &qupv3_se4_i2c {
-	status = "ok";
-	fsa4480: fsa4480@43 {
-		compatible = "qcom,fsa4480-i2c";
-		reg = <0x43>;
-		pinctrl-names = "default";
-		pinctrl-0 = <&fsa_usbc_ana_en>;
-	};
+	//#ifndef VENDOR_EDIT
+	/* xiang.fei@PSW.MM.AudioDriver.HeadsetDet, 2019/09/13, not use fsa4480 */
+	//status = "ok";
+	//fsa4480: fsa4480@43 {
+	//	compatible = "qcom,fsa4480-i2c";
+	//	reg = <0x43>;
+	//	pinctrl-names = "default";
+	//	pinctrl-0 = <&fsa_usbc_ana_en>;
+	//};
+	//#endif /* VENDOR_EDIT */
 };
 
 &slim_aud {

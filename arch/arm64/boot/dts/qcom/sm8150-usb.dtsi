@@ -98,10 +98,18 @@
 			snps,has-lpm-erratum;
 			snps,hird-threshold = /bits/ 8 <0x10>;
 			snps,ssp-u3-u0-quirk;
-			snps,usb3-u1u2-disable;
+//#ifndef VENDOR_EDIT
+			/*zhijie.li@BSP.CHG.Basic, 2019/1/25, lzj add for RF and USB3.0 interfere*/
+			//snps,usb3-u1u2-disable;
+//#endif
 			usb-core-id = <0>;
 			tx-fifo-resize;
-			maximum-speed = "super-speed-plus";
+//#ifdef VENDOR_EDIT
+			/*zhijie.li@BSP.CHG.Basic, 2019/1/25, lzj add for RF and USB2.0 interfere*/
+			maximum-speed = "high-speed";
+//#else
+			//maximum-speed = "super-speed-plus";
+//#endif
 			dr_mode = "otg";
 		};
 
