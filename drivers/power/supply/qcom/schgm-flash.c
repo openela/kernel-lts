@@ -22,7 +22,10 @@
 #include <linux/of_irq.h>
 #include <linux/printk.h>
 #include <linux/pmic-voter.h>
-#include "smb5-lib.h"
+//#ifdef VENDOR_EDIT
+/*lizhijie@BSP.CHG.Basic, 2020/02/25 lzj add for charger*/
+//#include "smb5-lib.h"
+//#endif
 #include "schgm-flash.h"
 
 #define IS_BETWEEN(left, right, value) \
