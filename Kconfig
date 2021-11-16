@@ -5,6 +5,12 @@
 #
 mainmenu "Linux/$ARCH $KERNELVERSION Kernel Configuration"
 
+config OPLUS_SYSTEM_KERNEL_QCOM
+  bool "config oplus system feature "
+  default y
+  help
+	define this config to Distinguish between qcom and mtk platform
+
 config SRCARCH
 	string
 	option env="SRCARCH"
