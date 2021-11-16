@@ -1,0 +1,5 @@
+config OPPO_NFC
+  bool "config oppo nfc chipset"
+  default y
+  help
+	define this config to get chipset version from dts.
