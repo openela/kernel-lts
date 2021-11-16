@@ -412,6 +412,10 @@ static bool dsi_bridge_mode_fixup(struct drm_bridge *bridge,
 		if (rc) {
 			pr_err("[%s] seamless mode mismatch failure rc=%d\n",
 				c_bridge->display->name, rc);
+		/*
+		 *Chao.Zhang@MULTIMEDIA.DISPLAY.LCD, 2020/09/25, add for 19081 LCD
+		 *note: orignal change was abandoned here due to compatibility
+		 */
 			return false;
 		}
 
@@ -440,6 +444,25 @@ static bool dsi_bridge_mode_fixup(struct drm_bridge *bridge,
 			(!crtc_state->active_changed ||
 			 display->is_cont_splash_enabled))
 			dsi_mode.dsi_mode_flags |= DSI_MODE_FLAG_DMS;
+
+#ifdef OPLUS_BUG_STABILITY
+        /*Mark.Yao@PSW.MM.Display.LCD.Stable,2019-12-09 skip dms switch if cont_splash not ready */
+        if (display->is_cont_splash_enabled)
+            dsi_mode.dsi_mode_flags &= ~DSI_MODE_FLAG_DMS;
+
+#ifdef OPLUS_FEATURE_AOD_RAMLESS
+// Yuwei.Zhang@MULTIMEDIA.DISPLAY.LCD, 2020/09/25, sepolicy for aod ramless
+		if (display->panel && display->panel->oppo_priv.is_aod_ramless) {
+			if (crtc_state->active_changed && (dsi_mode.dsi_mode_flags & DSI_MODE_FLAG_DYN_CLK)) {
+				DSI_ERR("dyn clk changed when active_changed, WA to skip dyn clk change\n");
+				dsi_mode.dsi_mode_flags &= ~DSI_MODE_FLAG_DYN_CLK;
+			}
+
+			if (dsi_mode.dsi_mode_flags & DSI_MODE_FLAG_DMS)
+				dsi_mode.dsi_mode_flags |= DSI_MODE_FLAG_SEAMLESS;
+		}
+#endif /* OPLUS_FEATURE_AOD_RAMLESS */
+#endif /* OPLUS_BUG_STABILITY */
 
 		/* Reject seemless transition when active/connectors changed.*/
 		if ((crtc_state->active_changed ||

@@ -2401,7 +2401,12 @@ static void dsi_ctrl_handle_error_status(struct dsi_ctrl *dsi_ctrl,
 							0, 0, 0, 0);
 			}
 		}
+		#ifndef OPLUS_BUG_STABILITY
+		/*Mark.Yao@PSW.MM.Display.Lcd.Stability, 2018-05-24,avoid printk too often*/
 		pr_err("tx timeout error: 0x%lx\n", error);
+		#else /* OPLUS_BUG_STABILITY */
+		pr_err_ratelimited("tx timeout error: 0x%lx\n", error);
+		#endif /* OPLUS_BUG_STABILITY */
 	}
 
 	/* DSI FIFO OVERFLOW error */

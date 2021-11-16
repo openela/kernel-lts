@@ -158,6 +158,10 @@ struct sde_plane_state {
 	bool const_alpha_en;
 	bool pending;
 	bool defer_prepare_fb;
+#ifdef OPLUS_BUG_STABILITY
+	/*Sachin Shukla@PSW.MM.Display.LCD.Stable,2019-01-12 add is_skip check */
+	bool is_skip;
+#endif /* OPLUS_BUG_STABILITY */
 	uint32_t pipe_order_flags;
 
 	/* scaler configuration */

@@ -18,6 +18,12 @@
 #include "msm_drv.h"
 #include "msm_mmu.h"
 
+#ifdef CONFIG_OPLUS_FEATURE_MM_FEEDBACK
+/* Sachin Shukla@PSW.MM.Display.LCD.Machine, 2019/01/29,add for mm kevent fb. */
+#include <soc/oplus/system/oplus_mm_kevent_fb.h>
+static int msm_smmu_count = 0;
+#endif /* CONFIG_OPLUS_FEATURE_MM_FEEDBACK */
+
 struct msm_iommu {
 	struct msm_mmu base;
 	struct iommu_domain *domain;
@@ -28,9 +34,19 @@ static int msm_fault_handler(struct iommu_domain *domain, struct device *dev,
 		unsigned long iova, int flags, void *arg)
 {
 	struct msm_iommu *iommu = arg;
+
 	if (iommu->base.handler)
 		return iommu->base.handler(iommu->base.arg, iova, flags);
 	pr_warn_ratelimited("*** fault: iova=%08lx, flags=%d\n", iova, flags);
+
+#ifdef CONFIG_OPLUS_FEATURE_MM_FEEDBACK
+/* Sachin@PSW.MM.Display.LCD.Machine, 2019/01/29,add for mm kevent fb. */
+	if (msm_smmu_count < 30) {
+		mm_fb_display_kevent("SMMU msm fault", MM_FB_KEY_RATELIMIT_1H, "iova=%08lx flags=%d", iova, flags);
+		msm_smmu_count ++;
+	}
+ #endif /*CONFIG_OPLUS_FEATURE_MM_FEEDBACK*/
+
 	return 0;
 }
 

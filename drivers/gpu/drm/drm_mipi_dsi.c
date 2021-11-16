@@ -1058,6 +1058,10 @@ int mipi_dsi_dcs_set_tear_scanline(struct mipi_dsi_device *dsi, u16 scanline)
 }
 EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline);
 
+/*xupengcheng@MULTIMEDIA.DISPLAY.LCD, 2020/12/29, add for samsung 90fps Global HBM backlight issue*/
+extern u32 flag_writ;
+extern int oppo_dsi_hbm_backlight_setting(bool enabled);
+
 /**
  * mipi_dsi_dcs_set_display_brightness() - sets the brightness value of the
  *    display
@@ -1069,14 +1073,45 @@ EXPORT_SYMBOL(mipi_dsi_dcs_set_tear_scanline);
 int mipi_dsi_dcs_set_display_brightness(struct mipi_dsi_device *dsi,
 					u16 brightness)
 {
-	u8 payload[2] = { brightness & 0xff, brightness >> 8 };
+//#ifdef OPLUS_BUG_STABILITY
+//Jiasong.Zhong@PSW.MM.Display.LCD.Stable, 2020/02/27, Add for fix 10bit Backlight
+	//u8 payload[2] = { brightness & 0xff, brightness >> 8 };
+	u8 payload[2] = { brightness >> 8, brightness & 0xff };
+//#endif /* OPLUS_BUG_STABILITY */
 	ssize_t err;
+/*xupengcheng@MULTIMEDIA.DISPLAY.LCD, 2020/12/29, add for samsung 90fps Global HBM backlight issue*/
+	u8  value;
+	u16 hbm_brightness;
 
-	err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
-				 payload, sizeof(payload));
-	if (err < 0)
-		return err;
-
+	if(brightness > 1023){
+		value = 0xE0;
+		hbm_brightness =  brightness;
+		if(flag_writ == 0 || flag_writ == 3){
+			oppo_dsi_hbm_backlight_setting(true);
+			mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+					   &value, sizeof(value));
+			flag_writ = 2;
+			pr_err("dsi_cmd hbm_brightness:%d\n", hbm_brightness);
+		}
+		err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
+					 payload, sizeof(payload));
+		if (err < 0)
+			return err;
+	} else {
+		value = 0x20;
+		err = mipi_dsi_dcs_write(dsi, MIPI_DCS_SET_DISPLAY_BRIGHTNESS,
+					 payload, sizeof(payload));
+		if(flag_writ == 2 || flag_writ == 3){
+			mipi_dsi_dcs_write(dsi, MIPI_DCS_WRITE_CONTROL_DISPLAY,
+					   &value, sizeof(value));
+			if(brightness > 1)
+				oppo_dsi_hbm_backlight_setting(false);
+			flag_writ = 0;
+			pr_err("dsi_cmd hbm_brightness_off brightness %d\n", brightness);
+		}
+		if (err < 0)
+			return err;
+	}
 	return 0;
 }
 EXPORT_SYMBOL(mipi_dsi_dcs_set_display_brightness);

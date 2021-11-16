@@ -121,6 +121,12 @@ enum msm_mdp_plane_property {
 	PLANE_PROP_PREFILL_TIME,
 	PLANE_PROP_SCALER_V1,
 	PLANE_PROP_SCALER_V2,
+#ifdef OPLUS_BUG_STABILITY
+/* Sachin Shukla@PSW.MM.Display.LCD.Feature,2018-11-21
+ * Support custom propertys
+*/
+	PLANE_PROP_CUSTOM,
+#endif /* OPLUS_BUG_STABILITY */
 	PLANE_PROP_ROT_OUT_FB,
 	PLANE_PROP_INVERSE_PMA,
 
@@ -161,6 +167,12 @@ enum msm_mdp_crtc_property {
 	CRTC_PROP_SECURITY_LEVEL,
 	CRTC_PROP_IDLE_TIMEOUT,
 	CRTC_PROP_DEST_SCALER,
+#ifdef OPLUS_BUG_STABILITY
+/* Sachin Shukla@PSW.MM.Display.LCD.Feature,2018-11-21
+ * Support custom propertys
+*/
+	CRTC_PROP_CUSTOM,
+#endif /* OPLUS_BUG_STABILITY */
 	CRTC_PROP_CAPTURE_OUTPUT,
 
 	CRTC_PROP_IDLE_PC_STATE,
@@ -191,7 +203,12 @@ enum msm_mdp_conn_property {
 	CONNECTOR_PROP_ROI_V1,
 	CONNECTOR_PROP_BL_SCALE,
 	CONNECTOR_PROP_AD_BL_SCALE,
-
+#ifdef OPLUS_BUG_STABILITY
+/* Sachin Shukla@PSW.MM.Display.LCD.Feature,2018-011-21
+ * Support custom propertys
+*/
+	CONNECTOR_PROP_CUSTOM,
+#endif /* OPLUS_BUG_STABILITY */
 	/* enum/bitmask properties */
 	CONNECTOR_PROP_TOPOLOGY_NAME,
 	CONNECTOR_PROP_TOPOLOGY_CONTROL,

@@ -53,6 +53,18 @@
 #define display_for_each_ctrl(index, display) \
 	for (index = 0; (index < (display)->ctrl_count) &&\
 			(index < MAX_DSI_CTRLS_PER_DISPLAY); index++)
+#ifdef OPLUS_BUG_STABILITY
+/* Sachin Shukla@MM.Display.LCD.Stability,2020/10/08
+ * debug logs
+*/
+#define DSI_WARN(fmt, ...)	DRM_WARN("[msm-dsi-warn]: "fmt, ##__VA_ARGS__)
+#define DSI_ERR(fmt, ...)	DRM_DEV_ERROR(NULL, "[msm-dsi-error]: " fmt, \
+								##__VA_ARGS__)
+#define DSI_INFO(fmt, ...)	DRM_DEV_INFO(NULL, "[msm-dsi-info]: "fmt, \
+								##__VA_ARGS__)
+#define DSI_DEBUG(fmt, ...)	DRM_DEV_DEBUG(NULL, "[msm-dsi-debug]: "fmt, \
+								##__VA_ARGS__)
+#endif /* OPLUS_BUG_STABILITY */
 /**
  * enum dsi_pixel_format - DSI pixel formats
  * @DSI_PIXEL_FORMAT_RGB565:
@@ -282,6 +294,23 @@ enum dsi_dyn_clk_feature_type {
  * @DSI_CMD_SET_POST_TIMING_SWITCH:        Post timing switch
  * @DSI_CMD_SET_QSYNC_ON                   Enable qsync mode
  * @DSI_CMD_SET_QSYNC_OFF                  Disable qsync mode
+ #ifdef OPLUS_BUG_STABILITY
+ * @ Gou shengjun@PSW.MM.Display.LCD.Stability,2018/12/14, add for lcd notes
+ * @DSI_CMD_POST_ON_BACKLIGHT:             Panel on cmd send for AOD and Fingerprint
+ * @DSI_CMD_AOD_ON:                        Panel AOD on cmd
+ * @DSI_CMD_AOD_OFF:                       Panel AOD off cmd
+ * @DSI_CMD_HBM_ON:                        Panel Fingerprint high brightness 670nit on cmd
+ * @DSI_CMD_HBM_OFF:                       Panel Fingerprint high brightness off cmd
+ * @DSI_CMD_AOD_HBM_ON:                    Panel AOD and Fingerprint high brightness  670nit on cmd
+ * @DSI_CMD_AOD_HBM_OFF:                   Panel AOD and Fingerprint high brightness off cmd
+ * @DSI_CMD_SEED_DCI_P3:                   Panel seed level 3 cmd
+ * @DSI_CMD_SEED_SRGB:                     Panel seed SRGB mode cmd
+ * @DSI_CMD_SEED_OFF:                      Panel seed off cmd
+ * @DSI_CMD_NORMAL_HBM_ON:                 Panel normal HBM 600nit on cmd
+ * @DSI_CMD_CABC_OFF:                      Shutdown IC CABC cmd
+ * @DSI_CMD_CABC_LOW_LEVEL:                Load 11.5% CABC cmd
+ * @DSI_CMD_CABC_HIGH_LEVEL,               Load 25% CABC cmd
+#endif // OPLUS_BUG_STABILITY
  * @DSI_CMD_SET_MAX
  */
 enum dsi_cmd_set_type {
@@ -308,6 +337,57 @@ enum dsi_cmd_set_type {
 	DSI_CMD_SET_POST_TIMING_SWITCH,
 	DSI_CMD_SET_QSYNC_ON,
 	DSI_CMD_SET_QSYNC_OFF,
+#ifdef OPLUS_BUG_STABILITY
+/* Gou shengjun@PSW.MM.Display.LCD.Stability,2018/07/03
+ * optimize screen on
+*/
+	DSI_CMD_POST_ON_BACKLIGHT,
+	DSI_CMD_AOD_ON,
+	DSI_CMD_AOD_OFF,
+	DSI_CMD_HBM_ON,
+	DSI_CMD_HBM_OFF,
+	DSI_CMD_AOD_HBM_ON,
+	DSI_CMD_AOD_HBM_OFF,
+/*mark.yao@PSW.MM.Display.LCD.Stability,2018/4/28,add for sRGB and DCI-P3*/
+	DSI_CMD_SEED_MODE0,
+	DSI_CMD_SEED_MODE1,
+	DSI_CMD_SEED_MODE2,
+	DSI_CMD_SEED_MODE3,
+	DSI_CMD_SEED_MODE4,
+	DSI_CMD_SEED_OFF,
+	DSI_CMD_NORMAL_HBM_ON,
+	DSI_CMD_AOD_HIGH_LIGHT_MODE,
+	DSI_CMD_AOD_LOW_LIGHT_MODE,
+	DSI_CMD_CABC_OFF,
+	DSI_CMD_CABC_LOW_MODE,
+	DSI_CMD_CABC_HIGH_MODE,
+	DSI_CMD_DATA_DIMMING_ON,
+	DSI_CMD_DATA_DIMMING_OFF,
+	DSI_CMD_OSC_CLK_MODEO0,
+	DSI_CMD_OSC_CLK_MODEO1,
+/*Song.Gao@PSW.MM.Display.LCD.Stability,2020/04/21,add for DC backlight V2 enter and exit sequence*/
+	DSI_CMD_SEED_ENTER,
+	DSI_CMD_SEED_EXIT,
+	DSI_CMD_HBM_ENTER_SWITCH,
+	DSI_CMD_HBM_EXIT_SWITCH,
+#ifdef OPLUS_FEATURE_HDR10
+/* Chao.Zhang@MULTIMEDIA.DISPLAY.LCD,2020/10/31,add for HDR10 */
+	DSI_CMD_HDR10_SEED_MODE,
+#endif /* OPLUS_FEATURE_HDR10 */
+#ifdef OPLUS_FEATURE_AOD_RAMLESS
+/*Jiasong.Zhong@PSW.MM.Display.LCD.Stability,2019/11/18,add FAIL SAFE API for 19125 panel*/
+	DSI_CMD_FAILSAFE_ON,
+	DSI_CMD_FAILSAFE_OFF,
+#endif /* OPLUS_FEATURE_AOD_RAMLESS */
+#ifdef OPLUS_FEATURE_LCD_CABC
+/*xupengcheng@MULTIMEDIA.MM.Display.LCD.Stability,2020/09/18,add for 19696 LCD CABC feature*/
+	DSI_CMD_CABC_UI,
+	DSI_CMD_CABC_IMAGE,
+	DSI_CMD_CABC_VIDEO,
+#endif /*OPLUS_FEATURE_LCD_CABC*/
+	DSI_CMD_HBM_BACKLIGHT_ON,
+	DSI_CMD_HBM_BACKLIGHT_OFF,
+#endif /* OPLUS_BUG_STABILITY */
 	DSI_CMD_SET_MAX
 };
 
@@ -616,6 +696,18 @@ struct dsi_display_mode_priv_info {
 	struct msm_display_dsc_info dsc;
 	bool dsc_enabled;
 	struct msm_roi_caps roi_caps;
+	#ifdef OPLUS_BUG_STABILITY
+	/*Sachin Shukla@PSW.MM.Display.LCD.Stable,2019-11-17 add for fingerprint */
+	int fod_th_brightness;
+	int fod_on_vblank;
+	int fod_off_vblank;
+	int fod_on_delay;
+	int fod_off_delay;
+	int fod_on_vblank_above_th;
+	int fod_off_vblank_above_th;
+	int fod_on_delay_above_th;
+	int fod_off_delay_above_th;
+	#endif /* OPLUS_BUG_STABILITY */
 };
 
 /**
