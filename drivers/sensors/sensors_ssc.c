@@ -28,6 +28,7 @@
 #include <linux/sysfs.h>
 #include <linux/workqueue.h>
 
+#include <linux/regulator/consumer.h>
 #include <soc/qcom/subsystem_restart.h>
 
 #define IMAGE_LOAD_CMD 1
@@ -98,29 +99,49 @@ static void slpi_load_fw(struct work_struct *slpi_ldr_work)
 	}
 
 	ret = of_property_read_string(pdev->dev.of_node,
-		"qcom,firmware-name", &firmware_name);
-	if (ret < 0) {
-		pr_err("can't get fw name.\n");
-		goto fail;
+		"qcom,firmware-name-mutil", &firmware_name);
+	if (ret >= 0) {
+		priv = platform_get_drvdata(pdev);
+		if (!priv) {
+			dev_err(&pdev->dev,
+			" %s: Private data get failed\n", __func__);
+			goto fail;
+		}
+
+		priv->pil_h = subsystem_get_with_fwname("slpi", firmware_name);
+		if (IS_ERR(priv->pil_h)) {
+			dev_err(&pdev->dev, "%s: pil get failed,\n",
+				__func__);
+			goto fail;
+		}
+
+		dev_dbg(&pdev->dev, "%s: SLPI_V1 image is loaded\n", __func__);
+		return;
+	} else {
+		ret = of_property_read_string(pdev->dev.of_node,
+			"qcom,firmware-name", &firmware_name);
+		if (ret < 0) {
+			pr_err("can't get fw name.\n");
+			goto fail;
+		}
+
+		priv = platform_get_drvdata(pdev);
+		if (!priv) {
+			dev_err(&pdev->dev,
+			" %s: Private data get failed\n", __func__);
+			goto fail;
+		}
+
+		priv->pil_h = subsystem_get_with_fwname("slpi", firmware_name);
+		if (IS_ERR(priv->pil_h)) {
+			dev_err(&pdev->dev, "%s: pil get failed,\n",
+				__func__);
+			goto fail;
+		}
+
+		dev_dbg(&pdev->dev, "%s: SLPI image is loaded\n", __func__);
+		return;
 	}
-
-	priv = platform_get_drvdata(pdev);
-	if (!priv) {
-		dev_err(&pdev->dev,
-		" %s: Private data get failed\n", __func__);
-		goto fail;
-	}
-
-	priv->pil_h = subsystem_get_with_fwname("slpi", firmware_name);
-	if (IS_ERR(priv->pil_h)) {
-		dev_err(&pdev->dev, "%s: pil get failed,\n",
-			__func__);
-		goto fail;
-	}
-
-	dev_dbg(&pdev->dev, "%s: SLPI image is loaded\n", __func__);
-	return;
-
 fail:
 	dev_err(&pdev->dev, "%s: SLPI image loading failed\n", __func__);
 }
@@ -355,7 +376,10 @@ const struct file_operations sensors_ssc_fops = {
 static int sensors_ssc_probe(struct platform_device *pdev)
 {
 	int ret = slpi_loader_init_sysfs(pdev);
-
+#ifdef OPLUS_BUG_STABILITY
+	struct regulator *vdd_2v8 = NULL;
+	struct regulator *vddio_1v8 = NULL;
+#endif
 	if (ret != 0) {
 		dev_err(&pdev->dev, "%s: Error in initing sysfs\n", __func__);
 		return ret;
@@ -396,6 +420,33 @@ static int sensors_ssc_probe(struct platform_device *pdev)
 	}
 
 	INIT_WORK(&slpi_ldr_work, slpi_load_fw);
+#ifdef OPLUS_BUG_STABILITY
+//ye.zhang@BSP.Sensor, 2019-03-09, add for bring up sensor power by LSM6DSM timing
+	vdd_2v8 = regulator_get(&pdev->dev, "vdd");
+	vddio_1v8 = regulator_get(&pdev->dev, "vddio");
+
+	if (vdd_2v8 != NULL) {
+		dev_err(&pdev->dev,"%s: vdd_2v8 is not NULL\n", __func__);
+		regulator_set_voltage(vdd_2v8, 2800000, 3104000);
+		regulator_set_load(vdd_2v8, 200000);
+		ret = regulator_enable(vdd_2v8);
+		if (ret)
+			dev_err(&pdev->dev,"%s: vdd_2v8 enable fail\n", __func__);
+	} else {
+		dev_err(&pdev->dev,"%s: vdd_2v8 is NULL\n", __func__);
+	}
+	msleep(10);
+	if (vddio_1v8 != NULL) {
+		dev_err(&pdev->dev,"%s: vddio_1v8 is not NULL\n", __func__);
+		regulator_set_voltage(vddio_1v8, 1800000, 1952000);
+		regulator_set_load(vddio_1v8, 200000);
+		ret = regulator_enable(vddio_1v8);
+		if (ret)
+			dev_err(&pdev->dev,"%s: vddio_1v8 enable fail\n", __func__);
+	} else {
+		dev_err(&pdev->dev,"%s: vddio_1v8 is NULL\n", __func__);
+	}
+#endif//OPLUS_BUG_STABILITY
 
 	return 0;
 
