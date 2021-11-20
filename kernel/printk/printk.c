@@ -59,6 +59,25 @@
 #include "braille.h"
 #include "internal.h"
 
+#ifdef OPLUS_FEATURE_POWERINFO_FTM
+//Nanwei.Deng@BSP.CHG.Basic 2018/05/01  Add for debug console reg issue 969323*/
+#include <soc/oppo/boot_mode.h>
+static bool __read_mostly printk_disable_uart = true; /*set true avoid early console output*/
+static int __init printk_uart_disabled(char *str)
+{
+	if (str[0] == '1')
+		printk_disable_uart = true;
+	else
+		printk_disable_uart = false;
+	return 0;
+}
+early_param("printk.disable_uart", printk_uart_disabled);
+
+bool oem_disable_uart(void)
+{
+	return printk_disable_uart;
+}
+#endif /*OPLUS_FEATURE_POWERINFO_FTM*/
 #ifdef CONFIG_EARLY_PRINTK_DIRECT
 extern void printascii(char *);
 #endif
@@ -593,6 +612,19 @@ static int log_store(int facility, int level,
 	u32 size, pad_len;
 	u16 trunc_msg_len = 0;
 
+	#ifdef OPLUS_FEATURE_CHG_BASIC
+	//part 1/2: yixue.ge 2015-04-22 add for add cpu number and current id and current comm to kmsg
+	int this_cpu = smp_processor_id();
+	char tbuf[64];
+	unsigned tlen;
+	if (console_suspended == 0) {
+		tlen = snprintf(tbuf, sizeof(tbuf), " (%x)[%d:%s]",
+			this_cpu, current->pid, current->comm);
+	} else {
+		tlen = snprintf(tbuf, sizeof(tbuf), " %x)", this_cpu);
+	}
+	text_len += tlen;
+	#endif //add end part 1/3
 	/* number of '\0' padding bytes to next message */
 	size = msg_used_size(text_len, dict_len, &pad_len);
 
@@ -617,7 +649,13 @@ static int log_store(int facility, int level,
 
 	/* fill message */
 	msg = (struct printk_log *)(log_buf + log_next_idx);
+	#ifndef OPLUS_FEATURE_CHG_BASIC
+	//part 2/2: yixue.ge 2015-04-22 add for add cpu number and current id and current comm to kmsg
 	memcpy(log_text(msg), text, text_len);
+	#else
+	memcpy(log_text(msg), tbuf, tlen);
+	memcpy(log_text(msg) + tlen, text, text_len-tlen);
+	#endif //add end part 3/3
 	msg->text_len = text_len;
 	if (trunc_msg_len) {
 		memcpy(log_text(msg) + text_len, trunc_msg, trunc_msg_len);
@@ -970,7 +1008,9 @@ static int devkmsg_open(struct inode *inode, struct file *file)
 	if (!user)
 		return -ENOMEM;
 
-	ratelimit_default_init(&user->rs);
+	/* Lijingxiang@BSP.Kernel.Debug,2020/07/17, Modify for debug kernel init */
+	ratelimit_state_init(&user->rs, HZ, 300);
+
 	ratelimit_set_flags(&user->rs, RATELIMIT_MSG_ON_RELEASE);
 
 	mutex_init(&user->lock);
@@ -1716,6 +1756,15 @@ static void call_console_drivers(const char *ext_text, size_t ext_len,
 		return;
 
 	for_each_console(con) {
+#ifdef OPLUS_FEATURE_POWERINFO_FTM
+//Nanwei.Deng@BSP.CHG.Basic 2018/05/01  Add for debug console reg issue 969323*/
+		if ((con->flags & CON_CONSDEV) &&
+				(printk_disable_uart ||
+				get_boot_mode() == MSM_BOOT_MODE__FACTORY ||
+				get_boot_mode() == MSM_BOOT_MODE__RF ||
+				get_boot_mode() == MSM_BOOT_MODE__WLAN))
+			continue;
+#endif /*VENDOR_EDIT*/
 		if (exclusive_console && con != exclusive_console)
 			continue;
 		if (!(con->flags & CON_ENABLED))
