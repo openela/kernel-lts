@@ -934,4 +934,9 @@ config XILINX_XADC
 	  The driver can also be build as a module. If so, the module will be called
 	  xilinx-xadc.
 
+config OPLUS_SM8150R_CHARGER
+	tristate "OPPO SM8150 charger driver"
+	depends on MFD_SPMI_PMIC
+	help
+	  Enables support for the oppo charging framework
 endmenu
