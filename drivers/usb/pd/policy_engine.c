@@ -413,6 +413,10 @@ struct usbpd {
 	int			requested_current;	/* mA */
 	bool			pd_connected;
 	bool			in_explicit_contract;
+#ifdef VENDOR_EDIT
+	/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+	bool			in_good_connect;
+#endif
 	bool			peer_usb_comm;
 	bool			peer_pr_swap;
 	bool			peer_dr_swap;
@@ -491,6 +495,11 @@ struct usbpd {
 };
 
 static LIST_HEAD(_usbpd);	/* useful for debugging */
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+int oplus_usbpd_send_svdm(u16 svid, u8 cmd, enum usbpd_svdm_cmd_type cmd_type,
+		int obj_pos, const u32 *vdos, int num_vdos);
+#endif
 
 static const unsigned int usbpd_extcon_cable[] = {
 	EXTCON_USB,
@@ -862,6 +871,10 @@ static int pd_select_pdo(struct usbpd *pd, int pdo_pos, int uv, int ua)
 	return 0;
 }
 
+#ifdef VENDOR_EDIT
+/*lizhijie@BSP.CHG.Basic 2020/03/16 lzj add for TYPE c to c*/
+extern void oplus_set_opluschg_pd_sdp(bool value);
+#endif
 static int pd_eval_src_caps(struct usbpd *pd)
 {
 	int i;
@@ -899,6 +912,14 @@ static int pd_eval_src_caps(struct usbpd *pd)
 			POWER_SUPPLY_PD_ACTIVE;
 	power_supply_set_property(pd->usb_psy,
 			POWER_SUPPLY_PROP_PD_ACTIVE, &val);
+
+#ifdef VENDOR_EDIT
+/*lizhijie@BSP.CHG.Basic 2020/03/16 lzj add for TYPE c to c*/
+	if (pd->peer_usb_comm && pd->current_dr == DR_UFP && !pd->pd_connected) {
+			printk("set opluschg_pd_sdp = true\n");
+			oplus_set_opluschg_pd_sdp(true);
+	}
+#endif
 
 	/* First time connecting to a PD source and it supports USB data */
 	if (pd->peer_usb_comm && pd->current_dr == DR_UFP && !pd->pd_connected)
@@ -1413,11 +1434,12 @@ static void usbpd_set_state(struct usbpd *pd, enum usbpd_state next_state)
 
 			phy_params.data_role = pd->current_dr;
 			phy_params.power_role = pd->current_pr;
-
-			if (pd->vconn_enabled)
-				phy_params.frame_filter_val |=
-					FRAME_FILTER_EN_SOPI;
-
+#ifndef VENDOR_EDIT
+/* tongfeng.Huang@BSP.CHG.Basic, 2020/02/13,  add for pd+vooc adapter compatibility */
+//			if (pd->vconn_enabled)
+//				phy_params.frame_filter_val |=
+//					FRAME_FILTER_EN_SOPI;
+#endif
 			ret = pd_phy_open(&phy_params);
 			if (ret) {
 				WARN_ON_ONCE(1);
@@ -1590,6 +1612,10 @@ static void usbpd_set_state(struct usbpd *pd, enum usbpd_state next_state)
 
 		pd_send_hard_reset(pd);
 		pd->in_explicit_contract = false;
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+		pd->in_good_connect = false;
+#endif
 		pd->rdo = 0;
 		rx_msg_cleanup(pd);
 		reset_vdm_state(pd);
@@ -1650,11 +1676,12 @@ static void usbpd_set_state(struct usbpd *pd, enum usbpd_state next_state)
 
 			phy_params.data_role = pd->current_dr;
 			phy_params.power_role = pd->current_pr;
-
-			if (pd->vconn_enabled)
-				phy_params.frame_filter_val |=
-					FRAME_FILTER_EN_SOPI;
-
+#ifndef VENDOR_EDIT
+/* tongfeng.Huang@BSP.CHG.Basic, 2020/02/13,  add for pd+vooc adapter compatibility */
+//			if (pd->vconn_enabled)
+//				phy_params.frame_filter_val |=
+//					FRAME_FILTER_EN_SOPI;
+#endif
 			ret = pd_phy_open(&phy_params);
 			if (ret) {
 				WARN_ON_ONCE(1);
@@ -1726,6 +1753,12 @@ static void usbpd_set_state(struct usbpd *pd, enum usbpd_state next_state)
 			dual_role_instance_changed(pd->dual_role);
 
 		pd->in_explicit_contract = true;
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+		pd->in_good_connect = true;
+		oplus_usbpd_send_svdm(USBPD_SID, USBPD_SVDM_DISCOVER_SVIDS,
+			SVDM_CMD_TYPE_INITIATOR, 0, NULL, 0);
+#endif
 
 		if (pd->vdm_tx)
 			kick_sm(pd, 0);
@@ -1848,6 +1881,14 @@ int usbpd_send_vdm(struct usbpd *pd, u32 vdm_hdr, const u32 *vdos, int num_vdos)
 		kfree(pd->vdm_tx);
 		pd->vdm_tx = NULL;
 	}
+#ifdef VENDOR_EDIT
+	/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+	if (pd->current_state != PE_SRC_READY &&
+		pd->current_state != PE_SNK_READY) {
+		usbpd_err(&pd->dev, "VDM not allowed: PD not in Ready state\n");
+		return -EAGAIN;
+	}
+#endif
 
 	vdm_tx = kzalloc(sizeof(*vdm_tx), GFP_KERNEL);
 	if (!vdm_tx)
@@ -2406,10 +2447,15 @@ static void vconn_swap(struct usbpd *pd)
 
 		pd->vconn_enabled = true;
 
+#ifndef VENDOR_EDIT
+/* tongfeng.Huang@BSP.CHG.Basic, 2020/02/13,  add for  pd+vooc adapter compatibility */
+		//pd_phy_update_frame_filter(FRAME_FILTER_EN_SOP |
+		//			   FRAME_FILTER_EN_SOPI |
+		//			   FRAME_FILTER_EN_HARD_RESET);
+#else
 		pd_phy_update_frame_filter(FRAME_FILTER_EN_SOP |
-					   FRAME_FILTER_EN_SOPI |
 					   FRAME_FILTER_EN_HARD_RESET);
-
+#endif
 		/*
 		 * Small delay to ensure Vconn has ramped up. This is well
 		 * below tVCONNSourceOn (100ms) so we still send PS_RDY within
@@ -2537,6 +2583,10 @@ static void usbpd_sm(struct work_struct *w)
 		pd->in_pr_swap = false;
 		pd->pd_connected = false;
 		pd->in_explicit_contract = false;
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+		pd->in_good_connect = false;
+#endif
 		pd->hard_reset_recvd = false;
 		pd->caps_count = 0;
 		pd->hard_reset_count = 0;
@@ -2626,6 +2676,10 @@ static void usbpd_sm(struct work_struct *w)
 				POWER_SUPPLY_PROP_PR_SWAP, &val);
 
 		pd->in_explicit_contract = false;
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC, 2020/09/09,add for PD+SVOOC adapter*/
+		pd->in_good_connect = false;
+#endif
 		pd->selected_pdo = pd->requested_pdo = 0;
 		pd->rdo = 0;
 		rx_msg_cleanup(pd);
@@ -4099,6 +4153,8 @@ static ssize_t select_pdo_store(struct device *dev,
 	int pdo, uv = 0, ua = 0;
 	int ret;
 
+	return size;
+
 	mutex_lock(&pd->swap_lock);
 
 	/* Only allowed if we are already in explicit sink contract */
@@ -4510,6 +4566,94 @@ static void usbpd_release(struct device *dev)
 
 	kfree(pd);
 }
+#ifdef VENDOR_EDIT
+/* lizhijie@BSP.CHG.Basic, 2020/03/06, lzj Add for PD */
+struct usbpd *pd_lobal = NULL;
+int oplus_usbpd_send_svdm(u16 svid, u8 cmd, enum usbpd_svdm_cmd_type cmd_type,
+		int obj_pos, const u32 *vdos, int num_vdos) {
+	struct usbpd *pd = pd_lobal;
+	u32 svdm_hdr = SVDM_HDR(svid, 0, obj_pos, cmd_type, cmd);
+
+	return usbpd_send_vdm(pd, svdm_hdr, vdos, num_vdos);
+}
+
+bool oplus_check_pd_state_ready(void)
+{
+	return (pd_lobal->in_good_connect);
+}
+EXPORT_SYMBOL(oplus_check_pd_state_ready);
+int oplus_pdo_select(int vbus_mv, int ibus_ma)
+{
+	int i = 0;
+	int rc = 0;
+	u32 pdo = 0;
+	struct usbpd *pd = pd_lobal;
+
+	for (i = 0; i < ARRAY_SIZE(pd->received_pdos); i++) {
+		pdo = pd->received_pdos[i];
+		if (vbus_mv == PD_SRC_PDO_FIXED_VOLTAGE(pdo) * 50 || pdo == 0)
+			break;
+	}
+
+	mutex_lock(&pd->swap_lock);
+
+	/* Only allowed if we are already in explicit sink contract */
+	if (pd->current_state != PE_SNK_READY || !is_sink_tx_ok(pd)) {
+		printk(KERN_ERR "%s: cannot select new pdo yet\n", __func__);
+		rc = -EBUSY;
+		goto out;
+	}
+
+	if (i > 7) {
+		printk(KERN_ERR "%s: inval pdo[0x%x]\n", __func__, pdo);
+		rc = -EINVAL;
+		goto out;
+	}
+
+	if (vbus_mv != PD_SRC_PDO_FIXED_VOLTAGE(pdo) * 50) {
+		if (i > 0) {
+			printk(KERN_ERR "%s: can not find vbus_mv[%d], the last pdos[%d]=[%d]\n", __func__,
+				vbus_mv, i -1, PD_SRC_PDO_FIXED_VOLTAGE(pd->received_pdos[i - 1]) * 50);
+		} else {
+			printk(KERN_ERR "%s: can not find vbus_mv[%d], pdos0=[%d]\n", __func__,
+				vbus_mv, PD_SRC_PDO_FIXED_VOLTAGE(pd->received_pdos[i]) * 50);
+		}
+		rc = -EINVAL;
+		goto out;
+	}
+
+	rc = pd_select_pdo(pd, i + 1, vbus_mv * 1000, ibus_ma * 1000);
+	if (rc) {
+		printk(KERN_ERR "%s: pd_select_pdo fail, rc=%d\n", __func__, rc);
+		goto out;
+	}
+
+	reinit_completion(&pd->is_ready);
+	pd->send_request = true;
+	kick_sm(pd, 0);
+
+	/* wait for operation to complete */
+	if (!wait_for_completion_timeout(&pd->is_ready, msecs_to_jiffies(1000))) {
+		printk(KERN_ERR "%s: pdo[%d], vbus_mv[%d], ibus_ma[%d] request timed out\n",
+				__func__, i, vbus_mv, ibus_ma);
+		rc = -ETIMEDOUT;
+		goto out;
+	}
+
+	/* determine if request was accepted/rejected */
+	if (pd->selected_pdo != pd->requested_pdo ||
+			pd->current_voltage != pd->requested_voltage) {
+		printk(KERN_ERR "%s: request rejected\n", __func__);
+		rc = -EINVAL;
+	}
+
+out:
+	pd->send_request = false;
+	mutex_unlock(&pd->swap_lock);
+	return rc;
+}
+EXPORT_SYMBOL(oplus_pdo_select);
+#endif /*VENDOR_EDIT*/
 
 static int num_pd_instances;
 
@@ -4706,6 +4850,11 @@ struct usbpd *usbpd_create(struct device *parent)
 
 	/* force read initial power_supply values */
 	psy_changed(&pd->psy_nb, PSY_EVENT_PROP_CHANGED, pd->usb_psy);
+
+#ifdef VENDOR_EDIT
+/* lizhijie@PSW.BSP.CHG.Basic, 2020/03/06, lzj Add for handle xiaomi typec headset dsp crash issue(1+) */
+	pd_lobal = pd;
+#endif
 
 	return pd;
 

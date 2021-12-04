@@ -281,4 +281,9 @@ config DUAL_ROLE_USB_INTF
 	  this interface to expose it capabilities to the userspace
 	  and thereby allowing userspace to change the port mode.
 
+config OPLUS_SM8150R_CHARGER
+	tristate "OPLUS SM8150 charger driver"
+	depends on MFD_SPMI_PMIC
+	help
+	  Enables support for the oppo charging framework
 endmenu

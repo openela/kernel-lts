@@ -870,6 +870,10 @@ out:
 
 static void dwc3_remove_requests(struct dwc3 *dwc, struct dwc3_ep *dep)
 {
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC,06/04/2020,CR 2645944 to solve the dump*/
+	int retries = 40;
+#endif
 	struct dwc3_request		*req;
 	int ret;
 
@@ -891,7 +895,15 @@ static void dwc3_remove_requests(struct dwc3 *dwc, struct dwc3_ep *dep)
 		dwc->eps[0]->trb_enqueue = 0;
 		dwc->eps[1]->trb_enqueue = 0;
 	}
-
+#ifdef VENDOR_EDIT
+/*Gang.Yan@BSP.CHG.BASIC,06/04/2020,CR 2645944 to solve the dump*/
+	do {
+		udelay(50);
+	} while ((dep->flags & DWC3_EP_END_TRANSFER_PENDING) && --retries);
+	if (!retries)
+		dbg_log_string("ep end_xfer cmd completion timeout for %d",
+		dep->number);
+#endif
 	/* - giveback all requests to gadget driver */
 	while (!list_empty(&dep->started_list)) {
 		req = next_request(&dep->started_list);

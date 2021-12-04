@@ -90,3 +90,9 @@ config USB_LEDS_TRIGGER_USBPORT
 	  This driver allows LEDs to be controlled by USB events. Enabling this
 	  trigger allows specifying list of USB ports that should turn on LED
 	  when some USB device gets connected.
+
+config USB_USB2_LPM_POLICY_CLOSED
+	bool "close usb2 lpm policy"
+	help
+	  If you say Y here, close the usb2 lpm policy.fix some device cannot find
+	  in low power mode.
