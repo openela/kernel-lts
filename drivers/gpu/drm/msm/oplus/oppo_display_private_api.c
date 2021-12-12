@@ -1599,8 +1599,19 @@ static ssize_t oppo_display_set_debug(struct device *dev,
 static ssize_t oppo_display_get_dimlayer_enable(struct device *dev,
 	struct device_attribute *attr, char *buf)
 {
-	return sprintf(buf, "%d %d\n", oppo_dimlayer_bl_enable,
-			oppo_dimlayer_bl_enable_v2);
+	struct dsi_display *display = get_main_display();
+	int res = 0;
+
+	if (!strcmp(display->panel->name, "samsung amb655uv01 amoled fhd+ panel no DSC")
+		|| !strcmp(display->panel->name, "samsung ams643xf01 amoled fhd+ panel without DSC")
+		|| !strcmp(display->panel->oppo_priv.vendor_name, "ams643xy01")
+		|| !strcmp(display->panel->name, "samsung sofef03f_m amoled fhd+ panel with DSC")) {
+		res = oppo_dimlayer_bl_enable_v2;
+	} else if (strcmp(display->panel->name, "samsung 20261 ams643ye01 amoled fhd+ panel without DSC")) {
+		res = oppo_dimlayer_bl_enable;
+	}
+	
+	return sprintf(buf, "%d\n", res);
 }
 
 
