@@ -320,6 +320,11 @@ static void apr_adsp_up(void)
 		schedule_work(&apr_priv->add_chld_dev_work);
 	spin_unlock(&apr_priv->apr_lock);
 	snd_event_notify(apr_priv->dev, SND_EVENT_UP);
+
+	#ifdef OPLUS_FEATURE_ADSP_RECOVERY
+	/*Suresh.Alla@MULTIMEDIA.AUDIODRIVER.ADSP.2434874, 2020/08/14, Add for workaround fix adsp stuck issue*/
+	oplus_set_ssr_state(false);
+	#endif /* OPLUS_FEATURE_ADSP_RECOVERY */
 }
 
 int apr_load_adsp_image(void)

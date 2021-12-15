@@ -51,6 +51,12 @@
 #include "../wcdcal-hwdep.h"
 #include "wcd934x-dsd.h"
 
+//yangmingjin@BSP.POWER.Basic 2020/01/04 add to avoid bob noise for typec headset
+#ifdef OPLUS_ARCH_EXTENDS
+#include <linux/power_supply.h>
+#include <linux/workqueue.h>
+#endif
+
 #define WCD934X_RATES_MASK (SNDRV_PCM_RATE_8000 | SNDRV_PCM_RATE_16000 |\
 			    SNDRV_PCM_RATE_32000 | SNDRV_PCM_RATE_48000 |\
 			    SNDRV_PCM_RATE_96000 | SNDRV_PCM_RATE_192000 |\
@@ -668,6 +674,16 @@ static const struct tavil_reg_mask_val tavil_spkr_mode1[] = {
 	{WCD934X_CDC_BOOST0_BOOST_CTL, 0x7C, 0x44},
 	{WCD934X_CDC_BOOST1_BOOST_CTL, 0x7C, 0x44},
 };
+
+#ifdef OPLUS_ARCH_EXTENDS
+//zhenyu.dong@rm.POWER.Codec 2020/01/07 add to avoid bob noise for typec headset
+struct typec_headset_data {
+	struct wcd9xxx *pwcd934x_priv;
+	struct wcd9xxx_pdata *pwcd934x_pdata;
+};
+
+int wcd934x_headset_bob_regulator_set_mode(unsigned int bob_mode);
+#endif /* OPLUS_ARCH_EXTENDS*/
 
 static int __tavil_enable_efuse_sensing(struct tavil_priv *tavil);
 
@@ -5696,6 +5712,72 @@ static int tavil_compander_put(struct snd_kcontrol *kcontrol,
 	return 0;
 }
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*zhenyu.dong@RM.MM.AudioDriver.Codec, 2020/01/11,
+ *Add for fix headset capture noise which headset switch use bob regulator.
+ */
+static int g_bob_mode = REGULATOR_MODE_NORMAL;
+static char const *pmic_bob_ctrl_text[] = {
+	"MODE_NORMAL", "MODE_FAST", "MODE_IDLE", "MODE_STANDBY"
+};
+static const struct soc_enum pmic_bob_ctl_enum[] = {
+	SOC_ENUM_SINGLE_EXT(ARRAY_SIZE(pmic_bob_ctrl_text), pmic_bob_ctrl_text),
+};
+
+static int bob_regulator_mode_switch_get(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol)
+{
+	switch (g_bob_mode) {
+	case REGULATOR_MODE_NORMAL:
+		ucontrol->value.integer.value[0] = 0;
+		break;
+	case REGULATOR_MODE_FAST:
+		ucontrol->value.integer.value[0] = 1;
+		break;
+	case REGULATOR_MODE_IDLE:
+		ucontrol->value.integer.value[0] = 2;
+		break;
+	case REGULATOR_MODE_STANDBY:
+		ucontrol->value.integer.value[0] = 3;
+		break;
+	default:
+		pr_err("%s: invalid g_bob_mode = 0x%x\n", __func__, g_bob_mode);
+		break;
+	}
+
+	pr_err("%s: get g_bob_mode = 0x%x\n", __func__, g_bob_mode);
+	return 0;
+}
+
+static int bob_regulator_mode_switch_set(struct snd_kcontrol *kcontrol,
+					struct snd_ctl_elem_value *ucontrol)
+{
+	switch (ucontrol->value.integer.value[0]) {
+	case 0:
+		g_bob_mode = REGULATOR_MODE_NORMAL;
+		break;
+	case 1:
+		g_bob_mode = REGULATOR_MODE_FAST;
+		break;
+	case 2:
+		g_bob_mode = REGULATOR_MODE_IDLE;
+		break;
+	case 3:
+		g_bob_mode = REGULATOR_MODE_STANDBY;
+		break;
+	default:
+		pr_err("%s: set g_bob_mode to default.\n", __func__);
+		g_bob_mode = REGULATOR_MODE_NORMAL;
+		break;
+	}
+
+	pr_err("%s: set g_bob_mode = 0x%x\n", __func__, g_bob_mode);
+        wcd934x_headset_bob_regulator_set_mode(g_bob_mode);
+
+	return 0;
+}
+#endif /* OPLUS_ARCH_EXTENDS */
+
 static int tavil_hph_asrc_mode_put(struct snd_kcontrol *kcontrol,
 				   struct snd_ctl_elem_value *ucontrol)
 {
@@ -6318,6 +6400,15 @@ static SOC_ENUM_SINGLE_DECL(cf_int8_2_enum, WCD934X_CDC_RX8_RX_PATH_MIX_CFG, 2,
 							rx_cf_text);
 
 static const struct snd_kcontrol_new tavil_snd_controls[] = {
+    #ifdef OPLUS_ARCH_EXTENDS
+	/*zhenyu.dong@rm.MM.AudioDriver.Codec, 2020/01/11,
+	 *Add for fix headset capture noise which headset switch use bob regulator.
+	 */
+	SOC_ENUM_EXT("Bob Regulator Mode Switch", pmic_bob_ctl_enum[0],
+			bob_regulator_mode_switch_get,
+			bob_regulator_mode_switch_set),
+	#endif /* OPLUS_ARCH_EXTENDS */
+
 	SOC_ENUM_EXT("EAR PA Gain", tavil_ear_pa_gain_enum,
 		tavil_ear_pa_gain_get, tavil_ear_pa_gain_put),
 	SOC_ENUM_EXT("EAR SPKR PA Gain", tavil_ear_spkr_pa_gain_enum,
@@ -10249,6 +10340,103 @@ done:
 	return ret;
 }
 
+#ifdef OPLUS_ARCH_EXTENDS
+static struct typec_headset_data g_typec_headset_data;
+static int wcd934x_get_bob_regulator_index_by_name(const char *name){
+	struct wcd9xxx_pdata *pwcd934x_pdata = g_typec_headset_data.pwcd934x_pdata;
+	struct cdc_regulator *cdc_vreg = pwcd934x_pdata->regulator;
+	int i;
+	static int bob_index = -1;
+
+	if(bob_index != -1)
+		return bob_index;
+
+	for (i = 0; i < pwcd934x_pdata->num_supplies; i++) {
+		if (!strncmp(cdc_vreg[i].name, name, 64)){
+			bob_index = i;
+			return i;
+		}
+	}
+	return -1;
+}
+
+int wcd934x_headset_bob_regulator_get_mode(void)
+{
+	struct wcd9xxx_pdata *pwcd934x_pdata = g_typec_headset_data.pwcd934x_pdata;
+	struct cdc_regulator *cdc_vreg = pwcd934x_pdata->regulator;
+	struct wcd9xxx *pwcd934x_priv = g_typec_headset_data.pwcd934x_priv;
+	struct regulator_bulk_data *vsup = pwcd934x_priv->supplies;
+	unsigned int bob_mode = REGULATOR_MODE_NORMAL;
+	int bob_index = -1;
+
+	if (!pwcd934x_pdata || !cdc_vreg || !pwcd934x_priv || !vsup) {
+		pr_err("wcd934x_headset_bob_regulator_get_mode error,some NULL\n");
+		return -1;
+	}
+
+	bob_index = wcd934x_get_bob_regulator_index_by_name("cdc-vdd-3v3");
+	if(-1 == bob_index){
+		pr_err("bob_index not found\n");
+		return -1;
+	}
+
+	bob_mode = regulator_get_mode(vsup[bob_index].consumer);
+	if (bob_mode != REGULATOR_MODE_FAST && bob_mode != REGULATOR_MODE_NORMAL
+			&& bob_mode != REGULATOR_MODE_IDLE && bob_mode != REGULATOR_MODE_STANDBY) {
+		pr_err("%s: Couldn't get regulator mode=%d\n", __func__, bob_mode);
+		return -1;
+	}
+	return bob_mode;
+}
+EXPORT_SYMBOL(wcd934x_headset_bob_regulator_get_mode);
+
+int wcd934x_headset_bob_regulator_set_mode(unsigned int bob_mode)
+{
+
+	struct wcd9xxx_pdata *pwcd934x_pdata = g_typec_headset_data.pwcd934x_pdata;
+	struct cdc_regulator *cdc_vreg = pwcd934x_pdata->regulator;
+	struct wcd9xxx *pwcd934x_priv = g_typec_headset_data.pwcd934x_priv;
+	struct regulator_bulk_data *vsup = pwcd934x_priv->supplies;
+	int bob_index = -1, rc, ua_load;
+	static int pre_bob_mode = REGULATOR_MODE_NORMAL;
+
+	if (!pwcd934x_pdata || !cdc_vreg || !pwcd934x_priv || !vsup) {
+		pr_err("headset_bob_regulator_set_mode error,some NULL\n");
+		return -1;
+	}
+
+	if(bob_mode == pre_bob_mode)
+		return 0;
+	pre_bob_mode = bob_mode;
+
+	bob_index = wcd934x_get_bob_regulator_index_by_name("cdc-vdd-3v3");
+	if(-1 == bob_index){
+		pr_err("bob_index not found\n");
+		return -1;
+	}
+
+	ua_load = ((bob_mode == REGULATOR_MODE_FAST)? 2000000 : cdc_vreg[bob_index].optimum_uA);
+	rc = regulator_set_voltage(vsup[bob_index].consumer, cdc_vreg[bob_index].min_uV, cdc_vreg[bob_index].max_uV);
+	if (rc) {
+		pr_err("set regulator voltage failed for %s, err:%d\n", vsup[bob_index].supply, rc);
+	}
+	rc = regulator_set_load(vsup[bob_index].consumer, ua_load);
+	pr_err("wcd934x_headset_bob_regulator_set_mode: set regulator load %d for %s\n", ua_load, vsup[bob_index].supply);
+	if (rc < 0) {
+		pr_err("set regulator optimum mode failed for %s, err:%d\n", vsup[bob_index].supply, rc);
+	}
+
+	return 0;
+}
+EXPORT_SYMBOL(wcd934x_headset_bob_regulator_set_mode);
+
+static void wcd934x_typec_headset_data_init(struct wcd9xxx *wcd934x, struct wcd9xxx_pdata *pdata)
+{
+	g_typec_headset_data.pwcd934x_priv = wcd934x;
+	g_typec_headset_data.pwcd934x_pdata = pdata;
+}
+#endif
+
 static int tavil_soc_codec_probe(struct snd_soc_codec *codec)
 {
 	struct wcd9xxx *control;
@@ -10410,6 +10598,11 @@ static int tavil_soc_codec_probe(struct snd_soc_codec *codec)
 	snd_soc_dapm_sync(dapm);
 
 	tavil_wdsp_initialize(codec);
+
+        //yangmingjin@BSP.POWER.Basic 2020/01/04 add to avoid bob noise for typec headset
+        #ifdef OPLUS_ARCH_EXTENDS
+        wcd934x_typec_headset_data_init(control, pdata);
+        #endif
 
 	/*
 	 * Once the codec initialization is completed, the svs vote

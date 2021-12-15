@@ -169,6 +169,13 @@ ifdef CONFIG_QTI_PP
 	PLATFORM_OBJS += msm-qti-pp-config.o
 endif
 
+#ifdef OPLUS_ARCH_EXTENDS
+#/*Jianfeng.Qiu@MULTIMEDIA.AUDIODRIVER.MACHINE, 2019/02/03, Add for audio driver kevent log*/
+ifdef CONFIG_OPPO_KEVENT_UPLOAD
+	PLATFORM_OBJS += oppo_mm_audio_kevent.o
+endif
+#endif /* OPLUS_ARCH_EXTENDS */
+
 LINUX_INC +=	-Iinclude/linux
 
 INCS +=		$(COMMON_INC) \

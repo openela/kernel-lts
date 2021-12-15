@@ -888,6 +888,32 @@ struct audproc_volume_ctrl_master_gain {
 	uint16_t                  reserved;
 } __packed;
 
+#ifdef OPLUS_FEATURE_KTV
+// Erhu.Zhang@MULTIMEDIA.AUDIODRIVER.FEATURE, 2020/10/26, Add for ktv2.0
+struct audproc_revert_param {
+	int32_t mode;
+	int32_t volume;
+	int32_t peg;
+	int32_t pitchange;
+	int32_t reverbparam;
+	int32_t enabled;
+	int32_t reverved0;
+	int32_t reverved1;
+	int32_t reverved2;
+	int32_t reverved3;
+	int32_t reverved4;
+	int32_t reverved5;
+	int32_t reverved6;
+	int32_t reverved7;
+	int32_t reverved8;
+	int32_t reverved9;
+	int32_t reverved10;
+	int32_t reverved11;
+	int32_t reverved12;
+	int32_t reverved13;
+} __packed;
+#endif /* OPLUS_FEATURE_KTV */
+
 struct audproc_soft_step_volume_params {
 /*
  * Period in milliseconds.
@@ -1351,6 +1377,11 @@ struct adm_cmd_connect_afe_port_v5 {
 #define INT_FM_TX 0x3005
 #define RT_PROXY_PORT_001_RX	0x2000
 #define RT_PROXY_PORT_001_TX	0x2001
+#ifdef OPLUS_ARCH_EXTENDS
+/* Yongzhi.Zhang@MULTIMEDIA.AUDIODRIVER.PLATFORM, 2019/08/01,
+ * add for RX-to-TX AFE Loopback for AEC path */
+#define AFE_LOOPBACK_TX	0x6001
+#endif /* OPLUS_ARCH_EXTENDS */
 #define DISPLAY_PORT_RX	0x6020
 
 #define AFE_PORT_INVALID 0xFFFF
@@ -10713,6 +10744,39 @@ struct afe_spkr_prot_calib_get_resp {
 	struct asm_calib_res_cfg res_cfg;
 } __packed;
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*Wan.li@MULTIMEDIA.AUDIODRIVER.CODEC, 2020/09/27, Add for Max98937*/
+#ifdef CONFIG_SND_SOC_MAX98937
+/*Maxim DSM module and parameters IDs*/
+#define AFE_RX_TOPOLOGY_ID_DSM                              0x10001061
+#define AFE_TX_TOPOLOGY_ID_DSM                              0x10001060
+#define AFE_MODULE_DSM_TX                                   0x10001068
+#define AFE_MODULE_DSM_RX                                   0x10001062
+#define AFE_PARAM_ID_DSM_ENABLE                             0x10001063
+#define AFE_PARAM_ID_CALIB                                  0x10001065
+#define AFE_PARAM_ID_DSM_CFG                                0x10001066
+#define AFE_PARAM_ID_DSM_INFO                               0x10001067
+#define AFE_PARAM_ID_DSM_STAT                               0x10001069
+
+#define DSM_RX_PORT_ID      AFE_PORT_ID_QUATERNARY_MI2S_RX
+#define DSM_TX_PORT_ID      AFE_PORT_ID_QUATERNARY_MI2S_TX
+
+struct afe_dsm_param_array {
+    uint32_t    data[112];
+} __packed;
+struct afe_dsm_get_param {
+	struct param_hdr_v3 pdata;
+    struct afe_dsm_param_array param;
+} __packed;
+
+struct afe_dsm_get_resp {
+	uint32_t status;
+	struct param_hdr_v3 pdata;
+	struct afe_dsm_param_array param;
+} __packed;
+
+#endif
+#endif /* OPLUS_ARCH_EXTENDS */
 
 /* SRS TRUMEDIA start */
 /* topology */

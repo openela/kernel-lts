@@ -138,7 +138,14 @@ do {                                                    \
 				  SND_JACK_BTN_2 | SND_JACK_BTN_3 | \
 				  SND_JACK_BTN_4 | SND_JACK_BTN_5)
 #define OCP_ATTEMPT 20
+#ifndef OPLUS_ARCH_EXTENDS
+/*Suresh.Alla@MULTIMEDIA.AUDIODRIVER.HEADSETDET.959366, 2020/08/14,
+ *Modify for headphone detect.
+ */
 #define HS_DETECT_PLUG_TIME_MS (3 * 1000)
+#else /* OPLUS_ARCH_EXTENDS */
+#define HS_DETECT_PLUG_TIME_MS (5 * 1000)
+#endif /* OPLUS_ARCH_EXTENDS */
 #define SPECIAL_HS_DETECT_TIME_MS (2 * 1000)
 #define MBHC_BUTTON_PRESS_THRESHOLD_MIN 250
 #define GND_MIC_SWAP_THRESHOLD 4
@@ -432,6 +439,16 @@ enum mbhc_moisture_rref {
 	R_184_KOHM,
 };
 
+#ifdef OPLUS_ARCH_EXTENDS
+/*Zhao.Pan@PSW.MM.AudioDriver.Headset, 2018/11/07, Add audio switch max20328*/
+enum usbc_switch_type {
+    NO_USBC_SWITCH = 0,
+    FSA4480,
+    MAX20328,
+    USBC_SWITCH_MAX = MAX20328,
+};
+#endif /* OPLUS_ARCH_EXTENDS */
+
 struct wcd_mbhc_config {
 	bool read_fw_bin;
 	void *calibration;
@@ -447,6 +464,10 @@ struct wcd_mbhc_config {
 	int anc_micbias;
 	bool enable_anc_mic_detect;
 	u32 enable_usbc_analog;
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*RiCheng.Wang@MULTIMEDIA.AUDIODRIVER.DRIVER.1825796, 2020/10/17, Add audio switch max20328*/
+	enum usbc_switch_type switch_type;
+	#endif /* OPLUS_ARCH_EXTENDS */
 	bool moisture_duty_cycle_en;
 	struct usbc_ana_audio_config usbc_analog_cfg;
 	bool fsa_enable;
@@ -534,6 +555,10 @@ struct wcd_mbhc_fn {
 struct wcd_mbhc {
 	/* Delayed work to report long button press */
 	struct delayed_work mbhc_btn_dwork;
+	#ifdef OPLUS_BUG_STABILITY
+	/*lijiang@MULTIMEDIA.AUDIODRIVER.HEADSETSET, 2020/11/21,solve kernel crash when hs pluged and restart phone */
+	struct delayed_work max20328_det_ready_dwork;
+	#endif /* OPLUS_BUG_STABILITY */
 	int buttons_pressed;
 	struct wcd_mbhc_config *mbhc_cfg;
 	const struct wcd_mbhc_cb *mbhc_cb;
@@ -615,9 +640,26 @@ struct wcd_mbhc {
 	int usbc_mode;
 	struct device_node *fsa_np;
 	struct notifier_block fsa_nb;
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*RiCheng.Wang@MULTIMEDIA.AUDIODRIVER.DRIVER.1825796, 2020/10/17, Add audio switch max20328*/
+	struct device_node *switch_np;
+	struct notifier_block switch_nb;
+	#endif
 	struct notifier_block psy_nb;
 	struct power_supply *usb_psy;
 	struct work_struct usbc_analog_work;
+
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Suresh.Alla@MULTIMEDIA.AUDIODRIVER.HEADSETDET, 2020/07/31,
+	 *Add for mbhc cross connection.
+	 */
+	bool need_cross_conn;
+	#endif /* OPLUS_ARCH_EXTENDS */
+	#ifdef OPLUS_ARCH_EXTENDS
+	/*Suresh.Alla@MULTIMEDIA.AUDIODRIVER.HEADSETDET, 2020/08/14, Add for headset detect.*/
+	struct delayed_work hp_detect_work;
+	#endif /* OPLUS_ARCH_EXTENDS */
+
 };
 
 void wcd_mbhc_find_plug_and_report(struct wcd_mbhc *mbhc,
