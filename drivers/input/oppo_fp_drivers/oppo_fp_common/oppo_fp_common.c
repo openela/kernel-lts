@@ -50,7 +50,7 @@ static struct fp_data *fp_data_ptr = NULL;
 char g_engineermode_menu_config[ENGINEER_MENU_SELECT_MAXLENTH] = ENGINEER_MENU_DEFAULT;
 
 static DEFINE_MUTEX(opticalfp_handler_lock);
-static opticalfp_handler g_opticalfp_irq_handler = NULL;
+static opticalfp_handler g_opticalfp_irq_handlers[5 /* lazy */] = {0};
 
 static int fp_gpio_parse_parent_dts(struct fp_data *fp_data)
 {
@@ -147,9 +147,15 @@ static struct file_operations fp_id_node_ctrl = {
 };
 
 void opticalfp_irq_handler_register(opticalfp_handler handler) {
+    int i;
     if (handler) {
         mutex_lock(&opticalfp_handler_lock);
-        g_opticalfp_irq_handler = handler;
+        for (i = 0; i < ARRAY_SIZE(g_opticalfp_irq_handlers); i++) {
+            if (!g_opticalfp_irq_handlers[i]) {
+                g_opticalfp_irq_handlers[i] = handler;
+                break;
+            }
+        }
         mutex_unlock(&opticalfp_handler_lock);
     } else {
         pr_err("%s handler is NULL", __func__);
@@ -157,11 +163,12 @@ void opticalfp_irq_handler_register(opticalfp_handler handler) {
 }
 
 int opticalfp_irq_handler(struct fp_underscreen_info* tp_info) {
-    if (g_opticalfp_irq_handler) {
-        return g_opticalfp_irq_handler(tp_info);
-    } else {
-        return FP_UNKNOWN;
+    int i, ret = FP_UNKNOWN;
+    for (i = 0; i < ARRAY_SIZE(g_opticalfp_irq_handlers); i++) {
+        if (g_opticalfp_irq_handlers[i])
+            ret = g_opticalfp_irq_handlers[i](tp_info);
     }
+    return ret;
 }
 EXPORT_SYMBOL(opticalfp_irq_handler);
 

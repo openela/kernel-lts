@@ -31,6 +31,8 @@
 #include <soc/oppo/device_info.h>
 #include "dsi_pwr.h"
 
+#include "../../../../../drivers/input/oppo_fp_drivers/include/oppo_fp_common.h"
+
 extern int hbm_mode;
 #ifdef OPLUS_FEATURE_HDR10
 int hdr10_mode = 0;
@@ -87,6 +89,8 @@ extern int aod_light_mode;
 int osc_count;
 int osc_clock_mode = 0;
 extern enum oppo_display_support_list oppo_display_vendor;
+
+struct fp_underscreen_info fp_state = {0};
 
 #define PANEL_TX_MAX_BUF 256
 #define PANEL_CMD_MIN_TX_COUNT 2
@@ -3417,6 +3421,12 @@ static ssize_t oppo_display_set_hdr10_mode(struct device *dev,
 }
 #endif /* OPLUS_FEATURE_HDR10 */
 
+static ssize_t oppo_display_get_fp_state(struct device *obj,
+	struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d,%d,%d\n", fp_state.x, fp_state.y, fp_state.touch_state);
+}
+
 static struct kobject *oppo_display_kobj;
 
 static DEVICE_ATTR(hbm, S_IRUGO | S_IWUSR, oppo_display_get_hbm,
@@ -3427,6 +3437,7 @@ static DEVICE_ATTR(seed, S_IRUGO | S_IWUSR, oppo_display_get_seed,
 	oppo_display_set_seed);
 static DEVICE_ATTR(panel_serial_number, S_IRUGO | S_IWUSR,
 	oppo_display_get_panel_serial_number, NULL);
+static DEVICE_ATTR(fp_state, S_IRUGO, oppo_display_get_fp_state, NULL);
 static DEVICE_ATTR(dump_info, S_IRUGO | S_IWUSR, oppo_display_dump_info, NULL);
 static DEVICE_ATTR(panel_dsc, S_IRUGO | S_IWUSR, oppo_display_get_panel_dsc,
 	NULL);
@@ -3544,6 +3555,7 @@ static struct attribute *oppo_display_attrs[] = {
 /*xupengcheng@MULTIMEDIA.MM.Display.LCD.Stability,2020/09/18,add for 19696 LCD CABC feature*/
 	&dev_attr_LCM_CABC.attr,
 #endif /*OPLUS_FEATURE_LCD_CABC*/
+	&dev_attr_fp_state.attr,
 	NULL,	/* need to NULL terminate the list of attributes */
 };
 
@@ -3566,6 +3578,14 @@ int oppo_display_get_resolution(unsigned int *xres, unsigned int *yres)
 	return 0;
 }
 EXPORT_SYMBOL(oppo_display_get_resolution);
+
+static int oppo_opticalfp_irq_handler(struct fp_underscreen_info *tp_info) {
+	fp_state.x = tp_info->x;
+	fp_state.y = tp_info->y;
+	fp_state.touch_state = tp_info->touch_state;
+	sysfs_notify(kernel_kobj, "oppo_display", dev_attr_fp_state.attr.name);
+	return IRQ_HANDLED;
+}
 
 static int __init oppo_display_private_api_init(void)
 {
@@ -3591,6 +3611,8 @@ static int __init oppo_display_private_api_init(void)
 
 	retval = sysfs_create_link(oppo_display_kobj,
 			&display->pdev->dev.kobj, "panel");
+
+	opticalfp_irq_handler_register(oppo_opticalfp_irq_handler);
 
 	if (retval) {
 		goto error_remove_sysfs_group;
