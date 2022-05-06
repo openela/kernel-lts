@@ -347,6 +347,21 @@ u64 __cpu_logical_map[NR_CPUS] = { [0 ... NR_CPUS-1] = INVALID_HWID };
 
 void __init __weak init_random_pool(void) { }
 
+static int __init androidboot_startupmode(char *p)
+{
+	char *offset_addr;
+
+	if (strcmp(p, "dc_charger"))
+		return 1;
+
+	if ((offset_addr =
+		     strstr(boot_command_line, "androidboot.mode=normal")))
+		memset(offset_addr, ' ', sizeof("androidboot.mode=normal"));
+
+	return 0;
+}
+early_param("androidboot.startupmode", androidboot_startupmode);
+
 void __init setup_arch(char **cmdline_p)
 {
 	pr_info("Boot CPU: AArch64 Processor [%08x]\n", read_cpuid_id());
