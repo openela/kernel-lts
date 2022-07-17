@@ -15,3 +15,8 @@ obj-y	+= oplus_gauge.o
 obj-y	+= oplus_vooc.o
 obj-y	+= oplus_adapter.o
 obj-y	+= oplus_short.o
+
+# Undo compiler optimizations to workaround buggy code
+ccflags-remove-y := -O2 -O3 $(CC_FLAGS_LTO)
+
+ccflags-y += -Os
