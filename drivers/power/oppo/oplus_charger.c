@@ -14,6 +14,9 @@
 * Revision 1.1        2016-03-07        wenbin.liu@SW.Bsp.Driver       edit for log optimize
 * Revision 2.0        2018-04-14        Fanhong.Kong@ProDrv.CHG        Upgrade for SVOOC
 ***********************************************************************************/
+
+#define pr_fmt(fmt) "[OPLUS_CHG][%s:%d]" fmt, __func__, __LINE__
+
 #include <linux/delay.h>
 #include <linux/power_supply.h>
 #include <linux/proc_fs.h>
