@@ -81,6 +81,13 @@ static int pm_qos_state = 0;
 #define PM_QOS_TOUCH_WAKEUP_VALUE 400
 #endif
 
+static int sigle_num = 0;
+static struct timeval tpstart, tpend;
+static int pointx[2] = {0, 0};
+static int pointy[2] = {0, 0};
+
+#define ABS(a, b) ((a - b > 0) ? a - b : b - a)
+
 /*******Part2:declear Area********************************/
 static void speedup_resume(struct work_struct *work);
 static void lcd_trigger_load_tp_fw(struct work_struct *work);
@@ -421,6 +428,36 @@ static void tp_geture_info_transform(struct gesture_info *gesture, struct resolu
     gesture->Point_4th.y   = gesture->Point_4th.y   * resolution_info->LCD_HEIGHT / (resolution_info->max_y);
 }
 
+int sec_double_tap(struct gesture_info *gesture)
+{
+    uint32_t timeuse = 0;
+
+    if (sigle_num == 0) {
+        do_gettimeofday(&tpstart);
+        pointx[0] = gesture->Point_start.x;
+        pointy[0] = gesture->Point_start.y;
+        sigle_num++;
+        TPD_DEBUG("first enter double tap\n");
+    } else if (sigle_num == 1) {
+        do_gettimeofday(&tpend);
+        pointx[1] = gesture->Point_start.x;
+        pointy[1] = gesture->Point_start.y;
+        sigle_num = 0;
+        timeuse = 1000000 * (tpend.tv_sec-tpstart.tv_sec) + tpend.tv_usec-tpstart.tv_usec;
+        TPD_DEBUG("timeuse = %d, distance[x] = %d, distance[y] = %d\n", timeuse, ABS(pointx[0], pointx[1]), ABS(pointy[0], pointy[1]));
+        if ((ABS(pointx[0], pointx[1]) < 150) && (ABS(pointy[0], pointy[1]) < 200) && (timeuse < 500000)) {
+            return 1;
+        } else {
+            TPD_DEBUG("not match double tap\n");
+            do_gettimeofday(&tpstart);
+            pointx[0] = gesture->Point_start.x;
+            pointy[0] = gesture->Point_start.y;
+            sigle_num = 1;
+        }
+    }
+    return 0;
+}
+
 static void tp_gesture_handle(struct touchpanel_data *ts)
 {
     struct gesture_info gesture_info_temp;
@@ -433,6 +470,13 @@ static void tp_gesture_handle(struct touchpanel_data *ts)
     memset(&gesture_info_temp, 0, sizeof(struct gesture_info));
     ts->ts_ops->get_gesture_info(ts->chip_data, &gesture_info_temp);
     tp_geture_info_transform(&gesture_info_temp, &ts->resolution_info);
+    if (ts->single_tap_support) {
+        if (gesture_info_temp.gesture_type == SingleTap) {
+            if (sec_double_tap(&gesture_info_temp) == 1) {
+                gesture_info_temp.gesture_type  = DouTap;
+            }
+        }
+    }
 
     TPD_INFO("detect %s gesture\n", gesture_info_temp.gesture_type == DouTap ? "double tap" :
              gesture_info_temp.gesture_type == UpVee ? "up vee" :
