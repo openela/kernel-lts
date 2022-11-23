@@ -1066,3 +1066,6 @@ CONFIG_FEATURE_GPIO_CFG := y
 
 #Enable VDEV Response wakelock feature
 CONFIG_FEATURE_VDEV_RSP_WAKELOCK := y
+
+# Disable DFS channels on AP mode to avoid DFS CAC
+CONFIG_FEATURE_WLAN_STA_AP_MODE_DFS_DISABLE := y
