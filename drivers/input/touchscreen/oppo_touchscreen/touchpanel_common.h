@@ -685,6 +685,7 @@ struct touchpanel_data {
     bool glove_mode_support;                            /*glove_mode support feature*/
     bool black_gesture_support;                         /*black_gesture support feature*/
     bool single_tap_support;                            /*black_gesture support feature*/
+    bool black_gesture_indep_support;                   /*black_gesture indep control support feature*/
     bool charger_pump_support;                          /*charger_pump support feature*/
     bool wireless_charger_support;                      /*wireless_charger support feature*/
     bool headset_pump_support;                          /*headset_pump support feature*/
@@ -749,6 +750,7 @@ struct touchpanel_data {
 #if GESTURE_RATE_MODE
     int geature_ignore;
 #endif
+    int gesture_enable_indep;                           /*independent control state of black gesture*/
     int palm_enable;
     int es_enable;
     int fd_enable;
@@ -949,6 +951,7 @@ struct oppo_touchpanel_operations {
 #endif
     int  (*tp_refresh_switch)         (void *chip_data, int fps);
     int  (*tp_set_grip_level)         (void *chip_data, int level);
+    void (*set_gesture_state)(void *chip_data, int state);
 
 };
 
