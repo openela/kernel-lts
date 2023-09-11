@@ -341,7 +341,7 @@ uint32_t get_oppo_feature(enum F_INDEX index)
 EXPORT_SYMBOL(get_oppo_feature);
 
 #define SERIALNO_LEN 16
-unsigned int get_serialID()
+unsigned int get_serialID(void)
 {
     unsigned int serial_id = 0xFFFFFFFF;
 
@@ -571,7 +571,7 @@ static int project_read_func(struct seq_file *s, void *v)
     return 0;
 }
 
-unsigned int get_cdt_version()
+unsigned int get_cdt_version(void)
 {
     init_project_version();
 

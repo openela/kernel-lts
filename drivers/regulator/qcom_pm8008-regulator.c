@@ -719,7 +719,7 @@ static int pm8008_register_ldo(struct pm8008_regulator *pm8008_reg,
 
 #ifdef VENDOR_EDIT
 /*zhixian.Mai @Cam.Drv, 2019/9/29, Add for PM8008 i2c error */
-void  pm8008_do_reset()
+void  pm8008_do_reset(void)
 {
 	unsigned int val = 0;
 	int rc = 0;

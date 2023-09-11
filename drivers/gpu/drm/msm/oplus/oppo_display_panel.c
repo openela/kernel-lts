@@ -162,7 +162,7 @@ static const struct file_operations panel_ops =
 	.write              = panel_write,
 };
 
-static int __init oppo_display_panel_init()
+static int __init oppo_display_panel_init(void)
 {
 	int rc = 0;
 

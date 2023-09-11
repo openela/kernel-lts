@@ -43,7 +43,7 @@ extern atomic_t oppo_dimlayer_hbm_vblank_ref;
 extern int oppo_dc2_alpha;
 extern int oppo_seed_backlight;
 extern int oppo_panel_alpha;
-extern oppo_dc_v2_on;
+extern int oppo_dc_v2_on;
 extern ktime_t oppo_backlight_time;
 #ifdef OPLUS_FEATURE_AOD_RAMLESS
 /* Yuwei.Zhang@MULTIMEDIA.DISPLAY.LCD, 2020/09/25, sepolicy for aod ramless */

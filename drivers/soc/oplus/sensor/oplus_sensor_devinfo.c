@@ -32,7 +32,7 @@ __attribute__((weak)) void oplus_device_dir_redirect(struct sensor_info * chip)
     pr_info("%s oplus_device_dir_redirect \n", __func__);
 };
 
-__attribute__((weak)) unsigned int get_serialID()
+__attribute__((weak)) unsigned int get_serialID(void)
 {
     return 0;
 };
@@ -1076,7 +1076,7 @@ static struct file_operations row_coe_fops = {
     .write = row_coe_write_proc,
 };
 
-static int oplus_als_cali_data_init()
+static int oplus_als_cali_data_init(void)
 {
     int rc = 0;
     struct proc_dir_entry *pentry;
