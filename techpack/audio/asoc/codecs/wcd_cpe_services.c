@@ -1347,8 +1347,7 @@ static enum cpe_process_result cpe_mt_process_cmd(
 
 		cpe_change_state(t_info, CPE_STATE_SENDING_MSG,
 				CPE_SS_MSG_SEND_INBOX);
-		rc = (enum cpe_process_result)cpe_send_msg_to_inbox(t_info, 0,
-				m);
+		rc = (enum cpe_process_result)cpe_send_msg_to_inbox(t_info, 0, m);
 		break;
 
 	case CPE_CMD_SEND_MSG_COMPLETE:
