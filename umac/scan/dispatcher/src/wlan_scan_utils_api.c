@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2017-2021 The Linux Foundation. All rights reserved.
- * Copyright (c) 2022 Qualcomm Innovation Center, Inc. All rights reserved.
+ * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
  *
  * Permission to use, copy, modify, and/or distribute this software for
  * any purpose with or without fee is hereby granted, provided that the
@@ -754,6 +754,9 @@ util_scan_parse_extn_ie(struct scan_cache_entry *scan_params,
 		scan_params->ie_list.srp   = (uint8_t *)ie;
 		break;
 	case WLAN_EXTN_ELEMID_HECAP:
+		if ((extn_ie->ie_len < WLAN_MIN_HECAP_IE_LEN) ||
+		    (extn_ie->ie_len > WLAN_MAX_HECAP_IE_LEN))
+			return QDF_STATUS_E_INVAL;
 		scan_params->ie_list.hecap = (uint8_t *)ie;
 		break;
 	case WLAN_EXTN_ELEMID_HEOP:
