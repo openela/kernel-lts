@@ -4633,7 +4633,7 @@ typedef struct {
      *      WMI_RSRC_CFG_HOST_SERVICE_FLAG_RADAR_FLAGS_FULL_BW_NOL_GET
      *      and _SET macros.
      *  Bit 15
-     *      This bit will be set if the has qms_dlkm support enabled.
+     *      This bit will be set if the host has qms_dlkm support enabled.
      *      Refer to the below definitions of the
      *      WMI_RSRC_CFG_HOST_SERVICE_FLAG_QMS_DLKM_SUPPORT_GET
      *      and _SET macros.
@@ -23435,6 +23435,8 @@ typedef enum wake_reason_e {
     WOW_REASON_VDEV_REPURPOSE,
     /* STX High duty cycle event */
     WOW_REASON_STX_WOW_HIGH_DUTY_CYCLE,
+    /* WoW exit reason MCC lite */
+    WOW_REASON_MCC_LITE,
 
     /* add new WOW_REASON_ defs before this line */
     WOW_REASON_MAX,
