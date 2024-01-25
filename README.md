@@ -17,7 +17,7 @@ We appreciate the work of the upstream stable maintainers, and send a big thank 
 
 # Getting Updates about New Kernel Releases
 
-Subscribe to kernel-lts@openela.org for updates to kernels 
+[Subscribe to kernel-lts@openela.org](https://groups.google.com/a/openela.org/g/kernel-lts) for updates to kernels 
 
 # Contributing to kernel-lts
 
