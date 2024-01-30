@@ -9,11 +9,13 @@ This repository contains a continuation of stable kernel releases from upstream 
 
 We appreciate the work of the upstream stable maintainers, and send a big thank you to Greg Kroah-Hartman and Sasha Levin. This project is not affiliated with them, the Linux Kernel Stable project, or upstream stable maintainers. Please address any issues with the OpenELA LTS kernels to kernel-lts@openela.org
 
-# Current Releases
+# Maintained Branches
 
-| Kernel base version | Last upstream version | Upstream EOL      | Extension EOL |
-| ------------------- | --------------------- | ----------------- | ------------- |
-| 4.14                | 4.14.336              | January 2024 [^2] | December 2024 |
+| Kernel base version | Last upstream version | Upstream EOL  | Extension Branch | Extension EOL |
+| ------------------- | --------------------- | ------------- | ----------------- | ------------- |
+| 4.14                | 4.14.336              | 2024-Jan [^2] | [linux-4.14.y](https://github.com/openela/kernel-lts/tree/linux-4.14.y)  |  December 2024 |
+
+View all releases here: (https://github.com/openela/kernel-lts/releases)
 
 # Getting Updates about New Kernel Releases
 
