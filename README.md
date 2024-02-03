@@ -13,7 +13,7 @@ We appreciate the work of the upstream stable maintainers, and send a big thank 
 
 | Kernel base version | Last upstream version | Upstream EOL  | Extension Branch | Extension EOL |
 | ------------------- | --------------------- | ------------- | ----------------- | ------------- |
-| 4.14                | 4.14.336              | 2024-Jan [^2] | [linux-4.14.y](https://github.com/openela/kernel-lts/tree/linux-4.14.y)  |  December 2024 |
+| 4.14                | 4.14.336              | 2024-Jan [^2] | [linux-4.14.y](https://github.com/openela/kernel-lts/tree/linux-4.14.y)  |  2024-Dec |
 
 View all releases here: (https://github.com/openela/kernel-lts/releases)
 
