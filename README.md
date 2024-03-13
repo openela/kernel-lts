@@ -19,7 +19,7 @@ View all releases here: (https://github.com/openela/kernel-lts/releases)
 
 # Getting Updates about New Kernel Releases
 
-[Subscribe to kernel-lts@openela.org](https://groups.google.com/a/openela.org/g/kernel-lts) for updates to kernels 
+Subscribe to kernel-lts@openela.org by sending mail to [kernel-lts+subscribe@openela.org](mailto:kernel-lts+subscribe@openela.org). 
 
 # Contributing to kernel-lts
 
