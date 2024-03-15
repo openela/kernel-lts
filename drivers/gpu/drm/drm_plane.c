@@ -1077,6 +1077,7 @@ retry:
 out:
 	if (fb)
 		drm_framebuffer_put(fb);
+	fb = NULL;
 	if (crtc->primary->old_fb)
 		drm_framebuffer_put(crtc->primary->old_fb);
 	crtc->primary->old_fb = NULL;
