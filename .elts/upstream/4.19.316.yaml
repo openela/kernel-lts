@@ -1,0 +1,830 @@
+bfaadbda9b75e4726783f8ca55ceac1fedbf2deb:
+  title: 'x86/tsc: Trust initial offset in architectural TSC-adjust MSRs'
+  mainline: 455f9075f14484f358b3c1d6845b4a438de198a7
+  skipped: commit did not cherry-pick cleanly
+42f0a3f67158ed6b2908d2b9ffbf7e96d23fd358:
+  title: 'speakup: Fix sizeof() vs ARRAY_SIZE() bug'
+  mainline: 008ab3c53bc4f0b2f20013c8f6c204a3203d0b8b
+  backport: 8bb6ee62c33b1f281b98b2dd19f1d7249a1ee5ab
+b50932ea673b5a089a4bb570a8a868d95c72854e:
+  title: 'ring-buffer: Fix a race between readers and resize checks'
+  mainline: c2274b908db05529980ec056359fae916939fdaa
+  backport: a43f1f02b3a93c9a2da8ea92e4d6509d0a61ebd8
+0ca720bd1834c4577426d1fb5a75faa19aa089bf:
+  title: 'net: smc91x: Fix m68k kernel compilation for ColdFire CPU'
+  mainline: 5eefb477d21a26183bc3499aeefa991198315a2d
+  skipped: fixes patch not in branch
+072980bc50626c4557694ce54e3f6f2bde02b6e0:
+  title: 'nilfs2: fix unexpected freezing of nilfs_segctor_sync()'
+  mainline: 936184eadd82906992ff1f5ab3aada70cce44cee
+  backport: 39d470c1d65655756f7bc56eef30977466000040
+911d38be151921a5d152bb55e81fd752384c6830:
+  title: 'nilfs2: fix potential hang in nilfs_detach_log_writer()'
+  mainline: eb85dace897c5986bc2f36b3c783c6abb8a4292e
+  backport: 6696ef522ef729e48bb88e624f4b450cc48d0008
+9513d4148950b05bc99fa7314dc883cc0e1605e5:
+  title: 'tty: n_gsm: fix possible out-of-bounds in gsm0_receive()'
+  mainline: 47388e807f85948eefc403a8a5fdc5b406a65d5a
+  backport: 478b032b9b295f6e4d224766b1d74f3f8d8015f5
+5099e30dde0caffa9f0e2c41d7327fc3ed987fd5:
+  title: 'wifi: cfg80211: fix the order of arguments for trace events of the tx_rx_evt class'
+  mainline: 9ef369973cd2c97cce3388d2c0c7e3c056656e8a
+  backport: 0e454ea0aef962c0bc28aaec416c987c472ee16f
+25468fffbbd2b0f06b4b12d79ff56cc5c40bfd1f:
+  title: 'net: usb: qmi_wwan: add Telit FN920C04 compositions'
+  mainline: 0b8fe5bd73249dc20be2e88a12041f8920797b59
+  backport: 52bed87bdd7ff234fbf08cffb5805fec3753a574
+074218a00cf59abff526b79dcd34d461ce81ae4c:
+  title: 'drm/amd/display: Set color_mgmt_changed to true on unsuspend'
+  mainline: 2eb9dd497a698dc384c0dd3e0311d541eb2e13dd
+  skipped: file is not in 4.14.y
+5c50d2e998143ce00c0629dcaabd73c3d962545c:
+  title: 'ASoC: rt5645: Fix the electric noise due to the CBJ contacts floating'
+  mainline: 103abab975087e1f01b76fcb54c91dbb65dbc249
+  backport: 1de2264213019b0e94512027fedda73173da635e
+5af06b6c57a9bbfa9bd5421e28bcd5c571c5821e:
+  title: 'ASoC: dt-bindings: rt5645: add cbj sleeve gpio property'
+  mainline: 306b38e3fa727d22454a148a364123709e356600
+  backport: f5822a115c534c96bcde99428ab661088e193a09
+6d2d2aaae1faa64c2f803d6f11f4b2df3b3c2cff:
+  title: 'ASoC: da7219-aad: fix usage of device_get_named_child_node()'
+  mainline: e8a6a5ad73acbafd98e8fd3f0cbf6e379771bb76
+  backport: 6c8dd658875782d45f021c5015b9ec9bf5f5ff87
+c256b616067bfd6d274c679c06986b78d2402434:
+  title: 'crypto: bcm - Fix pointer arithmetic'
+  mainline: 2b3460cbf454c6b03d7429e9ffc4fe09322eb1a9
+  backport: 8355ba0b459240e847584f780402073b8236df46
+b7277844e7e367381b2377853afceb58427cf6fb:
+  title: 'firmware: raspberrypi: Use correct device for DMA mappings'
+  mainline: df518a0ae1b982a4dcf2235464016c0c4576a34d
+  backport: 09020d6f62421e7fd4240279ff30dde78a0300bc
+1c125b9287e58f364d82174efb167414b92b11f1:
+  title: 'ecryptfs: Fix buffer size for tag 66 packet'
+  mainline: 85a6a1aff08ec9f5b929d345d066e2830e8818e5
+  backport: 78f8f3e6cf95446a03837bb11a67c4c2569ced32
+7610fd35b74211ab8def4e124095e600a1ae945b:
+  title: 'nilfs2: fix out-of-range warning'
+  mainline: c473bcdd80d4ab2ae79a7a509a6712818366e32a
+  backport: 7ee6938a59b80751d7919f67a3c4fb585d3829f6
+63d5a72afbd1505f180e81bc72e056ceea28b43b:
+  title: 'parisc: add missing export of __cmpxchg_u8()'
+  mainline: c57e5dccb06decf3cb6c272ab138c033727149b5
+  backport: 72d5387b60255610eb6fd5c18bb819fc39cc8917
+4b713a1581b17a94a21699165a20d82eb0eca2dc:
+  title: 'crypto: ccp - Remove forward declaration'
+  mainline: 3512dcb4e6c64733871202c01f0ec6b5d84d32ac
+  backport: 7eb7c75444aa358909836ea7ff4f692a53b199f9
+ce8f89223c9552d18b118596a85fd6cc237bc0e9:
+  title: 'crypto: ccp - drop platform ifdef checks'
+  mainline: 42c2d7d02977ef09d434b1f5b354f5bc6c1027ab
+  backport: afb1d97ca2b2cdfa5f46e8eb9fc37934349bc34e
+77edda3c53d696fa30fa0352e18aad485716ffad:
+  title: 's390/cio: fix tracepoint subchannel type field'
+  mainline: 8692a24d0fae19f674d51726d179ad04ba95d958
+  skipped: fixes patch not in branch
+2904e1d9b64f72d291095e3cbb31634f08788b11:
+  title: 'jffs2: prevent xattr node from overflowing the eraseblock'
+  mainline: c6854e5a267c28300ff045480b5a7ee7f6f1d913
+  backport: 7375909839424727552bd0bb2022ca3db5c6ffe8
+54ee1f7e2ea06e5c5341dc54255881fa5d11b312:
+  title: 'null_blk: Fix missing mutex_destroy() at module removal'
+  mainline: 07d1b99825f40f9c0d93e6b99d79a08d0717bac1
+  backport: a28a74b9a53b5b25cde8cfbea4c071f7a1c9beed
+d4b9c764d48fa41caa24cfb4275f3aa9fb4bd798:
+  title: 'md: fix resync softlockup when bitmap size is less than array size'
+  mainline: f0e729af2eb6bee9eb58c4df1087f14ebaefe26b
+  skipped: fixes patch not in branch
+eb984e08100e42c20f05e425590ee1e78e092b9d:
+  title: 'power: supply: cros_usbpd: provide ID table for avoiding fallback match'
+  mainline: 0f8678c34cbfdc63569a9b0ede1fe235ec6ec693
+  skipped: file is not in 4.14.y
+52d3370e8022ce28cd8cf4d16c09245aa683d7fb:
+  title: 'nfsd: drop st_mutex before calling move_to_close_lru()'
+  mainline: 56c35f43eef013579c76c007ba1f386d8c2cac14
+  backport: 520ccb81e3976c1c21d19d43265958faad0aee46
+54e3970b1848856e49f8cd08751dcb010ac3296b:
+  title: 'wifi: ath10k: poll service ready message before failing'
+  mainline: e57b7d62a1b2f496caf0beba81cec3c90fad80d5
+  backport: 6faa6059493e8a857fe5c3b5e12a3ceec730cda3
+2487db16d4b9faead07b7825d33294e9e783791d:
+  title: 'x86/boot: Ignore relocations in .notes sections in walk_relocs() too'
+  mainline: 76e9762d66373354b45c33b60e9a53ef2a3c5ff2
+  backport: a2c3254bc18b8f7bea19a00d8e7ea4ec52e941c1
+6780fe28e415c84f81ee7fc30027e57105f0b136:
+  title: 'qed: avoid truncating work queue length'
+  mainline: 954fd908f177604d4cce77e2a88cc50b29bad5ff
+  skipped: fixes patch not in branch
+e6bfc88b60f0874a00b22f243a94a5e8601d5039:
+  title: 'scsi: ufs: qcom: Perform read back after writing reset bit'
+  mainline: c4d28e06b0c94636f6e35d003fa9ebac0a94e1ae
+  backport: 5b61b9cefdb45e69ab265050d603cdd30f3d089b
+ea2cebd3b66bffa2630e413553776a4dbdca641a:
+  title: 'scsi: ufs: cleanup struct utp_task_req_desc'
+  mainline: 391e388f853dad5d1d7462a31bb50ff2446e37f0
+  skipped: commit did not cherry-pick cleanly
+359975cbf2551e40130cc604e2753f65585b68d0:
+  title: 'scsi: ufs: add a low-level __ufshcd_issue_tm_cmd helper'
+  mainline: c6049cd98212dfe39f67fb411d18d53df0ad9436
+  skipped: commit did not cherry-pick cleanly
+bf144a2e3b5048e5a9e3baf19f54d5e865d578b4:
+  title: 'scsi: ufs: core: Perform read back after disabling interrupts'
+  mainline: e4a628877119bd40164a651d20321247b6f94a8b
+  backport: 936e250e7ec6cb3bad3a8aa3a699a625e62cb5a6
+8dfd79c1c31660549a03439d42794c138efa5432:
+  title: 'scsi: ufs: core: Perform read back after disabling UIC_COMMAND_COMPL'
+  mainline: 4bf3855497b60765ca03b983d064b25e99b97657
+  backport: c5a8d87d1f0792ab4f65cf240309a4effe22de01
+4654dfa98682444152aac9bcef50e0d5e114a135:
+  title: 'irqchip/alpine-msi: Fix off-by-one in allocation error path'
+  mainline: ff3669a71afa06208de58d6bea1cc49d5e3fcbd1
+  backport: 94707145849c4be8019d4f7b2cce86402f9f9127
+2e816914b5ba234c3815ca80bffd2f3b3a7de6b0:
+  title: 'ACPI: disable -Wstringop-truncation'
+  mainline: a3403d304708f60565582d60af4316289d0316a0
+  backport: 96f2e9bb5b58c10a84e2a0064c7dc88cdcfff4d8
+2d8f31aa03df040c58a2e4a0382b96269c1bf96a:
+  title: 'scsi: libsas: Fix the failure of adding phy with zero-address to port'
+  mainline: 06036a0a5db34642c5dbe22021a767141f010b7a
+  backport: 8734c83b6dae36fbe4d97f42409e04459426858c
+9fc44d44b3b8eadd8b797462c733eb6c63598e6f:
+  title: 'scsi: hpsa: Fix allocation size for Scsi_Host private data'
+  mainline: 504e2bed5d50610c1836046c0c195b0a6dba9c72
+  backport: 784e2dc0d9be9b2e2ff8e3d05713f4d82895a489
+8b434681a6e7b2cae1452f1932d59c069236e9d2:
+  title: 'x86/purgatory: Switch to the position-independent small code model'
+  mainline: cba786af84a0f9716204e09f518ce3b7ada8555e
+  skipped: fixes patch not in branch
+569da482fdec15251ff113462717182d85bd1665:
+  title: 'wifi: ath10k: Fix an error code problem in ath10k_dbg_sta_write_peer_debug_trigger()'
+  mainline: c511a9c12674d246916bb16c479d496b76983193
+  backport: 6541bba29a4584f20a372e98ca07659b1b971c3e
+7020f6ad57cfd532a106542c2015710170270d21:
+  title: 'wifi: ath10k: populate board data for WCN3990'
+  mainline: f1f1b5b055c9f27a2f90fd0f0521f5920e9b3c18
+  skipped: fixes patch not in branch
+880897e8a5ade054a04575e5d8cc2666da415ab4:
+  title: 'macintosh/via-macii: Remove BUG_ON assertions'
+  mainline: 5f93d7081a47e1972031ccf57c4b2779eee162fb
+  backport: d85d76f39ef8f74c3ce4b2084bc1d56b90f808ce
+d0aa752285c9a35ee1ae0f2a4da10c5ceb6c09b6:
+  title: 'macintosh/via-macii, macintosh/adb-iop: Clean up whitespace'
+  mainline: 47fd2060660e62b169990a6fcd9eb61bc1a85c5c
+  backport: fad0ed0dd7bf14e6c89489e1db0486828e45f563
+e4ff8bcfb2841fe4e17e5901578b632adb89036d:
+  title: 'macintosh/via-macii: Fix "BUG: sleeping function called from invalid context"'
+  mainline: d301a71c76ee4c384b4e03cdc320a55f5cf1df05
+  backport: 82b5124ff8448c3b27d5cf963d835806a4ec8726
+eb0f2fc3ff5806cc572cd9055ce7c52a01e97645:
+  title: 'wifi: carl9170: add a proper sanity check for endpoints'
+  mainline: b6dd09b3dac89b45d1ea3e3bd035a3859c0369a0
+  backport: e6c959db704b9f17b53d0d695ac791ddb180649b
+79ddf5f2020fd593d50f1363bb5131283d74f78f:
+  title: 'wifi: ar5523: enable proper endpoint verification'
+  mainline: e120b6388d7d88635d67dcae6483f39c37111850
+  backport: 0e282a437be278b5a28b5de56553710ca304877a
+8ed15460d8bbc517bf54b24c7694e6c0ff174968:
+  title: 'sh: kprobes: Merge arch_copy_kprobe() into arch_prepare_kprobe()'
+  mainline: 1422ae080b66134fe192082d9b721ab7bd93fcc5
+  backport: 08d55870d721795f5ca9affb641a9d77a5cde478
+3c37203af733254154602273a970cfb7400c223e:
+  title: 'Revert "sh: Handle calling csum_partial with misaligned data"'
+  mainline: b5319c96292ff877f6b58d349acf0a9dc8d3b454
+  backport: 3d986276f8b5fa0dc170e1b35f0659b9ba4b2cd0
+481fc0c8617304a67649027c4a44723a139a0462:
+  title: 'scsi: bfa: Ensure the copied buf is NUL terminated'
+  mainline: 13d0cecb4626fae67c00c84d3c7851f6b62f7df3
+  backport: 2461969d18d1b3a8ca40c5203819221813d2fa47
+1f84a2744ad813be23fc4be99fb74bfb24aadb95:
+  title: 'scsi: qedf: Ensure the copied buf is NUL terminated'
+  mainline: d0184a375ee797eb657d74861ba0935b6e405c62
+  backport: c2d34a41a30021d6947d93dee2373e98416296b8
+6bc4e51e8d8451d40ec092d01119287af2acffcf:
+  title: 'wifi: mwl8k: initialize cmd->addr[] properly'
+  mainline: 1d60eabb82694e58543e2b6366dae3e7465892a5
+  backport: ceee9c23ca78be8cbe0b677623554c14da4a8ffe
+c0aff9978bb6ead0aec382a2645a563a3dd2df38:
+  title: 'net: usb: sr9700: stop lying about skb->truesize'
+  mainline: 05417aa9c0c038da2464a0c504b9d4f99814a23b
+  backport: 2341a1b273189a5673cfbb6a5badecca8e25d24a
+2a8d1d95302c7d52c6ac8fa5cb4a6948ae0d3a14:
+  title: 'm68k: Fix spinlock race in kernel thread creation'
+  mainline: da89ce46f02470ef08f0f580755d14d547da59ed
+  backport: 314fdca9aa1eac5417fd9621bf4ebbacfd100e75
+c96430d59c71a0e5c641b5267ccf141c501fe15e:
+  title: 'm68k/mac: Use ''030 reset method on SE/30'
+  mainline: 9c0e91f6b701dce6902408d50c4df9cebe4744f5
+  backport: 4e23b79c4b130dd3049e3c0001d4926dcfacded5
+8055e882c57031a5ca7fbf278796c19ded9f9d6f:
+  title: 'm68k: mac: Fix reboot hang on Mac IIci'
+  mainline: 265a3b322df9a973ff1fc63da70af456ab6ae1d6
+  backport: 3d47f159d4991609f1a71bb15683f1b8cac8d2a8
+0a60bdd5ac8a51ac9c04bd19fee30c1c4f178dc3:
+  title: 'net: ethernet: cortina: Locking fixes'
+  mainline: 812552808f7ff71133fc59768cdc253c5b8ca1bf
+  skipped: fixes patch not in branch
+fca6072e1a7b1e709ada5604b951513b89b4bd0a:
+  title: 'af_unix: Fix data races in unix_release_sock/unix_stream_sendmsg'
+  mainline: 540bf24fba16b88c1b3b9353927204b4f1074e25
+  backport: be1d9f0e9de4ae6b3c0baed5547aa84be06f6548
+1010b50b2ebaaa863baeba7572267ac39bbb7adb:
+  title: 'net: usb: smsc95xx: stop lying about skb->truesize'
+  mainline: d50729f1d60bca822ef6d9c1a5fb28d486bd7593
+  backport: 16d0a15317ccdd42565ee3b0b4414f7134f414ba
+6a51ac92bf35d34b4996d6eb67e2fe469f573b11:
+  title: 'net: openvswitch: fix overwriting ct original tuple for ICMPv6'
+  mainline: 7c988176b6c16c516474f6fceebe0f055af5eb56
+  backport: d84c07f0a36edfbb017f66723aff19b75408ec6a
+9acb7ed4ff0e57b29326768aa8780f2ba2310090:
+  title: 'ipv6: sr: add missing seg6_local_exit'
+  mainline: 3321687e321307629c71b664225b861ebf3e5753
+  backport: e990bf08d73df105508439d775a40706fa34e4da
+d55cf7ced48c5054a79829a0b14203710006a277:
+  title: 'ipv6: sr: fix incorrect unregister order'
+  mainline: 6e370a771d2985107e82d0f6174381c1acb49c20
+  backport: 32cc76dc98c3a167b25dfe1548848036fc07d834
+10610575a3ac2a702bf5c57aa931beaf847949c7:
+  title: 'ipv6: sr: fix invalid unregister error path'
+  mainline: 160e9d2752181fcf18c662e74022d77d3164cd45
+  backport: a7eb748e89ec4c74a795fd32380019f21ae75895
+604c506ca43fce52bb882cff9c1fdf2ec3b4029c:
+  title: 'drm/amd/display: Fix potential index out of bounds in color transformation function'
+  mainline: 63ae548f1054a0b71678d0349c7dc9628ddd42ca
+  skipped: fixes patch not in branch
+80850a39e2548988f4feae26f3fd66286b460278:
+  title: 'mtd: rawnand: hynix: fixed typo'
+  mainline: 6819db94e1cd3ce24a432f3616cd563ed0c4eaba
+  backport: 73bc0203a1791e5252c190a016d46502406d53f0
+f6100ea560ed320a397d99aad6ad6918f0f1a70a:
+  title: 'fbdev: shmobile: fix snprintf truncation'
+  mainline: 26c8cfb9d1e4b252336d23dd5127a8cbed414a32
+  backport: 4ba8a5fa126c85d319a0f1c773a15c04dde7d74c
+79078880795478d551a05acc41f957700030d364:
+  title: 'drm/mediatek: Add 0 size check to mtk_drm_gem_obj'
+  mainline: 1e4350095e8ab2577ee05f8c3b044e661b5af9a0
+  backport: 43f9acac76b1661328292b13c57936252536a7ee
+b798cfeea12ebfd74c4bba511deb02956c97789e:
+  title: 'powerpc/fsl-soc: hide unused const variable'
+  mainline: 01acaf3aa75e1641442cc23d8fe0a7bb4226efb1
+  backport: 27a754ac9d1b146c6690b8cc566be4df02028430
+6891334b1458739701885fef2909daef754654fa:
+  title: 'fbdev: sisfb: hide unused variables'
+  mainline: 688cf598665851b9e8cb5083ff1d208ce43d10ff
+  skipped: fixes patch not in branch
+7394bab35c51cead246ef50d8c2e699e36032aed:
+  title: 'media: ngene: Add dvb_ca_en50221_init return value check'
+  mainline: 9bb1fd7eddcab2d28cfc11eb20f1029154dac718
+  backport: a36a6656bdcc519ee8206e91a484c9545e41c428
+cbc12c9693fad0545fb0e753d78979026ae0772a:
+  title: 'media: radio-shark2: Avoid led_names truncations'
+  mainline: 1820e16a3019b6258e6009d34432946a6ddd0a90
+  backport: 83fe7e17269e69bb85c5dcde3543fe69a7d14907
+74bafc897cb6c83b29c66cb39e82936204a5e51f:
+  title: 'fbdev: sh7760fb: allow modular build'
+  mainline: 51084f89d687e14d96278241e5200cde4b0985c7
+  backport: d1bafe8dbdd69b5b94c648616261b10f89e9e634
+b6cc5dd06336ed8bb3a7a1fc5aaf7d5e88bc0818:
+  title: 'drm/arm/malidp: fix a possible null pointer dereference'
+  mainline: a1f95aede6285dba6dd036d907196f35ae3a11ea
+  skipped: fixes patch not in branch
+60c68092723ea420215e9c3d5530038bc6568739:
+  title: 'ASoC: tracing: Export SND_SOC_DAPM_DIR_OUT to its value'
+  mainline: 58300f8d6a48e58d1843199be743f819e2791ea3
+  backport: 8b76f73f5124b83712d6cdcb3ef990263e40c5f0
+9b7b7f640f078cfe90319190b59efcde3acc1952:
+  title: 'RDMA/hns: Use complete parentheses in macros'
+  mainline: 4125269bb9b22e1d8cdf4412c81be8074dbc61ca
+  skipped: fixes patch not in branch
+ef10bbdf4d59a98cf57ddf943756f14ef3cdbccd:
+  title: 'x86/insn: Fix PUSH instruction in x86 instruction decoder opcode map'
+  mainline: 59162e0c11d7257cde15f907d19fefe26da66692
+  backport: e39747d5b28a334d3aa4a7d53db14f9f30390923
+1f9e32f9ea3454f79d80c8af7fac54843beba7f6:
+  title: 'ext4: avoid excessive credit estimate in ext4_tmpfile()'
+  mainline: 35a1f12f0ca857fee1d7a04ef52cbd5f1f84de13
+  backport: 668cfe934e0081e60581269d5afab127489cdfda
+ab8466d4e26806a4ae82c282762c4545eecf45ef:
+  title: 'SUNRPC: Fix gss_free_in_token_pages()'
+  mainline: bafa6b4d95d97877baa61883ff90f7e374427fae
+  skipped: fixes patch not in branch
+32b0469d13ebeb008b39613eb5acf529a10e0bde:
+  title: 'selftests/kcmp: Make the test output consistent and clear'
+  mainline: ff682226a353d88ffa5db9c2a9b945066776311e
+  backport: 0f0c8dcfaaff549a0397d3e63ec093c2ff6d602d
+24331545d6ff749a8dbfb09925af86e8cc50dad5:
+  title: 'selftests/kcmp: remove unused open mode'
+  mainline: eb59a58113717df04b8a8229befd8ab1e5dbf86e
+  backport: eea262830c62f8856fed4c532b5598f83c2972a9
+b469345f1fca84bed4dea3cae85faa401cf9bf3e:
+  title: 'RDMA/IPoIB: Fix format truncation compilation errors'
+  mainline: 49ca2b2ef3d003402584c68ae7b3055ba72e750a
+  backport: 183cb1a936e35c5ae205498945addd70a31a61e0
+b9d663fbf74290cb68fbc66ae4367bd56837ad1d:
+  title: 'netrom: fix possible dead-lock in nr_rt_ioctl()'
+  mainline: e03e7f20ebf7e1611d40d1fdc1bde900fd3335f6
+  backport: 08f41b353c1621f65bd6f61aa5f5aed2fc1feb11
+4f3ae7d846b4565c0b80d65ed607c3277bc984d4:
+  title: 'af_packet: do not call packet_read_pending() from tpacket_destruct_skb()'
+  mainline: 581073f626e387d3e7eed55c48c8495584ead7ba
+  backport: 79417a25cb5eb9644fe89e5aae703a6b591669d5
+046daa54c348ccec12ab38b92923060dd09ef00b:
+  title: 'sched/topology: Don''t set SD_BALANCE_WAKE on cpuset domain relax'
+  mainline: 9ae7ab20b4835dbea0e5fc6a5c70171dc354a72e
+  backport: 03baaba21b3291e6300e4fafb8d2849f0389de3d
+454de5ed81766fbbf4777c43392d8b0b35e7e16d:
+  title: 'sched/fair: Allow disabling sched_balance_newidle with sched_relax_domain_level'
+  mainline: a1fd0b9d751f840df23ef0e75b691fc00cfd4743
+  backport: cd212b4b364b6efe32441d764cabaef2402c8eba
+8f4a76d477f0cc3c54d512f07f6f88c8e1c1e07b:
+  title: 'greybus: lights: check return of get_channel_from_mode'
+  mainline: a1ba19a1ae7cd1e324685ded4ab563e78fe68648
+  backport: 8d680792eafdefb9e3e547a305a505da085932ff
+12c70cc851b263b8cc9479a23488992eeb4c35e6:
+  title: 'dmaengine: idma64: Add check for dma_set_max_seg_size'
+  mainline: 2b1c1cf08a0addb6df42f16b37133dc7a351de29
+  backport: 0d0f766835c349005332fd8e7b296660a7d6a65a
+20595142ca22ac2c8357564d9e7d52a0ffa471af:
+  title: 'firmware: dmi-id: add a release callback function'
+  mainline: cf770af5645a41a753c55a053fa1237105b0964a
+  backport: e9c8e448b86118386e2aed7e3bb0e02fdbb68d14
+44b38924135d2093e2ec1812969464845dd66dc9:
+  title: 'serial: max3100: Lock port->lock when calling uart_handle_cts_change()'
+  mainline: 77ab53371a2066fdf9b895246505f5ef5a4b5d47
+  backport: bcbacbcfd59ba38747a001592ffb3aae1118e5de
+21a61a7fbcfdd3493cede43ebc7c4dfae2147a8b:
+  title: 'serial: max3100: Update uart_driver_registered on driver removal'
+  mainline: 712a1fcb38dc7cac6da63ee79a88708fbf9c45ec
+  backport: c6cf8b544d9ca71186322b2ede24e7ded577381a
+2ae8d5726526c05452aff0444b0f305fdf89a32d:
+  title: 'serial: max3100: Fix bitwise types'
+  mainline: e60955dbecb97f080848a57524827e2db29c70fd
+  backport: 647c442cedd75f319c8ce8dc039c2d7baec68317
+22e65ed6799f2bfd059d633890d6c7ebe46abc9b:
+  title: 'greybus: arche-ctrl: move device table to its right location'
+  mainline: 6a0b8c0da8d8d418cde6894a104cf74e6098ddfa
+  backport: 89f965ae0a3f751235963e2597c63fd9ce035113
+2822594f2dac6e493379885cef54fd179d8de8c5:
+  title: 'microblaze: Remove gcc flag for non existing early_printk.c file'
+  mainline: edc66cf0c4164aa3daf6cc55e970bb94383a6a57
+  skipped: fixes patch not in branch
+d481ddb83d2d92c31479cdfaa7fdd97a73697992:
+  title: 'microblaze: Remove early printk call from cpuinfo-static.c'
+  mainline: 58d647506c92ccd3cfa0c453c68ddd14f40bf06f
+  skipped: fixes patch not in branch
+a646645af00f65db78fe4a60f753f2b07df35b6e:
+  title: 'usb: gadget: u_audio: Clear uac pointer when freed.'
+  mainline: a2cf936ebef291ef7395172b9e2f624779fb6dc0
+  backport: 0328af15e33a89109f97c8abcce2119896607fb4
+6cc30ef8eb6d8f8d6df43152264bbf8835d99931:
+  title: 'stm class: Fix a double free in stm_register_device()'
+  mainline: 3df463865ba42b8f88a590326f4c9ea17a1ce459
+  backport: 5bbc7d325cef8fbd593fd8e71f12343c47028be1
+1e4805ba1b7800f2acfdd0b2e6588e4b64d6c493:
+  title: 'ppdev: Remove usage of the deprecated ida_simple_xx() API'
+  mainline: d8407f71ebeaeb6f50bd89791837873e44609708
+  skipped: new API does not exist in 4.14
+65cd017d43f4319a56747d38308b0a24cf57299e:
+  title: 'ppdev: Add an error check in register_device'
+  mainline: fbf740aeb86a4fe82ad158d26d711f2f3be79b3e
+  backport: 16e15c7fd21ec24f98668e5a7bf28ef5c1a0fcaa
+b463819e3725b60c550145df952080b5d0fe85a7:
+  title: 'extcon: max8997: select IRQ_DOMAIN instead of depending on it'
+  mainline: b1781d0a1458070d40134e4f3412ec9d70099bec
+  backport: d1e6203d776319b888b57b1176df438ee85e67f7
+3506e1b893b5c2afa96922f36a01f018e4c4bbba:
+  title: 'f2fs: add error prints for debugging mount failure'
+  mainline: 9227d5227b8db354d386f592f159eaa44db1c0b8
+  backport: 46dc390d5714351d5b798312f8edf666e327a1ef
+bc14bb3ef307947fc3110bca8a34a85a63300b6c:
+  title: 'f2fs: fix to release node block count in error path of f2fs_new_node_page()'
+  mainline: 0fa4e57c1db263effd72d2149d4e21da0055c316
+  skipped: fixes patch not in branch
+82b6263b330a2b94a0b1d5c5d5543db7e24340ec:
+  title: 'serial: sh-sci: Extract sci_dma_rx_chan_invalidate()'
+  mainline: 11b3770d54b28dcd905155a6d4aa551187ff00eb
+  skipped: dependency for a patch not needed for 4.14.y
+03023fd058fab714309a8d91ccdf1b3c5bb816d3:
+  title: 'serial: sh-sci: protect invalidating RXDMA on shutdown'
+  mainline: aae20f6e34cd0cbd67a1d0e5877561c40109a81b
+  skipped: fixes patch not in branch
+3625187a973f16a3df59b803297816fe51d32400:
+  title: 'libsubcmd: Fix parse-options memory leak'
+  mainline: 230a7a71f92212e723fa435d4ca5922de33ec88a
+  backport: 3fa32fd0a2737a59698613854994f72051a6d4bb
+502f295dcccf0ee7c4bddcf1ff2876987aaf89ca:
+  title: 'Input: ims-pcu - fix printf string overflow'
+  mainline: bf32bceedd0453c70d9d022e2e29f98e446d7161
+  backport: 41c0d9061a68f5979e3244c26854cef37d91382b
+fd4bb5284d34687c82356f07efe957af89ee51fe:
+  title: 'Input: pm8xxx-vibrator - correct VIB_MAX_LEVELS calculation'
+  mainline: 48c0687a322d54ac7e7a685c0b6db78d78f593af
+  backport: 7dfc577218ae7aeeadc5bdffe5727d57337904ee
+732e700a1689fbdb8ac94faeb7765e81456b0a95:
+  title: 'drm/msm/dpu: use kms stored hw mdp block'
+  mainline: 57250ca5433306774e7f83b11503609ed1bf28cf
+  skipped: file is not in 4.14.y
+d2640251f94078e1dcf0a26b1815601f6dbd5440:
+  title: 'um: Fix return value in ubd_init()'
+  mainline: 31a5990ed253a66712d7ddc29c92d297a991fdf2
+  backport: bb75c00bad0d04025b00991fe16db2fc0504ce58
+66ea9a7c6824821476914bed21a476cd20094f33:
+  title: 'um: Add winch to winch_handlers before registering winch IRQ'
+  mainline: a0fbbd36c156b9f7b2276871d499c9943dfe5101
+  backport: 330646466ce0f4978524457d109ac80ece62c547
+f6a392266276730bea893b55d12940e32a25f56a:
+  title: 'media: stk1160: fix bounds checking in stk1160_copy_video()'
+  mainline: faa4364bef2ec0060de381ff028d1d836600a381
+  backport: b7d9420c157cdb207a95dfc4a40edd116dedf355
+f0f4cb4cc3f43324bab3b5541b27e79cbd15c8d1:
+  title: 'powerpc/pseries: Add failure related checks for h_get_mpp and h_get_ppp'
+  mainline: 6d4341638516bf97b9a34947e0bd95035a8230a5
+  backport: cd05d6e21092d824ec4d37f39f7583310d0442fa
+c08650c13bfc05794855480cc51075fdfcc388e0:
+  title: 'um: Fix the -Wmissing-prototypes warning for __switch_mm'
+  mainline: 2cbade17b18c0f0fd9963f26c9fc9b057eb1cb3a
+  backport: d6c506b111a38e5583e5bdd880cc0c04d7ef3948
+896dfd4d74f84c854d3a24d889e54a44329d313e:
+  title: 'media: cec: cec-adap: always cancel work in cec_transmit_msg_fh'
+  mainline: 9fe2816816a3c765dff3b88af5b5c3d9bbb911ce
+  skipped: fixes patch not in branch
+d2cfbc5298add5e0c6cfe8b343f73dfdf01c8b1c:
+  title: 'media: cec: cec-api: add locking in cec_release()'
+  mainline: 42bcaacae924bf18ae387c3f78c202df0b739292
+  backport: 75fd6535ba80c0726e31004af666d80a0b9c3df8
+7471d0be031ab830a0fa154437601cff98f7068b:
+  title: 'null_blk: Fix the WARNING: modpost: missing MODULE_DESCRIPTION()'
+  mainline: 9e6727f824edcdb8fdd3e6e8a0862eb49546e1cd
+  backport: 9da7f2b727fd54add9890e238847acf82d6807a1
+28a7a1f9571068bb2ddc8a11f0afe5dfa9863462:
+  title: 'x86/kconfig: Select ARCH_WANT_FRAME_POINTERS again when UNWINDER_FRAME_POINTER=y'
+  mainline: 66ee3636eddcc82ab82b539d08b85fb5ac1dff9b
+  backport: 4e00769cc5020fde90269bdd1e5c24302b0ba6ce
+406cfac9debd4a6d3dc5d9258ee086372a8c08b6:
+  title: 'nfc: nci: Fix uninit-value in nci_rx_work'
+  mainline: e4a87abf588536d1cdfb128595e6e680af5cf3ed
+  backport: 3327ed68607e86e489af26305145830bf3f299a6
+afd5730969aec960a2fee4e5ee839a6014643976:
+  title: 'ipv6: sr: fix memleak in seg6_hmac_init_algo'
+  mainline: efb9f4f19f8e37fde43dfecebc80292d179f56c6
+  backport: 2d5acfc9e45f4597b931857dd92d2f29d2382ad7
+459de98d7a6b3d504b5e8664f32f59a306dd425c:
+  title: 'params: lift param_set_uint_minmax to common code'
+  mainline: 2a14c9ae15a38148484a128b84bff7e9ffd90d68
+  backport: 45e0b129726564750a58c06f1b4060b23f158960
+06d0fe049b51b0a92a70df8333fd85c4ba3eb2c6:
+  title: 'tcp: Fix shift-out-of-bounds in dctcp_update_alpha().'
+  mainline: 3ebc46ca8675de6378e3f8f40768e180bb8afa66
+  backport: cf1096a1c8e1905df5e69949153c2598060457f0
+62a95de44a9bc006e01b0afa1b1e8868dc6de9d1:
+  title: 'openvswitch: Set the skbuff pkt_type for proper pmtud support.'
+  mainline: 30a92c9e3d6b073932762bef2ac66f4ee784c657
+  backport: a629b0579dee6b041fdcad1859fa9f6a86da4ced
+f221bd58db0f6ca087ac0392284f6bce21f4f8ea:
+  title: 'arm64: asm-bug: Add .align 2 to the end of __BUG_ENTRY'
+  mainline: ffbf4fb9b5c12ff878a10ea17997147ea4ebea6f
+  backport: 0374a08aa5206c6200a88e0a122500dfd1d195f0
+cb7a7c8144b434e06aba99b13b045a7efe859587:
+  title: 'virtio: delete vq in vp_find_vqs_msix() when request_irq() fails'
+  mainline: 89875151fccdd024d571aa884ea97a0128b968b6
+  backport: 63c5945dbfcb8b6f4c260aef57172893a15ebbb3
+4e4efb8f1b275e85c5c7f69087e392dbae437a8d:
+  title: 'net: fec: avoid lock evasion when reading pps_enable'
+  mainline: 3b1c92f8e5371700fada307cc8fd2c51fa7bc8c1
+  backport: 76ff93a5ccf6378571ba77875039f77752ac8a33
+c6c938ef515733a1c7af2c87dbc23138f402ba97:
+  title: 'nfc: nci: Fix kcov check in nci_rx_work()'
+  mainline: 19e35f24750ddf860c51e51c68cf07ea181b4881
+  backport: 3267e236cb890a2ff6450ba831f3ad66386d6c4b
+8f02d494cebae48dbd14c582ad4b36846e211b6a:
+  title: 'nfc: nci: Fix handling of zero-length payload packets in nci_rx_work()'
+  mainline: 6671e352497ca4bb07a96c48e03907065ff77d8a
+  backport: 1a7a9cc0bb2c966cb7edee4a47dc81053e9030d8
+8658bd777cbfcb0c13df23d0ea120e70517761b9:
+  title: 'netfilter: nfnetlink_queue: acquire rcu_read_lock() in instance_destroy_rcu()'
+  mainline: dc21c6cc3d6986d938efbf95de62473982c98dec
+  backport: ac335a5fe30958ed4c81fac6b76e4b6c77f6f95d
+c7893975764ba3b7a58a186f63dae188f7eddb18:
+  title: 'spi: Don''t mark message DMA mapped when no transfer in it is'
+  mainline: 9f788ba457b45b0ce422943fcec9fa35c4587764
+  backport: 0a359294f4d22e037ff38999b1fdaa688aab6e5f
+36a935c8785a9ca95b094440a0450cd56b90e70c:
+  title: 'nvmet: fix ns enable/disable possible hang'
+  mainline: f97914e35fd98b2b18fb8a092e0a0799f73afdfe
+  backport: 5584ee5ae01187bdcb286738c27d8cecf7c2b92d
+19f9b6cb94eebb4ef2a4a6bca0ef595039d73e04:
+  title: 'net/mlx5e: Use rx_missed_errors instead of rx_dropped for reporting buffer exhaustion'
+  mainline: 5c74195d5dd977e97556e6fa76909b831c241230
+  backport: d6e67757cebbeb5857838f51e2c514a3c9fc5557
+1ff116f68560a25656933d5a18e7619cb6773d8a:
+  title: 'dma-buf/sw-sync: don''t enable IRQ from sync_print_obj()'
+  mainline: b794918961516f667b0c745aebdfebbb8a98df39
+  backport: 5beeab6917b9b59ab2c15744b190b3ad93c58687
+2b649d7e0cb42a660f0260ef25fd55fdc9c6c600:
+  title: 'enic: Validate length of nl attributes in enic_set_vf_port'
+  mainline: e8021b94b0412c37bcc79027c2e382086b6ce449
+  backport: 3d00c58ac6d7f0fa0882aafb5b1ca2c3c22838eb
+eced17c8715d43ce16f61c5a6a49299fbf37c0a0:
+  title: 'smsc95xx: remove redundant function arguments'
+  mainline: 368be1ca28f66deba16627e2a02e78adedd023a6
+  backport: d7936abfc24afa29d587b2bdd0829092dc478ebf
+bcc526fec891dee22162082b1beeb9068b9eabb0:
+  title: 'smsc95xx: use usbnet->driver_priv'
+  mainline: ad90a73f0236c41f7a2dedc2e75c7b5a364eb93e
+  backport: 17ddb0fdf87c7f3f7c07e2721f688301411d2792
+85b6bcf9d5e332aa9c4b7820cb3aa748c3df6a80:
+  title: 'net: usb: smsc95xx: fix changing LED_SEL bit value updated from EEPROM'
+  mainline: 52a2f0608366a629d43dacd3191039c95fef74ba
+  backport: e0bd5cab3be56a1437e713a5411c458b80fa039c
+416b0756721dcee2bb6227a4403e694011c32874:
+  title: 'net:fec: Add fec_enet_deinit()'
+  mainline: bf0497f53c8535f99b72041529d3f7708a6e2c0d
+  backport: 4c2d953d579bbc6018f916d7474ca42a0ea2471f
+6bfda3ef7f6a2c1de30e70d67e901aa966f40c17:
+  title: 'kconfig: fix comparison to constant symbols, ''m'', ''n'''
+  mainline: aabdc960a283ba78086b0bf66ee74326f49e218e
+  backport: c00f30ffce7c99732b9610771908b84af2f7e95a
+0049a623dfbbb49888de7f0c2f33a582b5ead989:
+  title: 'ipvlan: Dont Use skb->sk in ipvlan_process_v{4,6}_outbound'
+  mainline: b3dc6e8003b500861fa307e9a3400c52e78e4d3a
+  backport: 3a016fed8503f04152b170bc324fd7fbbfb155e4
+68396c825c43664b20a3a1ba546844deb2b4e48f:
+  title: 'ALSA: timer: Set lower bound of start tick time'
+  mainline: 4a63bd179fa8d3fcc44a0d9d71d941ddd62f0c4e
+  backport: 804b59ac965568b4ac7b1788ba8b3b324e362693
+a40209d355afe4ed6d533507838c9e5cd70a76d8:
+  title: 'genirq/cpuhotplug, x86/vector: Prevent vector leak during CPU offline'
+  mainline: a6c11c0a5235fb144a65e0cb2ffd360ddc1f6c32
+  skipped: too risky to backport
+57ff6c0a175930856213b2aa39f8c845a53e5b1c:
+  title: 'SUNRPC: Fix loop termination condition in gss_free_in_token_pages()'
+  mainline: 4a77c3dead97339478c7422eb07bf4bf63577008
+  skipped: fixes patch not in branch
+c437184be3c16f7123e5c59b4c85c1101f4dc96b:
+  title: 'binder: fix max_thread type inconsistency'
+  mainline: 42316941335644a98335f209daafa4c122f28983
+  backport: f642f364e2b4e4302e6b41f1583603a9be83baef
+bda1d354bef71be32aaf2c5e6b96eef854b3dd4e:
+  title: 'mmc: core: Do not force a retune before RPMB switch'
+  mainline: 67380251e8bbd3302c64fea07f95c31971b91c22
+  backport: 5584cc5bd6c850f9738f7b249be3d298f0012a16
+822ae5a8eac30478578a75f7e064f0584931bf2d:
+  title: 'nilfs2: fix use-after-free of timer for log writer thread'
+  mainline: f5d4e04634c9cf68bdf23de08ada0bb92e8befe7
+  backport: 705fabd9032429d644eee84edc1d45f740edcc81
+f6141cbc2b5af521b1711e95363302b858a38729:
+  title: 'vxlan: Fix regression when dropping packets due to invalid src addresses'
+  mainline: 1cd4bc987abb2823836cbb8f887026011ccddc8a
+  backport: 7e6f3eaf97955faec6cf408b6404a35cf2c82ea0
+f451d1a013fd585cbf70a65ca6b9cf3548bb039f:
+  title: 'neighbour: fix unaligned access to pneigh_entry'
+  mainline: ed779fe4c9b5a20b4ab4fd6f3e19807445bb78c7
+  backport: 34358bf261de42b079db6cbd5ae3b074282cd00f
+21604179f67bd484790c296565bdc38f7a40fe35:
+  title: 'ata: pata_legacy: make legacy_exit() work again'
+  mainline: d4a89339f17c87c4990070e9116462d16e75894f
+  backport: 792524d8e1b344cedcb40983a8756d4793a22e9e
+40f76e72ec0ebe27dcff9bfd5de8e65e1a2b8939:
+  title: 'arm64: tegra: Correct Tegra132 I2C alias'
+  mainline: 2633c58e1354d7de2c8e7be8bdb6f68a0a01bad7
+  backport: aa9c43942fc69f5e652d6b4f68e0e2bf75868c7e
+b32aa95843cac6b12c2c014d40fca18aef24a347:
+  title: 'md/raid5: fix deadlock that raid5d() wait for itself to clear MD_SB_CHANGE_PENDING'
+  mainline: 151f66bb618d1fd0eeb84acb61b4a9fa5d8bb0fa
+  backport: d7263704edf4ee2783b116f64f407752d5b2f2bf
+e9b77b537a198235a518f71a274348afd1288467:
+  title: 'wifi: rtl8xxxu: Fix the TX power of RTL8192CU, RTL8723AU'
+  mainline: 08b5d052d17a89bb8706b2888277d0b682dc1610
+  skipped: u32_get_bits() does not build
+26e62b983a31b304733fb21f4b576a4a1e171297:
+  title: 'arm64: dts: hi3798cv200: fix the size of GICR'
+  mainline: 428a575dc9038846ad259466d5ba109858c0a023
+  backport: 964fdd7feb56e40a55b89328877b0a7103bb4084
+772f5e31ed2d6bc5e8698394e4d13b298060c74a:
+  title: 'media: mxl5xx: Move xpt structures off stack'
+  mainline: 526f4527545b2d4ce0733733929fac7b6da09ac6
+  backport: 35d3fa1859980a84c64c51b04a2ac57ffe5af109
+1ea3de272f5cc7603610b96316f9ed07bec6c2d0:
+  title: 'media: v4l2-core: hold videodev_lock until dev reg, finishes'
+  mainline: 1ed4477f2ea4743e7c5e1f9f3722152d14e6eeb1
+  backport: 2046df24d6472a520a62d52a72d84d180b3e363c
+be754cbd77eaf2932408a4e18532e4945274a5c7:
+  title: 'fbdev: savage: Handle err return when savagefb_check_var failed'
+  mainline: 6ad959b6703e2c4c5d7af03b4cfd5ff608036339
+  backport: 293140832f7230044b5f6888d0110714f51b554f
+525561faa075cb49905783fd3e4e16b66b218846:
+  title: 'netfilter: nf_tables: pass context to nft_set_destroy()'
+  mainline: 0c2a85edd143162b3a698f31e94bf8cdc041da87
+  backport: c4af59f2d8336214168c4e0778a1a0a62afcbdc4
+68b10f33a37e942bdc06b9cb313ad4e1b1f612e8:
+  title: 'netfilter: nftables: rename set element data activation/deactivation functions'
+  mainline: f8bb7889af58d8e74d2d61c76b1418230f1610fa
+  backport: b42c75cd69307b546b719cc59fb421a7c80a980f
+bc9f791d2593f17e39f87c6e2b3a36549a3705b1:
+  title: 'netfilter: nf_tables: drop map element references from preparation phase'
+  mainline: 628bd3e49cba1c066228e23d71a852c23e26da73
+  backport: 50bfcb0af95ae860d93c151604451b9a10af6e06
+c6d5477753caa9ab0c5c043bf5d0fad29d1e596d:
+  title: 'netfilter: nft_set_rbtree: allow loose matching of closing element in interval'
+  mainline: 3b18d5eba491b2328b31efa4235724a2354af010
+  skipped: fixes patch not in branch
+1302ba27fdc84ba0786301575dbcd2e1eddbcdc0:
+  title: 'netfilter: nft_set_rbtree: Add missing expired checks'
+  mainline: 340eaff651160234bdbce07ef34b92a8e45cd540
+  skipped: fixes patch not in branch
+7ab87a326f20c52ff4d9972052d085be951c704b:
+  title: 'netfilter: nft_set_rbtree: Switch to node list walk for overlap detection'
+  mainline: c9e6978e2725a7d4b6cd23b2facd3f11422c0643
+  skipped: fixes patch not in branch
+b76db53ee8802ee5683f8cb401d7e2ec6f9b3d56:
+  title: 'netfilter: nft_set_rbtree: fix null deref on element insertion'
+  mainline: 61ae320a29b0540c16931816299eb86bf2b66c08
+  skipped: fixes patch not in branch
+8284a79136c384059e85e278da2210b809730287:
+  title: 'netfilter: nft_set_rbtree: fix overlap expiration walk'
+  mainline: f718863aca469a109895cb855e6b81fff4827d71
+  skipped: fixes patch not in branch
+94313a196b44184b5b52c1876da6a537701b425a:
+  title: 'netfilter: nf_tables: don''t skip expired elements during walk'
+  mainline: 24138933b97b055d486e8064b4a1721702442a9b
+  backport: 4538b02484e4c2d0c016ca190c5219fd97f932fb
+8da1b048f9a501d3d7d38c188ba09d7d0d5b8c27:
+  title: 'netfilter: nf_tables: GC transaction API to avoid race with control plane'
+  mainline: 5f68718b34a531a556f2f50300ead2862278da26
+  skipped: too risky to backport
+cb4d00b563675ba8ff6ef94b077f58d816f68ba3:
+  title: 'netfilter: nf_tables: adapt set backend to use GC transaction API'
+  mainline: f6c383b8c31a93752a52697f8430a71dcbc46adf
+  skipped: too risky to backport
+a35a20e083be2b507c30cc216b59d1a57f381d9b:
+  title: 'netfilter: nf_tables: remove busy mark and gc batch API'
+  mainline: a2dd0233cbc4d8a0abb5f64487487ffc9265beb5
+  skipped: too risky to backport
+e7b86599fa945f3ce2bcbb95b4bbf1febbd3b087:
+  title: 'netfilter: nf_tables: fix GC transaction races with netns and netlink event exit path'
+  mainline: 6a33d8b73dfac0a41f3877894b38082bd0c9a5bc
+  skipped: too risky to backport
+9a3f450ed90c72b6b80fd6e8974cbe8683c7365f:
+  title: 'netfilter: nf_tables: GC transaction race with netns dismantle'
+  mainline: 02c6c24402bf1c1e986899c14ba22a10b510916b
+  skipped: too risky to backport
+f85ca36090cbb252bcbc95fc74c2853fc792694f:
+  title: 'netfilter: nf_tables: GC transaction race with abort path'
+  mainline: 720344340fb9be2765bbaab7b292ece0a4570eae
+  skipped: too risky to backport
+9c22bd1ab442c552e9481f1157589362887a7f47:
+  title: 'netfilter: nf_tables: defer gc run if previous batch is still pending'
+  mainline: 8e51830e29e12670b4c10df070a4ea4c9593e961
+  skipped: too risky to backport
+9db9feb841f7449772f9393c16b9ef4536d8c127:
+  title: 'netfilter: nft_set_rbtree: skip sync GC for new elements in this transaction'
+  mainline: 2ee52ae94baabf7ee09cf2a8d854b990dac5d0e4
+  skipped: too risky to backport
+b3558703731028be2aee61baf341e53a3734e2a9:
+  title: 'netfilter: nft_set_rbtree: use read spinlock to avoid datapath contention'
+  mainline: 96b33300fba880ec0eafcf3d82486f3463b4b6da
+  skipped: too risky to backport
+b6a744ba74f2388034c422f57568451bb6111d00:
+  title: 'netfilter: nft_set_hash: try later when GC hits EAGAIN on iteration'
+  mainline: b079155faae94e9b3ab9337e82100a914ebb4e8d
+  skipped: too risky to backport
+7cf055b43756b10aa2b851c927c940f5ed652125:
+  title: 'netfilter: nf_tables: fix memleak when more than 255 elements expired'
+  mainline: cf5000a7787cbc10341091d37245a42c119d26c5
+  skipped: too risky to backport
+88c795491bf45a8c08a0f94c9ca4f13722e51013:
+  title: 'netfilter: nf_tables: unregister flowtable hooks on netns exit'
+  mainline: 6069da443bf65f513bb507bb21e2f87cfb1ad0b6
+  skipped: fixes patch not in branch
+c73955a09408e7374d9abfd0e78ce3de9cda0635:
+  title: 'netfilter: nf_tables: double hook unregistration in netns path'
+  mainline: f9a43007d3f7ba76d5e7f9421094f00f2ef202f8
+  skipped: fixes patch not in branch
+2565d90ab654f775d8865512f2a6aa3940182038:
+  title: 'netfilter: nftables: update table flags from the commit phase'
+  mainline: 0ce7cf4127f14078ca598ba9700d813178a59409
+  skipped: too risky to backport
+bf8083bbf8fa202e6e5316bbd99759ab82bfe7a3:
+  title: 'netfilter: nf_tables: fix table flag updates'
+  mainline: 179d9ba5559a756f4322583388b3213fe4e391b0
+  skipped: too risky to backport
+746523b4a3927fb922c82a6e997c4d1ba74c7f13:
+  title: 'netfilter: nf_tables: disable toggling dormant table state more than once'
+  mainline: c9bd26513b3a11b3adb3c2ed8a31a01a87173ff1
+  skipped: too risky to backport
+a118e0d82bb4b7760db8f704c05e2b8713b9bcc1:
+  title: 'netfilter: nf_tables: bogus EBUSY when deleting flowtable after flush (for 4.19)'
+6a67f972de8994ee1c3092b19b6f5569b66b9904:
+  title: 'netfilter: nft_dynset: fix timeouts later than 23 days'
+  mainline: 917d80d376ffbaa9725fde9e3c0282f63643f278
+  skipped: too risky to backport
+28a97c43c9e32f437ebb8d6126f9bb7f3ca9521a:
+  title: 'netfilter: nftables: exthdr: fix 4-byte stack OOB write'
+  mainline: fd94d9dadee58e09b49075240fe83423eb1dcd36
+  skipped: commit is already present in branch
+c5c4746c8cd6d049dcbf39c811172c917ea6fb6e:
+  title: 'netfilter: nft_dynset: report EOPNOTSUPP on missing set feature'
+  mainline: 95cd4bca7b1f4a25810f3ddfc5e767fb46931789
+  backport: ea71b10a3d18e5589f44b836a83003a6e741d6bb
+79e98cd78610560a6a6cf85200eb31331602f9a9:
+  title: 'netfilter: nft_dynset: relax superfluous check on set updates'
+  mainline: 7b1394892de8d95748d05e3ee41e85edb4abbfa1
+  backport: fa8b9918795f9be7f4ca95f5440acff86fe946db
+451dc4678c1342fc5c3a2d23e1d8e120e58f6304:
+  title: 'netfilter: nf_tables: mark newset as dead on transaction abort'
+  mainline: 08e4c8c5919fd405a4d709b4ba43d836894a26eb
+  skipped: too risky to backport
+18f1f50558e1736d34597fdf08554aee94f59405:
+  title: 'netfilter: nf_tables: skip dead set elements in netlink dump'
+  mainline: 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a
+  skipped: too risky to backport
+a5bbd579c81ffb9f65cb280fa89be9ec9c01029b:
+  title: 'netfilter: nf_tables: validate NFPROTO_* family'
+  mainline: d0009effa8862c20a13af4cb7475d9771b905693
+  skipped: too risky to backport
+c60d252949caf9aba537525195edae6bbabc35eb:
+  title: 'netfilter: nft_set_rbtree: skip end interval element from gc'
+  mainline: 60c0c230c6f046da536d3df8b39a20b9a9fd6af0
+  skipped: fixes patch not in branch
+a6411f3c48f991c19aaf9a24fce36865fbba28d7:
+  title: 'netfilter: nf_tables: set dormant flag on hook register failure'
+  mainline: bccebf64701735533c8db37773eeacc6566cc8ec
+  skipped: fixes issue not in 4.14
+d8853cfe273c181b2e45528db7300536e860b758:
+  title: 'netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()'
+  mainline: 7e0f122c65912740327e4c54472acaa5f85868cb
+  skipped: too risky to backport
+845083249d6a392f3a88804e1669bdb936ee129f:
+  title: 'netfilter: nf_tables: do not compare internal table flags on updates'
+  mainline: 4a0e7f2decbf9bd72461226f1f5f7dcc4b08f139
+  skipped: too risky to backport
+d75a589bb92af1abf3b779cfcd1977ca11b27033:
+  title: 'netfilter: nf_tables: mark set as dead when unbinding anonymous set with timeout'
+  mainline: 552705a3650bbf46a22b1adedc1b04181490fc36
+  skipped: too risky to backport
+6d12f21f8bbe23fde25b77c2bf5973c136b8bef8:
+  title: 'netfilter: nf_tables: reject new basechain after table flag update'
+  mainline: 994209ddf4f430946f6247616b2e33d179243769
+  skipped: too risky to backport
+e75faf01e22ec7dc671640fa0e0968964fafd2fc:
+  title: 'netfilter: nf_tables: discard table flag update with pending basechain deletion'
+  mainline: 1bc83a019bbe268be3526406245ec28c2458a518
+  skipped: too risky to backport
+3c9ee8294728633e707c25fe0a321eeac1cc7515:
+  title: 'KVM: arm64: Allow AArch32 PSTATE.M to be restored as System mode'
+  mainline: dfe6d190f38fc5df5ff2614b463a5195a399c885
+  backport: 6658c1ef0cb35d3d594507db800cb44a54db4f75
+0ce5964b82f212f4df6a9813f09a0b5de15bd9c8:
+  title: 'crypto: qat - Fix ADF_DEV_RESET_SYNC memory leak'
+  mainline: d3b17c6d9dddc2db3670bc9be628b122416a3d26
+  backport: 9d5b95ce1488266fd3dc3951da6c8ce25c366ada
+72c5d8e416ecc46af370a1340b3db5ff0b0cc867:
+  title: 'net/9p: fix uninit-value in p9_client_rpc()'
+  mainline: 25460d6f39024cc3b8241b14c7ccf0d6f11a736a
+  backport: 9a9a74f4cdb1295a5a854d2ca6cb87fc19048ef3
+58c0309c73fe1e9c477ed4cc5d02fc9015336979:
+  title: 'intel_th: pci: Add Meteor Lake-S CPU support'
+  mainline: a4f813c3ec9d1c32bc402becd1f011b3904dd699
+  backport: 471ea347bb7d4b16dd62a6642efb111fa36f2da7
+180b2e4c1ba4f6e3e4c52d6664cb019f6eac02f8:
+  title: 'sparc64: Fix number of online CPUs'
+  mainline: 98937707fea8375e8acea0aaa0b68a956dd52719
+  backport: 9f2edbc910b189e46e7ca3d17680e36fde63276d
+fb824a99e148ff272a53d71d84122728b5f00992:
+  title: 'kdb: Fix buffer overflow during tab-complete'
+  mainline: e9730744bf3af04cda23799029342aa3cddbc454
+  backport: f751d9a9f3d6c01908cf9bc9d966a35ecc1a2f64
+4edfbbaca46491b06af14e49dcb79ac661d0bbdc:
+  title: 'kdb: Use format-strings rather than ''\0'' injection in kdb_read()'
+  mainline: 09b35989421dfd5573f0b4683c7700a7483c71f9
+  backport: f990953b6d8d752849e6f682628d4632f051b7de
+21c068c1bbb4c336741749596d004b1965faab2c:
+  title: 'kdb: Fix console handling when editing and tab-completing commands'
+  mainline: db2f9c7dc29114f531df4a425d0867d01e1f1e28
+  backport: fc2a098bc09c4f9968c93222902d72f518ec6953
+4a89182788f9af9a290c19098382fb972ebe2783:
+  title: 'kdb: Merge identical case statements in kdb_read()'
+  mainline: 6244917f377bf64719551b58592a02a0336a7439
+  backport: 201f3d45deb9bcf1046483d72642d8457976c7a9
+2467f3f182eb35627534effd4956fceb2504c127:
+  title: 'kdb: Use format-specifiers rather than memset() for padding in kdb_read()'
+  mainline: c9b51ddb66b1d96e4d364c088da0f1dfb004c574
+  backport: c89fb4fb7559ec8e3f74ecbc29ef856a47cc85d4
+051c0bde9f0450a2ec3d62a86d2a0d2fad117f13:
+  title: 'net: fix __dst_negative_advice() race'
+  mainline: 92f1655aa2b2294d0b49925f3b875a634bd3b59e
+  skipped: fixes patch not in branch
+980a1cd6e092eab9398a78f517809a7dacaa0468:
+  title: 'sparc: move struct termio to asm/termios.h'
+  mainline: c32d18e7942d7589b62e301eb426b32623366565
+  backport: 212ca5dd4286a76808254db293bd898a062b56e3
+9ad75e78747b5a50dc5a52f0f8e92e920a653f16:
+  title: 'ext4: fix mb_cache_entry''s e_refcnt leak in ext4_xattr_block_cache_find()'
+  mainline: 0c0b4a49d3e7f49690a6827a41faeffad5df7e21
+  backport: 199f7d837409f78087fde12a33c486d4d866c16e
+2062e3f1f2374102f8014d7ca286b9aa527bd558:
+  title: 's390/ap: Fix crash in AP internal function modify_bitmap()'
+  mainline: d4f9d5a99a3fd1b1c691b7a1a6f8f3f25f4116c9
+  skipped: depends on missing commit 3d8f60d38e249f989a7fca9c2370c31c3d5487e1
+74ea538aa24490d7d259c881189bb58dbf1f692c:
+  title: 'nfs: fix undefined behavior in nfs_block_bits()'
+  mainline: 3c0a2e0b0ae661457c8505fecc7be5501aa7a715
+  backport: 593e234893f02097b207840c7c31b4d91b64ca14
